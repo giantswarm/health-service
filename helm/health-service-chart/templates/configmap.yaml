@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: health-service-configmap
+  namespace: giantswarm
+data:
+  config.yaml: |
+    server:
+      enable:
+        debug:
+          server: true
+      listen:
+        address: 'http://0.0.0.0:8000'
+    service:
+      kubernetes:
+        guest:
+          api:
+            endpointFormat: 'https://api.%s.{{ .Values.Installation.V1.Guest.Kubernetes.API.EndpointBase }}'
+      provider:
+        kind: '{{ .Values.Installation.V1.Provider.Kind }}'

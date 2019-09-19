@@ -1,0 +1,92 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: health-service
+  namespace: giantswarm
+  labels:
+    app: health-service
+spec:
+  replicas: 2
+  revisionHistoryLimit: 3
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: health-service
+      annotations:
+        releasetime: {{ $.Release.Time }}
+    spec:
+      volumes:
+      - name: health-service-configmap
+        configMap:
+          name: health-service-configmap
+          items:
+          - key: config.yaml
+            path: config.yaml
+      - name: health-service-secret
+        secret:
+          secretName: health-service-secret
+          items:
+          - key: secret.yaml
+            path: secret.yaml
+      - name: certs
+        hostPath:
+          path: /etc/ssl/certs
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                  - key: k8s-app
+                    operator: In
+                    values:
+                    - health-service
+              topologyKey: kubernetes.io/hostname
+      serviceAccountName: health-service
+      securityContext:
+        runAsUser: {{ .Values.userID }}
+        runAsGroup: {{ .Values.groupID }}
+      containers:
+      - name: health-service
+        image: quay.io/giantswarm/health-service:[[ .SHA ]]
+        volumeMounts:
+        - name: health-service-configmap
+          mountPath: /var/run/health-service/configmap/
+        - name: health-service-secret
+          mountPath: /var/run/health-service/secret/
+          readOnly: true
+        - name: certs
+          mountPath: /etc/ssl/certs
+        ports:
+        - name: http
+          containerPort: 8000
+        args:
+        - daemon
+        - --config.dirs=/var/run/health-service/configmap/
+        - --config.dirs=/var/run/health-service/secret/
+        - --config.files=config
+        - --config.files=secret
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8000
+          initialDelaySeconds: 30
+          timeoutSeconds: 1
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 8000
+          initialDelaySeconds: 30
+          timeoutSeconds: 1
+        resources:
+          requests:
+            cpu: 100m
+            memory: 20Mi
+          limits:
+            cpu: 250m
+            memory: 250Mi
+      imagePullSecrets:
+      - name: health-service-pull-secret

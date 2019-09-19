@@ -1,0 +1,127 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: health-service
+rules:
+  - apiGroups:
+      - apiextensions.k8s.io
+    resources:
+      - customresourcedefinitions
+    verbs:
+      - "*"
+  - apiGroups:
+      - extensions
+    resources:
+      - thirdpartyresources
+    verbs:
+      - "*"
+  - apiGroups:
+      - cluster.k8s.io
+    resources:
+      - clusters
+      - machinedeployments
+    verbs:
+      - get
+      - list
+  - apiGroups:
+      - core.giantswarm.io
+    resources:
+      - awsclusterconfigs
+      - azureclusterconfigs
+      - kvmclusterconfigs
+      - storageconfigs
+    verbs:
+      - "*"
+  - apiGroups:
+      - provider.giantswarm.io
+    resources:
+      - awsconfigs
+      - awsconfigs/status
+      - azureconfigs
+      - azureconfigs/status
+      - kvmconfigs
+      - kvmconfigs/status
+    verbs:
+      - get
+      - list
+  - apiGroups:
+      - giantswarm.io
+    resources:
+      - tprstorages
+    verbs:
+      - get
+      - create
+  - apiGroups:
+      - ""
+    resources:
+      - nodes
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - ""
+    resources:
+      - secrets
+    verbs:
+      - get
+      - list
+  - apiGroups:
+      - ""
+    resources:
+      - configmaps
+    resourceNames:
+      - health-service-configmap
+    verbs:
+      - get
+  - apiGroups:
+      - ""
+    resources:
+      - namespaces
+    verbs:
+      - create
+  - nonResourceURLs:
+      - "/"
+      - "/healthz"
+    verbs:
+      - get
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: health-service
+subjects:
+  - kind: ServiceAccount
+    name: health-service
+    namespace: giantswarm
+roleRef:
+  kind: ClusterRole
+  name: health-service
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: health-service-psp
+rules:
+  - apiGroups:
+      - extensions
+    resources:
+      - podsecuritypolicies
+    verbs:
+      - use
+    resourceNames:
+      - health-service-psp
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: health-service-psp
+subjects:
+  - kind: ServiceAccount
+    name: health-service
+    namespace: giantswarm
+roleRef:
+  kind: ClusterRole
+  name: health-service-psp
+  apiGroup: rbac.authorization.k8s.io
