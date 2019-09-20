@@ -31,14 +31,6 @@ type Config struct {
 	Service    *service.Service
 }
 
-func DefaultConfig() Config {
-	return Config{
-		Logger:     nil,
-		Middleware: nil,
-		Service:    nil,
-	}
-}
-
 type Endpoint struct {
 	logger     micrologger.Logger
 	middleware *middleware.Middleware

@@ -57,9 +57,10 @@ func New(config Config) (*Server, error) {
 
 	var middlewareCollection *middleware.Middleware
 	{
-		middlewareConfig := middleware.DefaultConfig()
-		middlewareConfig.Logger = config.Logger
-		middlewareConfig.Service = config.Service
+		middlewareConfig := middleware.Config{
+			Logger:  config.Logger,
+			Service: config.Service,
+		}
 		middlewareCollection, err = middleware.New(middlewareConfig)
 		if err != nil {
 			return nil, microerror.Mask(err)

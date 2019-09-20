@@ -96,13 +96,13 @@ func New(config Config) (*Service, error) {
 
 	var healthService *health.Service
 	{
-		healthConfig := health.DefaultConfig()
-
-		healthConfig.K8sClient = config.K8sClient
-		healthConfig.Logger = config.Logger
-		healthConfig.G8sClient = g8sClient
-		healthConfig.Flag = config.Flag
-		healthConfig.Viper = config.Viper
+		healthConfig := health.Config{
+			K8sClient: config.K8sClient,
+			Logger:    config.Logger,
+			G8sClient: g8sClient,
+			Flag:      config.Flag,
+			Viper:     config.Viper,
+		}
 
 		healthService, err = health.New(healthConfig)
 		if err != nil {

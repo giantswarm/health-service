@@ -29,16 +29,6 @@ type Config struct {
 	Services []healthz.Service
 }
 
-// DefaultConfig provides a default configuration to create a new healthz
-// endpoint by best effort.
-func DefaultConfig() Config {
-	return Config{
-		// Dependencies.
-		Logger:   nil,
-		Services: nil,
-	}
-}
-
 // New creates a new configured healthz endpoint.
 func New(config Config) (*Endpoint, error) {
 	// Dependencies.

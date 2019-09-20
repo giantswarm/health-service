@@ -20,7 +20,7 @@ type Config struct {
 }
 
 type Endpoint struct {
-	Health *health.Endpoint
+	Health  *health.Endpoint
 	Healthz *healthz.Endpoint
 	Version *version.Endpoint
 }
@@ -30,10 +30,11 @@ func New(config Config) (*Endpoint, error) {
 
 	var healthEndpoint *health.Endpoint
 	{
-		healthConfig := health.DefaultConfig()
-		healthConfig.Logger = config.Logger
-		healthConfig.Middleware = config.Middleware
-		healthConfig.Service = config.Service
+		healthConfig := health.Config{
+			Logger:     config.Logger,
+			Middleware: config.Middleware,
+			Service:    config.Service,
+		}
 		healthEndpoint, err = health.New(healthConfig)
 		if err != nil {
 			return nil, microerror.Mask(err)
@@ -66,7 +67,7 @@ func New(config Config) (*Endpoint, error) {
 	}
 
 	e := &Endpoint{
-		Health: healthEndpoint,
+		Health:  healthEndpoint,
 		Healthz: healthzEndpoint,
 		Version: versionEndpoint,
 	}

@@ -1,15 +1,11 @@
 package kubernetes
 
-type TLS struct {
-	CAFile  string
-	CrtFile string
-	KeyFile string
-}
+import "github.com/giantswarm/health-service/flag/service/kubernetes/tls"
 
 type Kubernetes struct {
-	Address                string
-	GuestAPIEndpointFormat string
-	InCluster              string
-	TLS                    TLS
-	KubeConfig             string
+	Address            string
+	ApiserverExtension string
+	InCluster          string
+	KubeConfig         string
+	TLS                tls.TLS
 }

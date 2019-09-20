@@ -24,19 +24,6 @@ type Config struct {
 	Viper *viper.Viper
 }
 
-// DefaultConfig provides a default configuration to create a new service by
-// best effort.
-func DefaultConfig() Config {
-	return Config{
-		G8sClient: nil,
-		K8sClient: nil,
-		Logger:    nil,
-
-		Flag:  nil,
-		Viper: nil,
-	}
-}
-
 type Service struct {
 	Searcher *searcher.Service
 }
@@ -57,10 +44,11 @@ func New(config Config) (*Service, error) {
 
 	var searcherService *searcher.Service
 	{
-		searcherConfig := searcher.DefaultConfig()
-		searcherConfig.G8sClient = config.G8sClient
-		searcherConfig.Logger = config.Logger
-		searcherConfig.Provider = strings.TrimSpace(config.Viper.GetString(config.Flag.Service.Provider.Kind))
+		searcherConfig := searcher.Config{
+			G8sClient: config.G8sClient,
+			Logger:    config.Logger,
+			Provider:  strings.TrimSpace(config.Viper.GetString(config.Flag.Service.Provider.Kind)),
+		}
 		searcherService, err = searcher.New(searcherConfig)
 		if err != nil {
 			return nil, microerror.Mask(err)
