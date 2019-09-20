@@ -17,17 +17,6 @@ type Config struct {
 	Service    *service.Service
 }
 
-// DefaultConfig provides a default configuration to create a new info
-// endpoint by best effort.
-func DefaultConfig() Config {
-	return Config{
-		// Dependencies.
-		Logger:     nil,
-		Middleware: nil,
-		Service:    nil,
-	}
-}
-
 // Endpoint is the info endpoint collection.
 type Endpoint struct {
 	Searcher *searcher.Endpoint
@@ -39,10 +28,11 @@ func New(config Config) (*Endpoint, error) {
 
 	var searcherEndpoint *searcher.Endpoint
 	{
-		searcherConfig := searcher.DefaultConfig()
-		searcherConfig.Logger = config.Logger
-		searcherConfig.Middleware = config.Middleware
-		searcherConfig.Service = config.Service
+		searcherConfig := searcher.Config{
+			Logger:     config.Logger,
+			Middleware: config.Middleware,
+			Service:    config.Service,
+		}
 		searcherEndpoint, err = searcher.New(searcherConfig)
 		if err != nil {
 			return nil, microerror.Mask(err)

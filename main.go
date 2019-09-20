@@ -141,7 +141,7 @@ func mainWithError() error {
 
 	daemonCommand.PersistentFlags().String(f.Service.Provider.Kind, "", "Kind of the underlying virtualization/technology provider the service is deployed in.")
 
-	daemonCommand.PersistentFlags().String(f.Service.Kubernetes.GuestAPIEndpointFormat, "", "Format string used to create the API endpoint of the guest Kubernetes clusters.")
+	daemonCommand.PersistentFlags().Bool(f.Service.Kubernetes.ApiserverExtension, true, "True if this is running as an apiserver extension or false if standalone.")
 	daemonCommand.PersistentFlags().String(f.Service.Kubernetes.Address, "http://127.0.0.1:8080", "Address used to connect to Kubernetes. When empty in-cluster config is created.")
 	daemonCommand.PersistentFlags().Bool(f.Service.Kubernetes.InCluster, true, "Whether to use the in-cluster config to authenticate with Kubernetes.")
 	daemonCommand.PersistentFlags().String(f.Service.Kubernetes.KubeConfig, "", "KubeConfig used to connect to Kubernetes. When empty other settings are used.")

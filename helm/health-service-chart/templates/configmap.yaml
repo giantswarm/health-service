@@ -12,9 +12,5 @@ data:
       listen:
         address: 'http://0.0.0.0:8000'
     service:
-      kubernetes:
-        guest:
-          api:
-            endpointFormat: 'https://api.%s.{{ .Values.Installation.V1.Guest.Kubernetes.API.EndpointBase }}'
       provider:
         kind: '{{ .Values.Installation.V1.Provider.Kind }}'

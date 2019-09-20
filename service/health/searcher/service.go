@@ -17,20 +17,6 @@ type Config struct {
 	Provider string
 }
 
-// DefaultConfig provides a default configuration to create a new service object
-// by best effort.
-func DefaultConfig() Config {
-	newConfig := Config{
-		// Dependencies.
-		Logger: nil,
-
-		// Settings
-		Provider: "",
-	}
-
-	return newConfig
-}
-
 // New creates a new configured service object.
 func New(config Config) (*Service, error) {
 	// Dependencies.
