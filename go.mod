@@ -13,6 +13,7 @@ require (
 	github.com/giantswarm/operatorkit v0.0.0-20190916084058-6e3f62f7a51f
 	github.com/giantswarm/versionbundle v0.0.0-20190424125133-c91a5899eae8 // indirect
 	github.com/go-kit/kit v0.9.0
+	github.com/google/go-cmp v0.3.0
 	github.com/googleapis/gnostic v0.3.1 // indirect
 	github.com/gorilla/mux v1.7.3
 	github.com/gregjones/httpcache v0.0.0-20190611155906-901d90724c79 // indirect
