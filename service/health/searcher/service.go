@@ -17,6 +17,15 @@ type Config struct {
 	Provider string
 }
 
+func contains(value string, values []string) bool {
+	for i := range values {
+		if values[i] == value {
+			return true
+		}
+	}
+	return false
+}
+
 // New creates a new configured service object.
 func New(config Config) (*Service, error) {
 	// Dependencies.
@@ -28,6 +37,14 @@ func New(config Config) (*Service, error) {
 	}
 	if config.Provider == "" {
 		return nil, microerror.Maskf(invalidConfigError, "provider must not be empty")
+	}
+	providers := []string{
+		"aws",
+		"azure",
+		"kvm",
+	}
+	if !contains(config.Provider, providers) {
+		return nil, microerror.Maskf(invalidConfigError, "provider must be one of %+v", providers)
 	}
 
 	newService := &Service{

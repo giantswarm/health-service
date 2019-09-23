@@ -1,67 +1,76 @@
 package searcher
 
 import (
-	"context"
+	"strconv"
 	"testing"
 
 	apiextensionsfake "github.com/giantswarm/apiextensions/pkg/clientset/versioned/fake"
-	"github.com/giantswarm/health-service/flag"
-	"github.com/spf13/viper"
-
 	"github.com/giantswarm/micrologger/microloggertest"
 )
 
-func Test_Service(t *testing.T) {
+func Test_Health_New(t *testing.T) {
 	testCases := []struct {
-		RequestFactory  func() Request
-		ExpectedFactory func() Response
-		ErrorMatcher    func(error) bool
+		name         string
+		inputObj     Config
+		errorMatcher func(err error) bool
 	}{
-		// Case 1. Having an empty request given there should be one master with
-		// proper defaults having set.
 		{
-			RequestFactory: func() Request {
-				request := Request{}
-				return request
+			name: "case 0: a service is successfully created",
+			inputObj: Config{
+				G8sClient: apiextensionsfake.NewSimpleClientset(),
+				Logger:    microloggertest.New(),
+				Provider:  "aws",
 			},
-			ExpectedFactory: func() Response {
-				request := Response{
-					ClusterHealth: "green",
-				}
-				return request
+			errorMatcher: nil,
+		},
+		{
+			name: "case 1: invalidConfigError returned when provider is missing",
+			inputObj: Config{
+				G8sClient: apiextensionsfake.NewSimpleClientset(),
+				Logger:    microloggertest.New(),
 			},
-			ErrorMatcher: nil,
+			errorMatcher: IsInvalidConfig,
+		},
+		{
+			name: "case 2: invalidConfigError returned when provider is not a known provider",
+			inputObj: Config{
+				G8sClient: apiextensionsfake.NewSimpleClientset(),
+				Logger:    microloggertest.New(),
+				Provider:  "invalid",
+			},
+			errorMatcher: IsInvalidConfig,
+		},
+		{
+			name: "case 3: invalidConfigError returned when logger is missing",
+			inputObj: Config{
+				G8sClient: apiextensionsfake.NewSimpleClientset(),
+				Provider:  "aws",
+			},
+			errorMatcher: IsInvalidConfig,
+		},
+		{
+			name: "case 4: invalidConfigError returned when g8sclient is missing",
+			inputObj: Config{
+				Logger:   microloggertest.New(),
+				Provider: "aws",
+			},
+			errorMatcher: IsInvalidConfig,
 		},
 	}
 
-	var err error
-	var newService *Service
-	{
-		f := flag.New()
-		v := viper.New()
-		v.Set(f.Service.Provider.Kind, "aws")
-
-		newConfig := Config{
-			G8sClient: apiextensionsfake.NewSimpleClientset(),
-			Logger:    microloggertest.New(),
-			Provider:  "aws",
-		}
-		newService, err = New(newConfig)
-		if err != nil {
-			t.Fatal("expected", nil, "got", err)
-		}
-	}
-
-	for i, testCase := range testCases {
-		request, err := newService.Search(context.TODO(), testCase.RequestFactory())
-		if err != nil && testCase.ErrorMatcher == nil {
-			t.Fatal("case", i+1, "expected", nil, "got", err)
-		}
-		if testCase.ErrorMatcher != nil && !testCase.ErrorMatcher(err) {
-			t.Fatal("case", i+1, "expected", true, "got", false)
-		}
-		if testCase.ExpectedFactory().ClusterHealth != request.ClusterHealth {
-			t.Fatal("case", i+1, "expected", true, "got", false)
-		}
+	for i, tc := range testCases {
+		t.Run(strconv.Itoa(i), func(t *testing.T) {
+			_, err := New(tc.inputObj)
+			switch {
+			case err == nil && tc.errorMatcher == nil:
+				// correct; carry on
+			case err != nil && tc.errorMatcher == nil:
+				t.Fatalf("error == %#v, want nil", err)
+			case err == nil && tc.errorMatcher != nil:
+				t.Fatalf("error == nil, want non-nil")
+			case !tc.errorMatcher(err):
+				t.Fatalf("error == %#v, want matching", err)
+			}
+		})
 	}
 }
