@@ -79,8 +79,13 @@ func (e *Endpoint) Endpoint() kitendpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		var serviceRequest searcher.Request
 		{
-			serviceRequest = searcher.DefaultRequest()
-			serviceRequest.ClusterID = request.(string)
+			clusterID, ok := request.(string)
+			if !ok {
+				return Response{}, microerror.Mask(clusterNotFoundError)
+			}
+			serviceRequest = searcher.Request{
+				ClusterID: clusterID,
+			}
 		}
 
 		serviceResponse, err := e.service.Health.Searcher.Search(ctx, serviceRequest)
