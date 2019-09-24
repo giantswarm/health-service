@@ -147,7 +147,7 @@ func Test_Health_Endpoint(t *testing.T) {
 
 			endpointResponseTyped, ok := endpointResponse.(Response)
 			if !ok {
-				t.Fatal("endpointResponse.(type) = %T, want %T", endpointResponse, endpointResponseTyped)
+				t.Fatalf("endpointResponse.(type) = %T, want %T", endpointResponse, endpointResponseTyped)
 			}
 
 			if !cmp.Equal(endpointResponseTyped.ClusterHealth, tc.expectedHealth) {
