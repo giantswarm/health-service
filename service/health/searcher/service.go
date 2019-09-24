@@ -36,7 +36,7 @@ func New(config Config) (*Service, error) {
 		return nil, microerror.Maskf(invalidConfigError, "%T.Provider must not be empty", config)
 	}
 
-	newService := &Service{
+	s := &Service{
 		g8sClient: config.G8sClient,
 		logger:    config.Logger,
 
