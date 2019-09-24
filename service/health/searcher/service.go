@@ -43,7 +43,7 @@ func New(config Config) (*Service, error) {
 		provider: config.Provider,
 	}
 
-	return newService, nil
+	return s, nil
 }
 
 // Search searches for the cluster information.
