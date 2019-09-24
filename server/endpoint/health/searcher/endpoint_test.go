@@ -16,6 +16,7 @@ import (
 	"k8s.io/client-go/rest"
 
 	"github.com/giantswarm/health-service/flag"
+	"github.com/giantswarm/health-service/mock"
 	"github.com/giantswarm/health-service/server/middleware"
 	"github.com/giantswarm/health-service/service"
 	"github.com/giantswarm/health-service/service/health"
@@ -34,7 +35,7 @@ func Test_Health_Endpoint(t *testing.T) {
 			name:           "case 0: aws health is returned successfully",
 			inputObj:       "abc",
 			errorMatcher:   nil,
-			k8sAPIResponse: `{"items": []}`,
+			k8sAPIResponse: mock.AWSHealthy,
 			expectedHealth: "green",
 			provider:       "aws",
 		},
@@ -42,7 +43,7 @@ func Test_Health_Endpoint(t *testing.T) {
 			name:           "case 1: azure health is returned successfully",
 			inputObj:       "abc",
 			errorMatcher:   nil,
-			k8sAPIResponse: `{"items": []}`,
+			k8sAPIResponse: mock.AzureHealthy,
 			expectedHealth: "green",
 			provider:       "azure",
 		},
@@ -50,7 +51,7 @@ func Test_Health_Endpoint(t *testing.T) {
 			name:           "case 2: kvm health is returned successfully",
 			inputObj:       "abc",
 			errorMatcher:   nil,
-			k8sAPIResponse: `{"items": []}`,
+			k8sAPIResponse: mock.KVMHealthy,
 			expectedHealth: "green",
 			provider:       "kvm",
 		},
@@ -150,8 +151,8 @@ func Test_Health_Endpoint(t *testing.T) {
 				t.Fatalf("endpointResponse.(type) = %T, want %T", endpointResponse, endpointResponseTyped)
 			}
 
-			if !cmp.Equal(endpointResponseTyped.ClusterHealth, tc.expectedHealth) {
-				t.Fatalf("\n\n%s\n", cmp.Diff(tc.expectedHealth, endpointResponseTyped.ClusterHealth))
+			if !cmp.Equal(endpointResponseTyped.General.Health, tc.expectedHealth) {
+				t.Fatalf("\n\n%s\n", cmp.Diff(tc.expectedHealth, endpointResponseTyped.General.Health))
 			}
 		})
 	}

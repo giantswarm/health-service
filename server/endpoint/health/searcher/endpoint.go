@@ -94,7 +94,9 @@ func (e *Endpoint) Endpoint() kitendpoint.Endpoint {
 		}
 
 		endpointResponse := Response{
-			ClusterHealth: serviceResponse.ClusterHealth,
+			General: GeneralStatus{
+				Health: serviceResponse.ClusterHealth,
+			},
 		}
 
 		return endpointResponse, nil
