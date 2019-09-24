@@ -1,5 +1,6 @@
 package searcher
 
+// GeneralStatus holds data about the overall health/status of a cluster
 type GeneralStatus struct {
 	Health       string `json:"health"`
 	Creating     bool   `json:"creating"`
@@ -10,24 +11,38 @@ type GeneralStatus struct {
 	MaxNodeCount int    `json:"maxNodeCount"`
 }
 
-type NodeStatus struct {
-	Ready                bool   `json:"ready"`
-	IP                   string `json:"ip"`
-	Hostname             string `json:"hostname"`
-	Version              string `json:"version"`
-	CPUs                 int    `json:"cpus"`
-	VolumeSizeGB         int    `json:"volumeSizeGb"`
-	MemoryGB             int    `json:"memoryGb"`
-	CPULimitTotal        int    `json:"cpuLimitTotal"`
-	MemoryGBLimitTotal   int    `json:"memoryGbLimitTotal"`
-	CPURequestTotal      int    `json:"cpuRequestTotal"`
-	MemoryGBRequestTotal int    `json:"memoryGbRequestTotal"`
-	AttachableDiskCount  int    `json:"attachableDiskCount"`
-	AttachedDiskCount    int    `json:"attachedDiskCount"`
-	EphemeralStorageGB   int    `json:"ephemeralStorageGb"`
+// NodeStatusComputeResources holds data about available or requested compute resources
+type NodeStatusComputeResources struct {
+	CPU      int `json:"cpu"`
+	MemoryGB int `json:"memoryGb"`
 }
 
+// NodeStatusStorage holds data about the status of storage on a cluster node
+type NodeStatusStorage struct {
+	VolumeSizeGB        int `json:"volumeSizeGb"`
+	AttachableDiskCount int `json:"attachableDiskCount"`
+	AttachedDiskCount   int `json:"attachedDiskCount"`
+	EphemeralStorageGB  int `json:"ephemeralStorageGb"`
+}
+
+// NodeStatusIdentity holds data about the identity of a node which is generally static
+type NodeStatusIdentity struct {
+	IP       string `json:"ip"`
+	Hostname string `json:"hostname"`
+	Version  string `json:"version"`
+}
+
+// NodeStatus represents the health status of a single node in a cluster
+type NodeStatus struct {
+	Ready            bool                       `json:"ready"`
+	Identity         NodeStatusIdentity         `json:"identity"`
+	MachineResources NodeStatusComputeResources `json:"machine"`
+	LimitTotals      NodeStatusComputeResources `json:"limitTotals"`
+	RequestTotals    NodeStatusComputeResources `json:"requestTotals"`
+}
+
+// Response holds the data returned from the health searcher endpoint
 type Response struct {
 	General GeneralStatus `json:"general"`
-	Nodes   []NodeStatus  `json:"nodes"`
+	Nodes   []NodeStatus  `json:"nodes,omitempty"`
 }
