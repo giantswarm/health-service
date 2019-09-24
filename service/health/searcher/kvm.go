@@ -2,25 +2,31 @@ package searcher
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/giantswarm/microerror"
-	"k8s.io/apimachinery/pkg/api/errors"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-// searchAWSCR searches for the cluster config in AWSClusterConfigs resources.
+// searchKVMCR searches for the cluster config in AWSClusterConfigs resources.
 func (s *Service) searchKVMCR(ctx context.Context, request Request) (*Response, error) {
-	awsClusterConfigName := fmt.Sprintf("%s-%s", request.ClusterID, "aws-cluster-config")
-	awsClusterConfig, err := s.G8sClient.CoreV1alpha1().AWSClusterConfigs(metav1.NamespaceDefault).Get(awsClusterConfigName, metav1.GetOptions{})
-	if errors.IsNotFound(err) {
-		return nil, microerror.Mask(clusterNotFoundError)
-	} else if err != nil {
+	kvmCR, err := s.G8sClient.ProviderV1alpha1().KVMConfigs("default").Get(request.ClusterID, v1.GetOptions{})
+	if err != nil {
 		return nil, microerror.Mask(err)
 	}
-
-	response := DefaultResponse()
-	response.ClusterHealth = awsClusterConfig.GetName()
+	var health string
+	{
+		nodeCount := len(kvmCR.Status.Cluster.Nodes)
+		if nodeCount == 4 {
+			health = "green"
+		} else if nodeCount > 0 {
+			health = "yellow"
+		} else {
+			health = "red"
+		}
+	}
+	response := Response{
+		ClusterHealth: health,
+	}
 
 	return &response, nil
 }

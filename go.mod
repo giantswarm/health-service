@@ -3,6 +3,7 @@ module github.com/giantswarm/health-service
 go 1.13
 
 require (
+	github.com/evanphx/json-patch v4.5.0+incompatible // indirect
 	github.com/giantswarm/apiextensions v0.0.0-20190918114644-490ba82fe60e
 	github.com/giantswarm/microendpoint v0.0.0-20190724091423-2c0b54e888d6
 	github.com/giantswarm/microerror v0.0.0-20190815145748-cb07ec533b50
@@ -12,6 +13,7 @@ require (
 	github.com/giantswarm/operatorkit v0.0.0-20190916084058-6e3f62f7a51f
 	github.com/giantswarm/versionbundle v0.0.0-20190424125133-c91a5899eae8 // indirect
 	github.com/go-kit/kit v0.9.0
+	github.com/google/go-cmp v0.3.0
 	github.com/googleapis/gnostic v0.3.1 // indirect
 	github.com/gorilla/mux v1.7.3
 	github.com/gregjones/httpcache v0.0.0-20190611155906-901d90724c79 // indirect
@@ -29,5 +31,5 @@ require (
 	k8s.io/apimachinery v0.0.0-20181127025237-2b1284ed4c93
 	k8s.io/client-go v0.0.0-20190111032708-6bf63545bd02
 	k8s.io/klog v1.0.0 // indirect
-	sigs.k8s.io/yaml v1.1.0 // indirect
+	k8s.io/kube-openapi v0.0.0-20190918143330-0270cf2f1c1d // indirect
 )

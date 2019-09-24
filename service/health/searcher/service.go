@@ -6,39 +6,49 @@ import (
 	"github.com/giantswarm/apiextensions/pkg/clientset/versioned"
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
+
+	"github.com/giantswarm/health-service/service/health/key"
 )
 
 // Config represents the configuration used to create a new service object.
 type Config struct {
-	// Dependencies.
 	G8sClient versioned.Interface
 	Logger    micrologger.Logger
 
 	Provider string
 }
 
-// New creates a new configured service object.
-func New(config Config) (*Service, error) {
-	// Dependencies.
-	if config.G8sClient == nil {
-		return nil, microerror.Maskf(invalidConfigError, "g8sclient must not be empty")
-	}
-	if config.Logger == nil {
-		return nil, microerror.Maskf(invalidConfigError, "logger must not be empty")
-	}
-	if config.Provider == "" {
-		return nil, microerror.Maskf(invalidConfigError, "provider must not be empty")
-	}
+type Service struct {
+	g8sClient versioned.Interface
+	logger    micrologger.Logger
 
-	newService := &Service{
-		Config: config,
-	}
-
-	return newService, nil
+	provider string
 }
 
-type Service struct {
-	Config
+// New creates a new configured service object.
+func New(config Config) (*Service, error) {
+	if config.G8sClient == nil {
+		return nil, microerror.Maskf(invalidConfigError, "%T.G8sClient must not be empty", config)
+	}
+	if config.Logger == nil {
+		return nil, microerror.Maskf(invalidConfigError, "%T.Logger must not be empty", config)
+	}
+
+	if config.Provider == "" {
+		return nil, microerror.Maskf(invalidConfigError, "%T.Provider must not be empty", config)
+	}
+	if !key.IsKnownProvider(config.Provider) {
+		return nil, microerror.Maskf(invalidConfigError, "provider must be one of %+v", key.Providers)
+	}
+
+	s := &Service{
+		g8sClient: config.G8sClient,
+		logger:    config.Logger,
+
+		provider: config.Provider,
+	}
+
+	return s, nil
 }
 
 // Search searches for the cluster information.
