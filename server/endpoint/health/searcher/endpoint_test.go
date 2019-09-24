@@ -28,13 +28,31 @@ func Test_Health_Endpoint(t *testing.T) {
 		k8sAPIResponse string
 		errorMatcher   func(err error) bool
 		expectedHealth string
+		provider       string
 	}{
 		{
-			name:           "case 0: health is returned successfully",
+			name:           "case 0: aws health is returned successfully",
 			inputObj:       "abc",
 			errorMatcher:   nil,
 			k8sAPIResponse: `{"items": []}`,
 			expectedHealth: "green",
+			provider:       "aws",
+		},
+		{
+			name:           "case 1: azure health is returned successfully",
+			inputObj:       "abc",
+			errorMatcher:   nil,
+			k8sAPIResponse: `{"items": []}`,
+			expectedHealth: "green",
+			provider:       "azure",
+		},
+		{
+			name:           "case 2: kvm health is returned successfully",
+			inputObj:       "abc",
+			errorMatcher:   nil,
+			k8sAPIResponse: `{"items": []}`,
+			expectedHealth: "green",
+			provider:       "kvm",
 		},
 	}
 
@@ -77,7 +95,7 @@ func Test_Health_Endpoint(t *testing.T) {
 
 			f := flag.New()
 			v := viper.New()
-			v.Set(f.Service.Provider.Kind, "aws")
+			v.Set(f.Service.Provider.Kind, tc.provider)
 
 			// Create health service.
 			var healthService *health.Service
@@ -112,18 +130,9 @@ func Test_Health_Endpoint(t *testing.T) {
 				}
 			}
 
-			req, err := http.NewRequest(Method, Path, nil)
-			if err != nil {
-				t.Fatal("Unexpected HTTP error:", err)
-			}
-
-			ctx := req.Context()
-			type contextKey string
-			ctx = context.WithValue(ctx, contextKey("Content-Type"), "application/json; charset=utf-8")
-
 			// Call the endpoint and get its response.
 			endpointFunc := endpoint.Endpoint()
-			endpointResponse, err := endpointFunc(ctx, tc.inputObj)
+			endpointResponse, err := endpointFunc(context.Background(), tc.inputObj)
 
 			switch {
 			case err == nil && tc.errorMatcher == nil:
@@ -138,7 +147,7 @@ func Test_Health_Endpoint(t *testing.T) {
 
 			endpointResponseTyped, ok := endpointResponse.(Response)
 			if !ok {
-				t.Fatal("Unexpected response type")
+				t.Fatal("endpointResponse.(type) = %T, want %T", endpointResponse, endpointResponseTyped)
 			}
 
 			if !cmp.Equal(endpointResponseTyped.ClusterHealth, tc.expectedHealth) {
