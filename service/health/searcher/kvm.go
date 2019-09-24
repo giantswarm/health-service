@@ -9,7 +9,7 @@ import (
 
 // searchKVMCR searches for the cluster config in AWSClusterConfigs resources.
 func (s *Service) searchKVMCR(ctx context.Context, request Request) (*Response, error) {
-	kvmCR, err := s.G8sClient.ProviderV1alpha1().KVMConfigs("default").Get(request.ClusterID, v1.GetOptions{})
+	kvmCR, err := s.g8sClient.ProviderV1alpha1().KVMConfigs("default").Get(request.ClusterID, v1.GetOptions{})
 	if err != nil {
 		return nil, microerror.Mask(err)
 	}
