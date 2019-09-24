@@ -3,7 +3,6 @@
 package service
 
 import (
-	"encoding/json"
 	"sync"
 	"time"
 
@@ -30,12 +29,10 @@ const (
 
 // Config represents the configuration used to create a new service.
 type Config struct {
-	// Dependencies.
 	K8sClient kubernetes.Interface
 	Logger    micrologger.Logger
 	Storage   microstorage.Storage
 
-	// Settings.
 	Flag  *flag.Flag
 	Viper *viper.Viper
 
@@ -56,14 +53,14 @@ type Service struct {
 // New creates a new configured service object.
 func New(config Config) (*Service, error) {
 	if config.K8sClient == nil {
-		return nil, microerror.Maskf(invalidConfigError, "config.K8SClient must not be empty")
+		return nil, microerror.Maskf(invalidConfigError, "%T.K8SClient must not be empty", config)
 	}
 
 	if config.Flag == nil {
-		return nil, microerror.Maskf(invalidConfigError, "config.Flag must not be empty")
+		return nil, microerror.Maskf(invalidConfigError, "%T.Flag must not be empty", config)
 	}
 	if config.Viper == nil {
-		return nil, microerror.Maskf(invalidConfigError, "config.Viper must not be empty")
+		return nil, microerror.Maskf(invalidConfigError, "%T.Viper must not be empty", config)
 	}
 
 	var err error
@@ -134,10 +131,4 @@ func New(config Config) (*Service, error) {
 	}
 
 	return s, nil
-}
-
-func stringToInstanceTypes(s string) ([]string, error) {
-	var instanceTypes []string
-	err := json.Unmarshal([]byte(s), &instanceTypes)
-	return instanceTypes, err
 }

@@ -30,14 +30,15 @@ type Service struct {
 
 // New creates a new configured service object.
 func New(config Config) (*Service, error) {
-	if config.Flag == nil {
-		return nil, microerror.Maskf(invalidConfigError, "config.Flag must not be empty")
-	}
 	if config.K8sClient == nil {
-		return nil, microerror.Maskf(invalidConfigError, "config.K8sClient must not be empty")
+		return nil, microerror.Maskf(invalidConfigError, "%T.K8sClient must not be empty", config)
+	}
+
+	if config.Flag == nil {
+		return nil, microerror.Maskf(invalidConfigError, "%T.Flag must not be empty", config)
 	}
 	if config.Viper == nil {
-		return nil, microerror.Maskf(invalidConfigError, "config.Viper must not be empty")
+		return nil, microerror.Maskf(invalidConfigError, "%T.Viper must not be empty", config)
 	}
 
 	var err error

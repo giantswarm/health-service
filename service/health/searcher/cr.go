@@ -8,7 +8,7 @@ import (
 
 // searchCR searches for the cluster config in CR resources.
 func (s *Service) searchCR(ctx context.Context, request Request) (response *Response, err error) {
-	switch s.Provider {
+	switch s.provider {
 	case "aws":
 		response, err = s.searchAWSCR(ctx, request)
 	case "azure":
@@ -16,7 +16,7 @@ func (s *Service) searchCR(ctx context.Context, request Request) (response *Resp
 	case "kvm":
 		response, err = s.searchKVMCR(ctx, request)
 	default:
-		return nil, microerror.Maskf(invalidConfigError, "unsupported provider: %s", s.Provider)
+		return nil, microerror.Maskf(invalidConfigError, "unsupported provider: %s", s.provider)
 	}
 
 	if err != nil {
