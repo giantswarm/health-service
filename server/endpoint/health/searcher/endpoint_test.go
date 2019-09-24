@@ -151,8 +151,8 @@ func Test_Health_Endpoint(t *testing.T) {
 				t.Fatalf("endpointResponse.(type) = %T, want %T", endpointResponse, endpointResponseTyped)
 			}
 
-			if !cmp.Equal(endpointResponseTyped.ClusterHealth, tc.expectedHealth) {
-				t.Fatalf("\n\n%s\n", cmp.Diff(tc.expectedHealth, endpointResponseTyped.ClusterHealth))
+			if !cmp.Equal(endpointResponseTyped.General.Health, tc.expectedHealth) {
+				t.Fatalf("\n\n%s\n", cmp.Diff(tc.expectedHealth, endpointResponseTyped.General.Health))
 			}
 		})
 	}
