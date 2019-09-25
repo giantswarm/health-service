@@ -20,6 +20,7 @@ import (
 	"github.com/giantswarm/health-service/server/middleware"
 	"github.com/giantswarm/health-service/service"
 	"github.com/giantswarm/health-service/service/health"
+	"github.com/giantswarm/health-service/service/health/searcher"
 )
 
 func Test_Health_Endpoint(t *testing.T) {
@@ -36,7 +37,7 @@ func Test_Health_Endpoint(t *testing.T) {
 			inputObj:       "abc",
 			errorMatcher:   nil,
 			k8sAPIResponse: mock.AWSHealthy,
-			expectedHealth: "green",
+			expectedHealth: "red",
 			provider:       "aws",
 		},
 		{
@@ -44,7 +45,7 @@ func Test_Health_Endpoint(t *testing.T) {
 			inputObj:       "abc",
 			errorMatcher:   nil,
 			k8sAPIResponse: mock.AzureHealthy,
-			expectedHealth: "green",
+			expectedHealth: "red",
 			provider:       "azure",
 		},
 		{
@@ -146,7 +147,7 @@ func Test_Health_Endpoint(t *testing.T) {
 				t.Fatalf("error == %#v, want matching", err)
 			}
 
-			endpointResponseTyped, ok := endpointResponse.(Response)
+			endpointResponseTyped, ok := endpointResponse.(*searcher.Response)
 			if !ok {
 				t.Fatalf("endpointResponse.(type) = %T, want %T", endpointResponse, endpointResponseTyped)
 			}

@@ -81,7 +81,7 @@ func (e *Endpoint) Endpoint() kitendpoint.Endpoint {
 		{
 			clusterID, ok := request.(string)
 			if !ok {
-				return Response{}, microerror.Mask(clusterNotFoundError)
+				return nil, microerror.Mask(clusterNotFoundError)
 			}
 			serviceRequest = searcher.Request{
 				ClusterID: clusterID,
@@ -90,16 +90,10 @@ func (e *Endpoint) Endpoint() kitendpoint.Endpoint {
 
 		serviceResponse, err := e.service.Health.Searcher.Search(ctx, serviceRequest)
 		if err != nil {
-			return Response{}, microerror.Mask(err)
+			return nil, microerror.Mask(err)
 		}
 
-		endpointResponse := Response{
-			General: GeneralStatus{
-				Health: serviceResponse.ClusterHealth,
-			},
-		}
-
-		return endpointResponse, nil
+		return serviceResponse, nil
 	}
 }
 
