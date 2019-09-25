@@ -116,7 +116,7 @@ func (s *Service) Search(ctx context.Context, request Request) (*Response, error
 
 	switch s.provider {
 	case "aws":
-		cluster, err = s.searchKVMInfo(ctx, request.ClusterID)
+		cluster, err = s.searchAWSInfo(ctx, request.ClusterID)
 	case "azure":
 		cluster, err = s.searchAzureInfo(ctx, request.ClusterID)
 	case "kvm":

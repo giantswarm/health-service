@@ -45,7 +45,7 @@ func Test_Health_Endpoint(t *testing.T) {
 			inputObj:       "abc",
 			errorMatcher:   nil,
 			k8sAPIResponse: mock.AzureHealthy,
-			expectedHealth: "red",
+			expectedHealth: "green",
 			provider:       "azure",
 		},
 		{
