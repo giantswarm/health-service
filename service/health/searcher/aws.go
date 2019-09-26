@@ -17,7 +17,7 @@ func (s *Service) searchAWSCR(ctx context.Context, request Request) (*Response, 
 		return nil, microerror.Mask(err)
 	}
 
-	var clusterHealth = key.HealthGreen // Optimistic default
+	clusterHealth := key.HealthGreen // Optimistic default
 
 	// TODO: Move to separate function
 	// Check desired/actual node counts
