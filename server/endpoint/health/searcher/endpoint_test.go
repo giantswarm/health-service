@@ -25,36 +25,63 @@ import (
 
 func Test_Health_Endpoint(t *testing.T) {
 	testCases := []struct {
-		name           string
-		inputObj       string
-		k8sAPIResponse string
-		errorMatcher   func(err error) bool
-		expectedHealth string
-		provider       string
+		name             string
+		inputObj         string
+		k8sAPIResponse   string
+		errorMatcher     func(err error) bool
+		expectedResponse searcher.Response
+		provider         string
 	}{
 		{
 			name:           "case 0: aws health is returned successfully",
 			inputObj:       "abc",
 			errorMatcher:   nil,
 			k8sAPIResponse: mock.AWSHealthy,
-			expectedHealth: "green",
-			provider:       "aws",
+			expectedResponse: searcher.Response{
+				General: searcher.GeneralStatus{
+					Health:    "green",
+					Creating:  false,
+					Upgrading: false,
+					Deleting:  false,
+					Normal:    true,
+					NodeCount: 4,
+				},
+			},
+			provider: "aws",
 		},
 		{
 			name:           "case 1: azure health is returned successfully",
 			inputObj:       "abc",
 			errorMatcher:   nil,
 			k8sAPIResponse: mock.AzureHealthy,
-			expectedHealth: "green",
-			provider:       "azure",
+			expectedResponse: searcher.Response{
+				General: searcher.GeneralStatus{
+					Health:    "green",
+					Creating:  false,
+					Upgrading: false,
+					Deleting:  false,
+					Normal:    true,
+					NodeCount: 4,
+				},
+			},
+			provider: "azure",
 		},
 		{
 			name:           "case 2: kvm health is returned successfully",
 			inputObj:       "abc",
 			errorMatcher:   nil,
 			k8sAPIResponse: mock.KVMHealthy,
-			expectedHealth: "green",
-			provider:       "kvm",
+			expectedResponse: searcher.Response{
+				General: searcher.GeneralStatus{
+					Health:    "green",
+					Creating:  false,
+					Upgrading: false,
+					Deleting:  false,
+					Normal:    true,
+					NodeCount: 4,
+				},
+			},
+			provider: "kvm",
 		},
 	}
 
@@ -152,8 +179,8 @@ func Test_Health_Endpoint(t *testing.T) {
 				t.Fatalf("endpointResponse.(type) = %T, want %T", endpointResponse, endpointResponseTyped)
 			}
 
-			if !cmp.Equal(endpointResponseTyped.General.Health, tc.expectedHealth) {
-				t.Fatalf("\n\n%s\n", cmp.Diff(tc.expectedHealth, endpointResponseTyped.General.Health))
+			if !cmp.Equal(tc.expectedResponse, *endpointResponseTyped) {
+				t.Fatalf("\n\n%s\n", cmp.Diff(tc.expectedResponse, *endpointResponseTyped))
 			}
 		})
 	}

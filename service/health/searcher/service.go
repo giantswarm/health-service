@@ -7,10 +7,13 @@ import (
 	"github.com/giantswarm/apiextensions/pkg/clientset/versioned"
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
+	"k8s.io/apimachinery/pkg/api/errors"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 	"github.com/giantswarm/health-service/service/health/key"
 )
+
+const clusterNamespace = "default"
 
 // Config represents the configuration used to create a new service object.
 type Config struct {
@@ -55,8 +58,10 @@ func New(config Config) (*Service, error) {
 
 // searchAWSCR searches for the cluster config in AWSClusterConfigs resources.
 func (s *Service) searchAWSInfo(ctx context.Context, clusterID string) (v1alpha1.StatusCluster, error) {
-	cr, err := s.g8sClient.ProviderV1alpha1().AWSConfigs("default").Get(clusterID, v1.GetOptions{})
-	if err != nil {
+	cr, err := s.g8sClient.ProviderV1alpha1().AWSConfigs(clusterNamespace).Get(clusterID, v1.GetOptions{})
+	if errors.IsNotFound(err) {
+		return v1alpha1.StatusCluster{}, microerror.Mask(clusterNotFoundError)
+	} else if err != nil {
 		return v1alpha1.StatusCluster{}, microerror.Mask(err)
 	}
 	return cr.Status.Cluster, nil
@@ -64,8 +69,10 @@ func (s *Service) searchAWSInfo(ctx context.Context, clusterID string) (v1alpha1
 
 // searchAzureCR searches for the cluster config in AWSClusterConfigs resources.
 func (s *Service) searchAzureInfo(ctx context.Context, clusterID string) (v1alpha1.StatusCluster, error) {
-	cr, err := s.g8sClient.ProviderV1alpha1().AzureConfigs("default").Get(clusterID, v1.GetOptions{})
-	if err != nil {
+	cr, err := s.g8sClient.ProviderV1alpha1().AzureConfigs(clusterNamespace).Get(clusterID, v1.GetOptions{})
+	if errors.IsNotFound(err) {
+		return v1alpha1.StatusCluster{}, microerror.Mask(clusterNotFoundError)
+	} else if err != nil {
 		return v1alpha1.StatusCluster{}, microerror.Mask(err)
 	}
 	return cr.Status.Cluster, nil
@@ -73,8 +80,10 @@ func (s *Service) searchAzureInfo(ctx context.Context, clusterID string) (v1alph
 
 // searchKVMCR abc
 func (s *Service) searchKVMInfo(ctx context.Context, clusterID string) (v1alpha1.StatusCluster, error) {
-	cr, err := s.g8sClient.ProviderV1alpha1().KVMConfigs("default").Get(clusterID, v1.GetOptions{})
-	if err != nil {
+	cr, err := s.g8sClient.ProviderV1alpha1().KVMConfigs(clusterNamespace).Get(clusterID, v1.GetOptions{})
+	if errors.IsNotFound(err) {
+		return v1alpha1.StatusCluster{}, microerror.Mask(clusterNotFoundError)
+	} else if err != nil {
 		return v1alpha1.StatusCluster{}, microerror.Mask(err)
 	}
 	return cr.Status.Cluster, nil
@@ -90,14 +99,24 @@ func evaluateGeneralHealth(status v1alpha1.StatusCluster) GeneralStatus {
 		clusterHealth = key.HealthYellow
 	}
 
-	if status.HasDeletedCondition() || status.HasDeletingCondition() {
+	creating := status.HasCreatingCondition()
+	updating := status.HasUpdatingCondition()
+	deleted := status.HasDeletedCondition()
+	deleting := status.HasDeletingCondition()
+
+	if deleted || deleting {
 		clusterHealth = key.HealthRed
-	} else if status.HasUpdatingCondition() || status.HasCreatingCondition() { // TODO: Account for draining/scaling
+	} else if updating || creating { // TODO: Account for draining/scaling
 		clusterHealth = key.HealthYellow
 	}
 
 	return GeneralStatus{
-		Health: clusterHealth,
+		Health:    clusterHealth,
+		Creating:  creating,
+		Upgrading: updating,
+		Deleting:  deleting,
+		Normal:    !creating && !updating && !deleting,
+		NodeCount: currentNodes,
 	}
 }
 
@@ -110,20 +129,24 @@ func (s *Service) Search(ctx context.Context, request Request) (*Response, error
 	switch s.provider {
 	case "aws":
 		status, err = s.searchAWSInfo(ctx, request.ClusterID)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
 	case "azure":
 		status, err = s.searchAzureInfo(ctx, request.ClusterID)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
 	case "kvm":
 		status, err = s.searchKVMInfo(ctx, request.ClusterID)
-	default:
-		return nil, microerror.Maskf(invalidConfigError, "unsupported provider: %s", s.provider)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
 	}
 
-	if err != nil {
-		return nil, microerror.Mask(err)
-	}
-
-	return &Response{
+	response := Response{
 		General: evaluateGeneralHealth(status),
-		Nodes:   []NodeStatus{},
-	}, nil
+	}
+
+	return &response, nil
 }
