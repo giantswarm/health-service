@@ -21,14 +21,14 @@ func (s *Service) searchAWSCR(ctx context.Context, request Request) (*Response, 
 
 	// TODO: Move to separate function
 	// Check desired/actual node counts
-	var desiredNodes int = awsCR.Status.Cluster.Scaling.DesiredCapacity
-	var currentNodes int = len(awsCR.Status.Cluster.Nodes)
+	desiredNodes := awsCR.Status.Cluster.Scaling.DesiredCapacity
+	currentNodes := len(awsCR.Status.Cluster.Nodes)
 
 	if currentNodes < desiredNodes {
 		clusterHealth = key.HealthYellow
 	}
 
-	var clusterStatus = awsCR.ClusterStatus()
+	clusterStatus := awsCR.ClusterStatus()
 	if clusterStatus.HasDeletedCondition() || clusterStatus.HasDeletingCondition() {
 		clusterHealth = key.HealthRed
 	} else if clusterStatus.HasUpdatingCondition() || clusterStatus.HasCreatingCondition() { // TODO: Account for draining/scaling
