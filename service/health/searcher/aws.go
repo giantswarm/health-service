@@ -3,10 +3,10 @@ package searcher
 import (
 	"context"
 
-	"github.com/giantswarm/health-service/service/health/key"
-
 	"github.com/giantswarm/microerror"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
+	"github.com/giantswarm/health-service/service/health/key"
 )
 
 // searchAWSCR searches for the cluster config in AWSClusterConfigs resources.
@@ -33,8 +33,6 @@ func (s *Service) searchAWSCR(ctx context.Context, request Request) (*Response, 
 		clusterHealth = key.HealthRed
 	} else if clusterStatus.HasUpdatingCondition() || clusterStatus.HasCreatingCondition() { // TODO: Account for draining/scaling
 		clusterHealth = key.HealthYellow
-	} else if clusterStatus.HasCreatedCondition() || clusterStatus.HasUpdatedCondition() {
-		// Don't set back to Green from Yellow or Red
 	}
 
 	response := Response{
