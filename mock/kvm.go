@@ -92,7 +92,7 @@ var KVMHealthy = `
 			"conditions": [
 				{
 					"lastTransitionTime": "2019-09-23T12:08:24.66025979Z",
-					"status": "True",
+					"status": "False",
 					"type": "Updating"
 				},
 				{

@@ -53,58 +53,51 @@ func New(config Config) (*Service, error) {
 	return s, nil
 }
 
-func extractStatusCluster(status v1alpha1.StatusCluster) ClusterInfo {
-	nodes := []NodeInfo{}
-	for _, node := range status.Nodes {
-		nodes = append(nodes, NodeInfo{
-			labels: node.Labels,
-		})
-	}
-	return ClusterInfo{
-		nodes,
-	}
-}
-
 // searchAWSCR searches for the cluster config in AWSClusterConfigs resources.
-func (s *Service) searchAWSInfo(ctx context.Context, clusterID string) (*ClusterInfo, error) {
+func (s *Service) searchAWSInfo(ctx context.Context, clusterID string) (v1alpha1.StatusCluster, error) {
 	cr, err := s.g8sClient.ProviderV1alpha1().AWSConfigs("default").Get(clusterID, v1.GetOptions{})
 	if err != nil {
-		return nil, microerror.Mask(err)
+		return v1alpha1.StatusCluster{}, microerror.Mask(err)
 	}
-	clusterInfo := extractStatusCluster(cr.Status.Cluster)
-	return &clusterInfo, nil
+	return cr.Status.Cluster, nil
 }
 
 // searchAzureCR searches for the cluster config in AWSClusterConfigs resources.
-func (s *Service) searchAzureInfo(ctx context.Context, clusterID string) (*ClusterInfo, error) {
+func (s *Service) searchAzureInfo(ctx context.Context, clusterID string) (v1alpha1.StatusCluster, error) {
 	cr, err := s.g8sClient.ProviderV1alpha1().AzureConfigs("default").Get(clusterID, v1.GetOptions{})
 	if err != nil {
-		return nil, microerror.Mask(err)
+		return v1alpha1.StatusCluster{}, microerror.Mask(err)
 	}
-	clusterInfo := extractStatusCluster(cr.Status.Cluster)
-	return &clusterInfo, nil
+	return cr.Status.Cluster, nil
 }
 
 // searchKVMCR abc
-func (s *Service) searchKVMInfo(ctx context.Context, clusterID string) (*ClusterInfo, error) {
+func (s *Service) searchKVMInfo(ctx context.Context, clusterID string) (v1alpha1.StatusCluster, error) {
 	cr, err := s.g8sClient.ProviderV1alpha1().KVMConfigs("default").Get(clusterID, v1.GetOptions{})
 	if err != nil {
-		return nil, microerror.Mask(err)
+		return v1alpha1.StatusCluster{}, microerror.Mask(err)
 	}
-	clusterInfo := extractStatusCluster(cr.Status.Cluster)
-	return &clusterInfo, nil
+	return cr.Status.Cluster, nil
 }
 
-func evaluateGeneralHealth(cluster *ClusterInfo) GeneralStatus {
-	nodeCount := len(cluster.nodes)
-	generalHealth := "red"
-	if nodeCount > 3 {
-		generalHealth = "green"
-	} else if nodeCount > 1 {
-		generalHealth = "yellow"
+func evaluateGeneralHealth(status v1alpha1.StatusCluster) GeneralStatus {
+	clusterHealth := key.HealthGreen // Optimistic default
+
+	desiredNodes := status.Scaling.DesiredCapacity
+	currentNodes := len(status.Nodes)
+
+	if currentNodes < desiredNodes {
+		clusterHealth = key.HealthYellow
 	}
+
+	if status.HasDeletedCondition() || status.HasDeletingCondition() {
+		clusterHealth = key.HealthRed
+	} else if status.HasUpdatingCondition() || status.HasCreatingCondition() { // TODO: Account for draining/scaling
+		clusterHealth = key.HealthYellow
+	}
+
 	return GeneralStatus{
-		Health: generalHealth,
+		Health: clusterHealth,
 	}
 }
 
@@ -112,15 +105,15 @@ func evaluateGeneralHealth(cluster *ClusterInfo) GeneralStatus {
 // It try to find cluster information in CR and fallback to storage service when nothing is found.
 func (s *Service) Search(ctx context.Context, request Request) (*Response, error) {
 	var err error
-	var cluster *ClusterInfo
+	var status v1alpha1.StatusCluster
 
 	switch s.provider {
 	case "aws":
-		cluster, err = s.searchAWSInfo(ctx, request.ClusterID)
+		status, err = s.searchAWSInfo(ctx, request.ClusterID)
 	case "azure":
-		cluster, err = s.searchAzureInfo(ctx, request.ClusterID)
+		status, err = s.searchAzureInfo(ctx, request.ClusterID)
 	case "kvm":
-		cluster, err = s.searchKVMInfo(ctx, request.ClusterID)
+		status, err = s.searchKVMInfo(ctx, request.ClusterID)
 	default:
 		return nil, microerror.Maskf(invalidConfigError, "unsupported provider: %s", s.provider)
 	}
@@ -130,7 +123,7 @@ func (s *Service) Search(ctx context.Context, request Request) (*Response, error
 	}
 
 	return &Response{
-		General: evaluateGeneralHealth(cluster),
+		General: evaluateGeneralHealth(status),
 		Nodes:   []NodeStatus{},
 	}, nil
 }
