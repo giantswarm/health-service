@@ -2,26 +2,20 @@
 package health
 
 import (
-	"strings"
-
 	"github.com/giantswarm/apiextensions/pkg/clientset/versioned"
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
-	"github.com/spf13/viper"
-	"k8s.io/client-go/kubernetes"
+	"github.com/giantswarm/tenantcluster"
 
-	"github.com/giantswarm/health-service/flag"
 	"github.com/giantswarm/health-service/service/health/searcher"
 )
 
 // Config represents the configuration used to create a new service.
 type Config struct {
-	G8sClient versioned.Interface
-	K8sClient kubernetes.Interface
-	Logger    micrologger.Logger
-
-	Flag  *flag.Flag
-	Viper *viper.Viper
+	G8sClient     versioned.Interface
+	Logger        micrologger.Logger
+	Provider      string
+	TenantCluster tenantcluster.Interface
 }
 
 type Service struct {
@@ -30,15 +24,14 @@ type Service struct {
 
 // New creates a new configured service object.
 func New(config Config) (*Service, error) {
-	if config.K8sClient == nil {
-		return nil, microerror.Maskf(invalidConfigError, "%T.K8sClient must not be empty", config)
+	if config.G8sClient == nil {
+		return nil, microerror.Maskf(invalidConfigError, "%T.G8sClient must not be empty", config)
 	}
-
-	if config.Flag == nil {
-		return nil, microerror.Maskf(invalidConfigError, "%T.Flag must not be empty", config)
+	if config.Provider == "" {
+		return nil, microerror.Maskf(invalidConfigError, "%T.Provider must not be empty", config)
 	}
-	if config.Viper == nil {
-		return nil, microerror.Maskf(invalidConfigError, "%T.Viper must not be empty", config)
+	if config.TenantCluster == nil {
+		return nil, microerror.Maskf(invalidConfigError, "%T.TenantCluster must not be empty", config)
 	}
 
 	var err error
@@ -46,9 +39,10 @@ func New(config Config) (*Service, error) {
 	var searcherService *searcher.Service
 	{
 		searcherConfig := searcher.Config{
-			G8sClient: config.G8sClient,
-			Logger:    config.Logger,
-			Provider:  strings.TrimSpace(config.Viper.GetString(config.Flag.Service.Provider.Kind)),
+			G8sClient:     config.G8sClient,
+			Logger:        config.Logger,
+			Provider:      config.Provider,
+			TenantCluster: config.TenantCluster,
 		}
 		searcherService, err = searcher.New(searcherConfig)
 		if err != nil {

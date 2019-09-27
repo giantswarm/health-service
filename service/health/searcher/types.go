@@ -2,12 +2,15 @@ package searcher
 
 import (
 	v1alpha1 "github.com/giantswarm/apiextensions/pkg/apis/provider/v1alpha1"
+	v1 "k8s.io/api/core/v1"
 
 	"github.com/giantswarm/health-service/service/health/key"
 )
 
 type clusterInfo struct {
-	status v1alpha1.StatusCluster
+	endpoint string
+	nodes    []v1.Node
+	status   v1alpha1.StatusCluster
 }
 
 func NewClusterStatus(cluster clusterInfo) ClusterStatus {
@@ -46,4 +49,25 @@ func NewClusterStatus(cluster clusterInfo) ClusterStatus {
 		State:     state,
 		NodeCount: currentNodes,
 	}
+}
+
+func NewNodeStatus(node v1.Node) NodeStatus {
+	ready := false
+	for _, condition := range node.Status.Conditions {
+		if condition.Type == v1.NodeReady {
+			ready = condition.Status == "True"
+		}
+	}
+	return NodeStatus{
+		Name:  node.Name,
+		Ready: ready,
+	}
+}
+
+func NewNodesStatus(cluster clusterInfo) []NodeStatus {
+	result := []NodeStatus{}
+	for _, node := range cluster.nodes {
+		result = append(result, NewNodeStatus(node))
+	}
+	return result
 }

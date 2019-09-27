@@ -12,7 +12,6 @@ import (
 	"github.com/giantswarm/operatorkit/client/k8srestconfig"
 	"github.com/google/go-cmp/cmp"
 	"github.com/spf13/viper"
-	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
 
 	"github.com/giantswarm/health-service/flag"
@@ -78,11 +77,6 @@ func Test_NotFound(t *testing.T) {
 				}
 			}
 
-			k8sClient, err := kubernetes.NewForConfig(restConfig)
-			if err != nil {
-				t.Fatal("expected", nil, "got", err)
-			}
-
 			g8sClient, err := versioned.NewForConfig(restConfig)
 			if err != nil {
 				t.Fatal("expected", nil, "got", err)
@@ -98,7 +92,6 @@ func Test_NotFound(t *testing.T) {
 				healthConfig := health.Config{
 					Flag:      f,
 					Viper:     v,
-					K8sClient: k8sClient,
 					G8sClient: g8sClient,
 					Logger:    microloggertest.New(),
 				}
@@ -223,11 +216,6 @@ func Test_Health_Endpoint(t *testing.T) {
 				}
 			}
 
-			k8sClient, err := kubernetes.NewForConfig(restConfig)
-			if err != nil {
-				t.Fatal("expected", nil, "got", err)
-			}
-
 			g8sClient, err := versioned.NewForConfig(restConfig)
 			if err != nil {
 				t.Fatal("expected", nil, "got", err)
@@ -243,7 +231,6 @@ func Test_Health_Endpoint(t *testing.T) {
 				healthConfig := health.Config{
 					Flag:      f,
 					Viper:     v,
-					K8sClient: k8sClient,
 					G8sClient: g8sClient,
 					Logger:    microloggertest.New(),
 				}
