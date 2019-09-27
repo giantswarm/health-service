@@ -11,13 +11,13 @@ type clusterInfo struct {
 }
 
 func NewClusterStatus(cluster clusterInfo) ClusterStatus {
-	clusterHealth := key.HealthGreen // Optimistic default
+	health := key.Default
 
 	desiredNodes := cluster.status.Scaling.DesiredCapacity
 	currentNodes := len(cluster.status.Nodes)
 
 	if currentNodes < desiredNodes {
-		clusterHealth = key.HealthYellow
+		health = key.Yellow
 	}
 
 	creating := cluster.status.HasCreatingCondition()
@@ -26,17 +26,24 @@ func NewClusterStatus(cluster clusterInfo) ClusterStatus {
 	deleting := cluster.status.HasDeletingCondition()
 
 	if deleted || deleting {
-		clusterHealth = key.HealthRed
+		health = key.Red
 	} else if updating || creating { // TODO: Account for draining/scaling
-		clusterHealth = key.HealthYellow
+		health = key.Yellow
+	}
+
+	state := key.Normal
+
+	if creating {
+		state = key.Creating
+	} else if updating {
+		state = key.Upgrading
+	} else if deleting {
+		state = key.Deleting
 	}
 
 	return ClusterStatus{
-		Health:    clusterHealth,
-		Creating:  creating,
-		Upgrading: updating,
-		Deleting:  deleting,
-		Normal:    !creating && !updating && !deleting,
+		Health:    health,
+		State:     state,
 		NodeCount: currentNodes,
 	}
 }

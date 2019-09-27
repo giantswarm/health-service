@@ -20,6 +20,7 @@ import (
 	"github.com/giantswarm/health-service/server/middleware"
 	"github.com/giantswarm/health-service/service"
 	"github.com/giantswarm/health-service/service/health"
+	"github.com/giantswarm/health-service/service/health/key"
 	"github.com/giantswarm/health-service/service/health/searcher"
 )
 
@@ -159,10 +160,7 @@ func Test_Health_Endpoint(t *testing.T) {
 			expectedResponse: searcher.Response{
 				Cluster: searcher.ClusterStatus{
 					Health:    "green",
-					Creating:  false,
-					Upgrading: false,
-					Deleting:  false,
-					Normal:    true,
+					State:     key.Normal,
 					NodeCount: 4,
 				},
 			},
@@ -176,10 +174,7 @@ func Test_Health_Endpoint(t *testing.T) {
 			expectedResponse: searcher.Response{
 				Cluster: searcher.ClusterStatus{
 					Health:    "green",
-					Creating:  false,
-					Upgrading: false,
-					Deleting:  false,
-					Normal:    true,
+					State:     key.Normal,
 					NodeCount: 4,
 				},
 			},
@@ -193,10 +188,7 @@ func Test_Health_Endpoint(t *testing.T) {
 			expectedResponse: searcher.Response{
 				Cluster: searcher.ClusterStatus{
 					Health:    "green",
-					Creating:  false,
-					Upgrading: false,
-					Deleting:  false,
-					Normal:    true,
+					State:     key.Normal,
 					NodeCount: 4,
 				},
 			},

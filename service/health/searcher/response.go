@@ -1,5 +1,7 @@
 package searcher
 
+import "github.com/giantswarm/health-service/service/health/key"
+
 // Response holds the data returned from the health searcher endpoint.
 type Response struct {
 	Cluster ClusterStatus `json:"cluster"`
@@ -7,10 +9,7 @@ type Response struct {
 
 // ClusterStatus holds data about the overall health/status of a cluster.
 type ClusterStatus struct {
-	Health    string `json:"health"`
-	Creating  bool   `json:"creating"`
-	Upgrading bool   `json:"upgrading"`
-	Deleting  bool   `json:"deleting"`
-	Normal    bool   `json:"normal"`
-	NodeCount int    `json:"node_count"`
+	Health    key.Health         `json:"health"`
+	State     key.LifecycleState `json:"state"`
+	NodeCount int                `json:"node_count"`
 }
