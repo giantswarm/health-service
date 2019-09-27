@@ -204,3 +204,8 @@ var KVMHealthy = `
 		}
 	}
 }`
+
+// KVMHealthyTC is a JSON string representing a healthy KVM tenant cluster's node list.
+var KVMHealthyTC = `
+{}
+`

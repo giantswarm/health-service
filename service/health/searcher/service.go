@@ -2,6 +2,7 @@ package searcher
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/giantswarm/apiextensions/pkg/clientset/versioned"
 	"github.com/giantswarm/microerror"
@@ -145,6 +146,8 @@ func (s *Service) Search(ctx context.Context, request Request) (*Response, error
 		}
 		cluster.nodes = nodes.Items
 	}
+
+	fmt.Println(cluster.nodes)
 
 	response := Response{
 		Cluster: NewClusterStatus(cluster),

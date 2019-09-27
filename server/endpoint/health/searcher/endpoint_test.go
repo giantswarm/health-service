@@ -2,6 +2,7 @@ package searcher
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"strconv"
@@ -10,11 +11,12 @@ import (
 	"github.com/giantswarm/apiextensions/pkg/clientset/versioned"
 	"github.com/giantswarm/micrologger/microloggertest"
 	"github.com/giantswarm/operatorkit/client/k8srestconfig"
+	"github.com/giantswarm/tenantcluster/tenantclustertest"
 	"github.com/google/go-cmp/cmp"
-	"github.com/spf13/viper"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
 
-	"github.com/giantswarm/health-service/flag"
 	"github.com/giantswarm/health-service/mock"
 	"github.com/giantswarm/health-service/server/middleware"
 	"github.com/giantswarm/health-service/service"
@@ -82,18 +84,14 @@ func Test_NotFound(t *testing.T) {
 				t.Fatal("expected", nil, "got", err)
 			}
 
-			f := flag.New()
-			v := viper.New()
-			v.Set(f.Service.Provider.Kind, tc.provider)
-
 			// Create health service.
 			var healthService *health.Service
 			{
 				healthConfig := health.Config{
-					Flag:      f,
-					Viper:     v,
-					G8sClient: g8sClient,
-					Logger:    microloggertest.New(),
+					G8sClient:     g8sClient,
+					Logger:        microloggertest.New(),
+					Provider:      tc.provider,
+					TenantCluster: tenantclustertest.New(tenantclustertest.Config{}),
 				}
 
 				healthService, err = health.New(healthConfig)
@@ -140,49 +138,107 @@ func Test_Health_Endpoint(t *testing.T) {
 	testCases := []struct {
 		name             string
 		clusterID        string
-		k8sAPIResponse   string
+		k8sCPAPIResponse string
+		k8sTCAPIResponse string
 		errorMatcher     func(err error) bool
 		expectedResponse searcher.Response
 		provider         string
 	}{
 		{
-			name:           "case 0: aws health is returned successfully",
-			clusterID:      "oby63",
-			errorMatcher:   nil,
-			k8sAPIResponse: mock.AWSHealthy,
+			name:             "case 0: aws health is returned successfully",
+			clusterID:        "oby63",
+			errorMatcher:     nil,
+			k8sCPAPIResponse: mock.AWSHealthy,
+			k8sTCAPIResponse: mock.AWSHealthyTC,
 			expectedResponse: searcher.Response{
 				Cluster: searcher.ClusterStatus{
-					Health:    "green",
+					Health:    key.Green,
 					State:     key.Normal,
 					NodeCount: 4,
+				},
+				Nodes: []searcher.NodeStatus{
+					searcher.NodeStatus{
+						Name:  "ip-10-1-1-104.eu-central-1.compute.internal",
+						Ready: true,
+					},
+					searcher.NodeStatus{
+						Name:  "ip-10-1-1-125.eu-central-1.compute.internal",
+						Ready: true,
+					},
+					searcher.NodeStatus{
+						Name:  "ip-10-1-1-57.eu-central-1.compute.internal",
+						Ready: true,
+					},
+					searcher.NodeStatus{
+						Name:  "ip-10-1-1-85.eu-central-1.compute.internal",
+						Ready: true,
+					},
 				},
 			},
 			provider: "aws",
 		},
 		{
-			name:           "case 1: azure health is returned successfully",
-			clusterID:      "0cu4f",
-			errorMatcher:   nil,
-			k8sAPIResponse: mock.AzureHealthy,
+			name:             "case 1: azure health is returned successfully",
+			clusterID:        "0cu4f",
+			errorMatcher:     nil,
+			k8sCPAPIResponse: mock.AzureHealthy,
+			k8sTCAPIResponse: mock.AWSHealthyTC,
 			expectedResponse: searcher.Response{
 				Cluster: searcher.ClusterStatus{
 					Health:    "green",
 					State:     key.Normal,
 					NodeCount: 4,
 				},
+				Nodes: []searcher.NodeStatus{
+					searcher.NodeStatus{
+						Name:  "ip-10-1-1-104.eu-central-1.compute.internal",
+						Ready: true,
+					},
+					searcher.NodeStatus{
+						Name:  "ip-10-1-1-125.eu-central-1.compute.internal",
+						Ready: true,
+					},
+					searcher.NodeStatus{
+						Name:  "ip-10-1-1-57.eu-central-1.compute.internal",
+						Ready: true,
+					},
+					searcher.NodeStatus{
+						Name:  "ip-10-1-1-85.eu-central-1.compute.internal",
+						Ready: true,
+					},
+				},
 			},
 			provider: "azure",
 		},
 		{
-			name:           "case 2: kvm health is returned successfully",
-			clusterID:      "cxx2e",
-			errorMatcher:   nil,
-			k8sAPIResponse: mock.KVMHealthy,
+			name:             "case 2: kvm health is returned successfully",
+			clusterID:        "cxx2e",
+			errorMatcher:     nil,
+			k8sCPAPIResponse: mock.KVMHealthy,
+			k8sTCAPIResponse: mock.AWSHealthyTC,
 			expectedResponse: searcher.Response{
 				Cluster: searcher.ClusterStatus{
 					Health:    "green",
 					State:     key.Normal,
 					NodeCount: 4,
+				},
+				Nodes: []searcher.NodeStatus{
+					searcher.NodeStatus{
+						Name:  "ip-10-1-1-104.eu-central-1.compute.internal",
+						Ready: true,
+					},
+					searcher.NodeStatus{
+						Name:  "ip-10-1-1-125.eu-central-1.compute.internal",
+						Ready: true,
+					},
+					searcher.NodeStatus{
+						Name:  "ip-10-1-1-57.eu-central-1.compute.internal",
+						Ready: true,
+					},
+					searcher.NodeStatus{
+						Name:  "ip-10-1-1-85.eu-central-1.compute.internal",
+						Ready: true,
+					},
 				},
 			},
 			provider: "kvm",
@@ -194,19 +250,28 @@ func Test_Health_Endpoint(t *testing.T) {
 			var err error
 
 			// Mock k8s api server handling `kubectl get aws/azure/kvmconfig <clusterID>`.
-			k8sAPIMockServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			k8sCPAPIMockServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 				w.Header().Set("Content-Type", "application/json; charset=utf-8")
 				w.WriteHeader(http.StatusOK)
-				w.Write([]byte(tc.k8sAPIResponse))
+				w.Write([]byte(tc.k8sCPAPIResponse))
 			}))
-			defer k8sAPIMockServer.Close()
+			defer k8sCPAPIMockServer.Close()
+
+			// Mock TC k8s api server handling `kubectl get nodes`.
+			k8sTCAPIMockServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+				fmt.Println("TCR", r.URL)
+				w.Header().Set("Content-Type", "application/json; charset=utf-8")
+				w.WriteHeader(http.StatusOK)
+				w.Write([]byte(tc.k8sTCAPIResponse))
+			}))
+			defer k8sTCAPIMockServer.Close()
 
 			var restConfig *rest.Config
 			{
 				c := k8srestconfig.Config{
 					Logger: microloggertest.New(),
 
-					Address:   k8sAPIMockServer.URL,
+					Address:   k8sCPAPIMockServer.URL,
 					InCluster: false,
 				}
 
@@ -221,18 +286,39 @@ func Test_Health_Endpoint(t *testing.T) {
 				t.Fatal("expected", nil, "got", err)
 			}
 
-			f := flag.New()
-			v := viper.New()
-			v.Set(f.Service.Provider.Kind, tc.provider)
+			var restConfigTC *rest.Config
+			{
+				c := k8srestconfig.Config{
+					Logger: microloggertest.New(),
+
+					Address:   k8sTCAPIMockServer.URL,
+					InCluster: false,
+				}
+
+				restConfigTC, err = k8srestconfig.New(c)
+				if err != nil {
+					t.Fatal("expected", nil, "got", err)
+				}
+			}
+
+			k8sClientTC, err := kubernetes.NewForConfig(restConfigTC)
+			if err != nil {
+				t.Fatal("expected", nil, "got", err)
+			}
+
+			nodes, err := k8sClientTC.CoreV1().Nodes().List(v1.ListOptions{})
+			fmt.Println(k8sCPAPIMockServer.URL, k8sTCAPIMockServer.URL, nodes, err)
 
 			// Create health service.
 			var healthService *health.Service
 			{
 				healthConfig := health.Config{
-					Flag:      f,
-					Viper:     v,
 					G8sClient: g8sClient,
 					Logger:    microloggertest.New(),
+					TenantCluster: tenantclustertest.New(tenantclustertest.Config{
+						K8sClient: k8sClientTC,
+					}),
+					Provider: tc.provider,
 				}
 
 				healthService, err = health.New(healthConfig)
