@@ -8,8 +8,8 @@ var invalidConfigError = &microerror.Error{
 	Kind: "invalidConfigError",
 }
 
-var clusterNotFoundError = &microerror.Error{
-	Kind: "clusterNotFoundError",
+var badRequestError = &microerror.Error{
+	Kind: "badRequestError",
 }
 
 // IsInvalidConfig asserts invalidConfigError.
@@ -17,7 +17,7 @@ func IsInvalidConfig(err error) bool {
 	return microerror.Cause(err) == invalidConfigError
 }
 
-// IsClusterNotFound asserts clusterNotFoundError.
-func IsClusterNotFound(err error) bool {
-	return microerror.Cause(err) == clusterNotFoundError
+// IsBadRequest asserts badRequestError.
+func IsBadRequest(err error) bool {
+	return microerror.Cause(err) == badRequestError
 }

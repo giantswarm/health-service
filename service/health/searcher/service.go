@@ -6,9 +6,13 @@ import (
 	"github.com/giantswarm/apiextensions/pkg/clientset/versioned"
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
+	"k8s.io/apimachinery/pkg/api/errors"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 	"github.com/giantswarm/health-service/service/health/key"
 )
+
+const clusterNamespace = "default"
 
 // Config represents the configuration used to create a new service object.
 type Config struct {
@@ -38,7 +42,7 @@ func New(config Config) (*Service, error) {
 		return nil, microerror.Maskf(invalidConfigError, "%T.Provider must not be empty", config)
 	}
 	if !key.IsKnownProvider(config.Provider) {
-		return nil, microerror.Maskf(invalidConfigError, "provider must be one of %+v", key.Providers)
+		return nil, microerror.Maskf(invalidConfigError, "%T.Provider must be one of %+v", config, key.Providers)
 	}
 
 	s := &Service{
@@ -51,13 +55,75 @@ func New(config Config) (*Service, error) {
 	return s, nil
 }
 
+// searchAWSCR searches for the cluster config in AWSClusterConfigs resources.
+func (s *Service) searchAWSInfo(ctx context.Context, clusterID string) (clusterInfo, error) {
+	cr, err := s.g8sClient.ProviderV1alpha1().AWSConfigs(clusterNamespace).Get(clusterID, v1.GetOptions{})
+	if errors.IsNotFound(err) {
+		return clusterInfo{}, microerror.Mask(clusterNotFoundError)
+	} else if err != nil {
+		return clusterInfo{}, microerror.Mask(err)
+	}
+	cluster := clusterInfo{
+		status: cr.Status.Cluster,
+	}
+	return cluster, nil
+}
+
+// searchAzureCR searches for the cluster config in AWSClusterConfigs resources.
+func (s *Service) searchAzureInfo(ctx context.Context, clusterID string) (clusterInfo, error) {
+	cr, err := s.g8sClient.ProviderV1alpha1().AzureConfigs(clusterNamespace).Get(clusterID, v1.GetOptions{})
+	if errors.IsNotFound(err) {
+		return clusterInfo{}, microerror.Mask(clusterNotFoundError)
+	} else if err != nil {
+		return clusterInfo{}, microerror.Mask(err)
+	}
+	cluster := clusterInfo{
+		status: cr.Status.Cluster,
+	}
+	return cluster, nil
+}
+
+// searchKVMCR abc
+func (s *Service) searchKVMInfo(ctx context.Context, clusterID string) (clusterInfo, error) {
+	cr, err := s.g8sClient.ProviderV1alpha1().KVMConfigs(clusterNamespace).Get(clusterID, v1.GetOptions{})
+	if errors.IsNotFound(err) {
+		return clusterInfo{}, microerror.Mask(clusterNotFoundError)
+	} else if err != nil {
+		return clusterInfo{}, microerror.Mask(err)
+	}
+	cluster := clusterInfo{
+		status: cr.Status.Cluster,
+	}
+	return cluster, nil
+}
+
 // Search searches for the cluster information.
 // It try to find cluster information in CR and fallback to storage service when nothing is found.
 func (s *Service) Search(ctx context.Context, request Request) (*Response, error) {
-	response, err := s.searchCR(ctx, request)
-	if err != nil {
-		return nil, microerror.Mask(err)
+	var err error
+	var cluster clusterInfo
+
+	switch s.provider {
+	case "aws":
+		cluster, err = s.searchAWSInfo(ctx, request.ClusterID)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+	case "azure":
+		cluster, err = s.searchAzureInfo(ctx, request.ClusterID)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+	case "kvm":
+		cluster, err = s.searchKVMInfo(ctx, request.ClusterID)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
 	}
 
-	return response, nil
+	response := Response{
+		Cluster: NewClusterStatus(cluster),
+	}
+
+	return &response, nil
 }
