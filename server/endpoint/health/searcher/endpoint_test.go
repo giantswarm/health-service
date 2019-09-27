@@ -157,7 +157,7 @@ func Test_Health_Endpoint(t *testing.T) {
 			errorMatcher:   nil,
 			k8sAPIResponse: mock.AWSHealthy,
 			expectedResponse: searcher.Response{
-				General: searcher.GeneralStatus{
+				Cluster: searcher.ClusterStatus{
 					Health:    "green",
 					Creating:  false,
 					Upgrading: false,
@@ -174,7 +174,7 @@ func Test_Health_Endpoint(t *testing.T) {
 			errorMatcher:   nil,
 			k8sAPIResponse: mock.AzureHealthy,
 			expectedResponse: searcher.Response{
-				General: searcher.GeneralStatus{
+				Cluster: searcher.ClusterStatus{
 					Health:    "green",
 					Creating:  false,
 					Upgrading: false,
@@ -191,7 +191,7 @@ func Test_Health_Endpoint(t *testing.T) {
 			errorMatcher:   nil,
 			k8sAPIResponse: mock.KVMHealthy,
 			expectedResponse: searcher.Response{
-				General: searcher.GeneralStatus{
+				Cluster: searcher.ClusterStatus{
 					Health:    "green",
 					Creating:  false,
 					Upgrading: false,

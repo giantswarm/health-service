@@ -3,7 +3,6 @@ package searcher
 import (
 	"context"
 
-	v1alpha1 "github.com/giantswarm/apiextensions/pkg/apis/provider/v1alpha1"
 	"github.com/giantswarm/apiextensions/pkg/clientset/versioned"
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
@@ -57,52 +56,61 @@ func New(config Config) (*Service, error) {
 }
 
 // searchAWSCR searches for the cluster config in AWSClusterConfigs resources.
-func (s *Service) searchAWSInfo(ctx context.Context, clusterID string) (v1alpha1.StatusCluster, error) {
+func (s *Service) searchAWSInfo(ctx context.Context, clusterID string) (clusterInfo, error) {
 	cr, err := s.g8sClient.ProviderV1alpha1().AWSConfigs(clusterNamespace).Get(clusterID, v1.GetOptions{})
 	if errors.IsNotFound(err) {
-		return v1alpha1.StatusCluster{}, microerror.Mask(clusterNotFoundError)
+		return clusterInfo{}, microerror.Mask(clusterNotFoundError)
 	} else if err != nil {
-		return v1alpha1.StatusCluster{}, microerror.Mask(err)
+		return clusterInfo{}, microerror.Mask(err)
 	}
-	return cr.Status.Cluster, nil
+	cluster := clusterInfo{
+		status: cr.Status.Cluster,
+	}
+	return cluster, nil
 }
 
 // searchAzureCR searches for the cluster config in AWSClusterConfigs resources.
-func (s *Service) searchAzureInfo(ctx context.Context, clusterID string) (v1alpha1.StatusCluster, error) {
+func (s *Service) searchAzureInfo(ctx context.Context, clusterID string) (clusterInfo, error) {
 	cr, err := s.g8sClient.ProviderV1alpha1().AzureConfigs(clusterNamespace).Get(clusterID, v1.GetOptions{})
 	if errors.IsNotFound(err) {
-		return v1alpha1.StatusCluster{}, microerror.Mask(clusterNotFoundError)
+		return clusterInfo{}, microerror.Mask(clusterNotFoundError)
 	} else if err != nil {
-		return v1alpha1.StatusCluster{}, microerror.Mask(err)
+		return clusterInfo{}, microerror.Mask(err)
 	}
-	return cr.Status.Cluster, nil
+	cluster := clusterInfo{
+		status: cr.Status.Cluster,
+	}
+	return cluster, nil
 }
 
 // searchKVMCR abc
-func (s *Service) searchKVMInfo(ctx context.Context, clusterID string) (v1alpha1.StatusCluster, error) {
+func (s *Service) searchKVMInfo(ctx context.Context, clusterID string) (clusterInfo, error) {
 	cr, err := s.g8sClient.ProviderV1alpha1().KVMConfigs(clusterNamespace).Get(clusterID, v1.GetOptions{})
 	if errors.IsNotFound(err) {
-		return v1alpha1.StatusCluster{}, microerror.Mask(clusterNotFoundError)
+		return clusterInfo{}, microerror.Mask(clusterNotFoundError)
 	} else if err != nil {
-		return v1alpha1.StatusCluster{}, microerror.Mask(err)
+		return clusterInfo{}, microerror.Mask(err)
 	}
-	return cr.Status.Cluster, nil
+	cluster := clusterInfo{
+		status: cr.Status.Cluster,
+	}
+	return cluster, nil
 }
 
-func evaluateGeneralHealth(status v1alpha1.StatusCluster) GeneralStatus {
+func evaluateClusterStatus(cluster clusterInfo) ClusterStatus {
 	clusterHealth := key.HealthGreen // Optimistic default
 
-	desiredNodes := status.Scaling.DesiredCapacity
-	currentNodes := len(status.Nodes)
+	desiredNodes := cluster.status.Scaling.DesiredCapacity
+	currentNodes := len(cluster.status.Nodes)
 
 	if currentNodes < desiredNodes {
 		clusterHealth = key.HealthYellow
 	}
 
-	creating := status.HasCreatingCondition()
-	updating := status.HasUpdatingCondition()
-	deleted := status.HasDeletedCondition()
-	deleting := status.HasDeletingCondition()
+	creating := cluster.status.HasCreatingCondition()
+	updating := cluster.status.HasUpdatingCondition()
+	deleted := cluster.status.HasDeletedCondition()
+	deleting := cluster.status.HasDeletingCondition()
 
 	if deleted || deleting {
 		clusterHealth = key.HealthRed
@@ -110,7 +118,7 @@ func evaluateGeneralHealth(status v1alpha1.StatusCluster) GeneralStatus {
 		clusterHealth = key.HealthYellow
 	}
 
-	return GeneralStatus{
+	return ClusterStatus{
 		Health:    clusterHealth,
 		Creating:  creating,
 		Upgrading: updating,
@@ -124,28 +132,28 @@ func evaluateGeneralHealth(status v1alpha1.StatusCluster) GeneralStatus {
 // It try to find cluster information in CR and fallback to storage service when nothing is found.
 func (s *Service) Search(ctx context.Context, request Request) (*Response, error) {
 	var err error
-	var status v1alpha1.StatusCluster
+	var cluster clusterInfo
 
 	switch s.provider {
 	case "aws":
-		status, err = s.searchAWSInfo(ctx, request.ClusterID)
+		cluster, err = s.searchAWSInfo(ctx, request.ClusterID)
 		if err != nil {
 			return nil, microerror.Mask(err)
 		}
 	case "azure":
-		status, err = s.searchAzureInfo(ctx, request.ClusterID)
+		cluster, err = s.searchAzureInfo(ctx, request.ClusterID)
 		if err != nil {
 			return nil, microerror.Mask(err)
 		}
 	case "kvm":
-		status, err = s.searchKVMInfo(ctx, request.ClusterID)
+		cluster, err = s.searchKVMInfo(ctx, request.ClusterID)
 		if err != nil {
 			return nil, microerror.Mask(err)
 		}
 	}
 
 	response := Response{
-		General: evaluateGeneralHealth(status),
+		Cluster: evaluateClusterStatus(cluster),
 	}
 
 	return &response, nil
