@@ -81,7 +81,7 @@ func (e *Endpoint) Endpoint() kitendpoint.Endpoint {
 		{
 			clusterID, ok := request.(string)
 			if !ok {
-				return nil, microerror.Mask(clusterNotFoundError)
+				return nil, microerror.Mask(badRequestError)
 			}
 			serviceRequest = searcher.Request{
 				ClusterID: clusterID,

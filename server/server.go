@@ -13,9 +13,9 @@ import (
 	"github.com/spf13/viper"
 
 	"github.com/giantswarm/health-service/server/endpoint"
-	healthsearcher "github.com/giantswarm/health-service/server/endpoint/health/searcher"
 	"github.com/giantswarm/health-service/server/middleware"
 	"github.com/giantswarm/health-service/service"
+	healthsearcher "github.com/giantswarm/health-service/service/health/searcher"
 )
 
 // Config represents the configuration used to create a new server object.
