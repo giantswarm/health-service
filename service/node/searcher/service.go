@@ -41,8 +41,7 @@ func New(config Config) (*Service, error) {
 	return s, nil
 }
 
-// Search searches for the cluster information.
-// It try to find cluster information in CR and fallback to storage service when nothing is found.
+// Search searches a tenant cluster for information about nodes.
 func (s *Service) Search(ctx context.Context, request Request) (*Response, error) {
 	var err error
 	var response Response
