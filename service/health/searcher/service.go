@@ -2,7 +2,6 @@ package searcher
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/giantswarm/apiextensions/pkg/clientset/versioned"
 	"github.com/giantswarm/microerror"
@@ -10,7 +9,6 @@ import (
 	"github.com/giantswarm/tenantcluster"
 	"k8s.io/apimachinery/pkg/api/errors"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/client-go/kubernetes"
 
 	"github.com/giantswarm/health-service/service/health/key"
 )
@@ -135,8 +133,7 @@ func (s *Service) Search(ctx context.Context, request Request) (*Response, error
 
 	{
 		// TODO: cache this?
-		var k8sClient kubernetes.Interface
-		k8sClient, err = s.tenantCluster.NewK8sClient(ctx, request.ClusterID, cluster.endpoint)
+		k8sClient, err := s.tenantCluster.NewK8sClient(ctx, request.ClusterID, cluster.endpoint)
 		if err != nil {
 			return nil, microerror.Mask(err)
 		}
@@ -146,8 +143,6 @@ func (s *Service) Search(ctx context.Context, request Request) (*Response, error
 		}
 		cluster.nodes = nodes.Items
 	}
-
-	fmt.Println(cluster.nodes)
 
 	response := Response{
 		Cluster: NewClusterStatus(cluster),

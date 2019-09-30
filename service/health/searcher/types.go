@@ -56,6 +56,7 @@ func NewNodeStatus(node v1.Node) NodeStatus {
 	for _, condition := range node.Status.Conditions {
 		if condition.Type == v1.NodeReady {
 			ready = condition.Status == "True"
+			break
 		}
 	}
 	return NodeStatus{
