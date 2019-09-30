@@ -60,8 +60,10 @@ func NewNodeStatus(node v1.Node) NodeStatus {
 		}
 	}
 	return NodeStatus{
-		Name:  node.Name,
-		Ready: ready,
+		Name:     node.Name,
+		Ready:    ready,
+		IP:       IPFromAddresses(node.Status.Addresses),
+		Hostname: HostnameFromAddresses(node.Status.Addresses),
 	}
 }
 
@@ -71,4 +73,21 @@ func NewNodesStatus(cluster clusterInfo) []NodeStatus {
 		result = append(result, NewNodeStatus(node))
 	}
 	return result
+}
+
+func FindInAddresses(addresses []v1.NodeAddress, address_type v1.NodeAddressType) string {
+	for _, entry := range addresses {
+		if entry.Type == address_type {
+			return entry.Address
+		}
+	}
+	return "" // TODO: Handle behavior if node doesn't have a type
+}
+
+func IPFromAddresses(addresses []v1.NodeAddress) string {
+	return FindInAddresses(addresses, v1.NodeInternalIP)
+}
+
+func HostnameFromAddresses(addresses []v1.NodeAddress) string {
+	return FindInAddresses(addresses, v1.NodeHostName)
 }
