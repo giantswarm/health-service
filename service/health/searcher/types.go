@@ -7,26 +7,20 @@ import (
 	"github.com/giantswarm/health-service/service/health/key"
 )
 
-type clusterInfo struct {
-	endpoint string
-	nodes    []v1.Node
-	status   v1alpha1.StatusCluster
-}
-
-func NewClusterStatus(cluster clusterInfo) ClusterStatus {
+func NewClusterStatus(cluster v1alpha1.StatusCluster) ClusterStatus {
 	health := key.Default
 
-	desiredNodes := cluster.status.Scaling.DesiredCapacity
-	currentNodes := len(cluster.status.Nodes)
+	desiredNodes := cluster.Scaling.DesiredCapacity
+	currentNodes := len(cluster.Nodes)
 
 	if currentNodes < desiredNodes {
 		health = key.Yellow
 	}
 
-	creating := cluster.status.HasCreatingCondition()
-	updating := cluster.status.HasUpdatingCondition()
-	deleted := cluster.status.HasDeletedCondition()
-	deleting := cluster.status.HasDeletingCondition()
+	creating := cluster.HasCreatingCondition()
+	updating := cluster.HasUpdatingCondition()
+	deleted := cluster.HasDeletedCondition()
+	deleting := cluster.HasDeletingCondition()
 
 	if deleted || deleting {
 		health = key.Red
@@ -65,9 +59,9 @@ func NewNodeStatus(node v1.Node) NodeStatus {
 	}
 }
 
-func NewNodesStatus(cluster clusterInfo) []NodeStatus {
+func NewNodesStatus(nodes []v1.Node) []NodeStatus {
 	result := []NodeStatus{}
-	for _, node := range cluster.nodes {
+	for _, node := range nodes {
 		result = append(result, NewNodeStatus(node))
 	}
 	return result

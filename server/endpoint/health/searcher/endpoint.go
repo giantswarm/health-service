@@ -12,8 +12,10 @@ import (
 	"github.com/gorilla/mux"
 
 	"github.com/giantswarm/health-service/server/middleware"
-	"github.com/giantswarm/health-service/service"
-	"github.com/giantswarm/health-service/service/health/searcher"
+	service "github.com/giantswarm/health-service/service"
+	cluster "github.com/giantswarm/health-service/service/cluster/searcher"
+	health "github.com/giantswarm/health-service/service/health/searcher"
+	node "github.com/giantswarm/health-service/service/node/searcher"
 )
 
 const (
@@ -77,23 +79,39 @@ func (e *Endpoint) Encoder() kithttp.EncodeResponseFunc {
 
 func (e *Endpoint) Endpoint() kitendpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
-		var serviceRequest searcher.Request
-		{
-			clusterID, ok := request.(string)
-			if !ok {
-				return nil, microerror.Mask(badRequestError)
-			}
-			serviceRequest = searcher.Request{
-				ClusterID: clusterID,
-			}
+		clusterID, ok := request.(string)
+		if !ok {
+			return nil, microerror.Mask(badRequestError)
 		}
 
-		serviceResponse, err := e.service.Health.Searcher.Search(ctx, serviceRequest)
+		clusterRequest := cluster.Request{
+			ClusterID: clusterID,
+		}
+		clusterResponse, err := e.service.Cluster.Searcher.Search(ctx, clusterRequest)
 		if err != nil {
 			return nil, microerror.Mask(err)
 		}
 
-		return serviceResponse, nil
+		nodeRequest := node.Request{
+			ClusterID: clusterID,
+			Endpoint:  clusterResponse.Endpoint,
+		}
+		nodeResponse, err := e.service.Node.Searcher.Search(ctx, nodeRequest)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+
+		healthRequest := health.Request{
+			Cluster:   clusterResponse.Status,
+			ClusterID: clusterID,
+			Nodes:     nodeResponse.Nodes,
+		}
+		healthResponse, err := e.service.Health.Searcher.Search(ctx, healthRequest)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+
+		return healthResponse, nil
 	}
 }
 

@@ -13,16 +13,18 @@ import (
 	"github.com/giantswarm/operatorkit/client/k8srestconfig"
 	"github.com/giantswarm/tenantcluster/tenantclustertest"
 	"github.com/google/go-cmp/cmp"
-	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
 
 	"github.com/giantswarm/health-service/mock"
 	"github.com/giantswarm/health-service/server/middleware"
 	"github.com/giantswarm/health-service/service"
+	"github.com/giantswarm/health-service/service/cluster"
+	clustersearcher "github.com/giantswarm/health-service/service/cluster/searcher"
 	"github.com/giantswarm/health-service/service/health"
 	"github.com/giantswarm/health-service/service/health/key"
 	"github.com/giantswarm/health-service/service/health/searcher"
+	"github.com/giantswarm/health-service/service/node"
 )
 
 func Test_NotFound(t *testing.T) {
@@ -35,19 +37,19 @@ func Test_NotFound(t *testing.T) {
 		{
 			name:         "case 0: aws health for non-existent cluster returns error",
 			clusterID:    "abc",
-			errorMatcher: searcher.IsClusterNotFound,
+			errorMatcher: clustersearcher.IsClusterNotFound,
 			provider:     "aws",
 		},
 		{
 			name:         "case 1: azure health for non-existent cluster returns error",
 			clusterID:    "abc",
-			errorMatcher: searcher.IsClusterNotFound,
+			errorMatcher: clustersearcher.IsClusterNotFound,
 			provider:     "azure",
 		},
 		{
 			name:         "case 2: kvm health for non-existent cluster returns error",
 			clusterID:    "abc",
-			errorMatcher: searcher.IsClusterNotFound,
+			errorMatcher: clustersearcher.IsClusterNotFound,
 			provider:     "kvm",
 		},
 	}
@@ -84,14 +86,40 @@ func Test_NotFound(t *testing.T) {
 				t.Fatal("expected", nil, "got", err)
 			}
 
+			// Create node service.
+			var nodeService *node.Service
+			{
+				nodeConfig := node.Config{
+					Logger:        microloggertest.New(),
+					TenantCluster: tenantclustertest.New(tenantclustertest.Config{}),
+				}
+
+				nodeService, err = node.New(nodeConfig)
+				if err != nil {
+					t.Fatal("Error creating node service: ", err)
+				}
+			}
+
+			// Create cluster service.
+			var clusterService *cluster.Service
+			{
+				clusterConfig := cluster.Config{
+					G8sClient: g8sClient,
+					Logger:    microloggertest.New(),
+					Provider:  tc.provider,
+				}
+
+				clusterService, err = cluster.New(clusterConfig)
+				if err != nil {
+					t.Fatal("Error creating cluster service: ", err)
+				}
+			}
+
 			// Create health service.
 			var healthService *health.Service
 			{
 				healthConfig := health.Config{
-					G8sClient:     g8sClient,
-					Logger:        microloggertest.New(),
-					Provider:      tc.provider,
-					TenantCluster: tenantclustertest.New(tenantclustertest.Config{}),
+					Logger: microloggertest.New(),
 				}
 
 				healthService, err = health.New(healthConfig)
@@ -107,7 +135,9 @@ func Test_NotFound(t *testing.T) {
 					Logger:     microloggertest.New(),
 					Middleware: &middleware.Middleware{},
 					Service: &service.Service{
-						Health: healthService,
+						Health:  healthService,
+						Cluster: clusterService,
+						Node:    nodeService,
 					},
 				}
 				endpoint, err = New(c)
@@ -306,19 +336,42 @@ func Test_Health_Endpoint(t *testing.T) {
 				t.Fatal("expected", nil, "got", err)
 			}
 
-			nodes, err := k8sClientTC.CoreV1().Nodes().List(v1.ListOptions{})
-			fmt.Println(k8sCPAPIMockServer.URL, k8sTCAPIMockServer.URL, nodes, err)
+			// Create node service.
+			var nodeService *node.Service
+			{
+				nodeConfig := node.Config{
+					Logger: microloggertest.New(),
+					TenantCluster: tenantclustertest.New(tenantclustertest.Config{
+						K8sClient: k8sClientTC,
+					}),
+				}
+
+				nodeService, err = node.New(nodeConfig)
+				if err != nil {
+					t.Fatal("Error creating node service: ", err)
+				}
+			}
+
+			// Create cluster service.
+			var clusterService *cluster.Service
+			{
+				clusterConfig := cluster.Config{
+					G8sClient: g8sClient,
+					Logger:    microloggertest.New(),
+					Provider:  tc.provider,
+				}
+
+				clusterService, err = cluster.New(clusterConfig)
+				if err != nil {
+					t.Fatal("Error creating cluster service: ", err)
+				}
+			}
 
 			// Create health service.
 			var healthService *health.Service
 			{
 				healthConfig := health.Config{
-					G8sClient: g8sClient,
-					Logger:    microloggertest.New(),
-					TenantCluster: tenantclustertest.New(tenantclustertest.Config{
-						K8sClient: k8sClientTC,
-					}),
-					Provider: tc.provider,
+					Logger: microloggertest.New(),
 				}
 
 				healthService, err = health.New(healthConfig)
@@ -334,7 +387,9 @@ func Test_Health_Endpoint(t *testing.T) {
 					Logger:     microloggertest.New(),
 					Middleware: &middleware.Middleware{},
 					Service: &service.Service{
-						Health: healthService,
+						Health:  healthService,
+						Cluster: clusterService,
+						Node:    nodeService,
 					},
 				}
 				endpoint, err = New(c)
