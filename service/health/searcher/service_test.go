@@ -21,7 +21,7 @@ func Test_Health_New(t *testing.T) {
 			errorMatcher: nil,
 		},
 		{
-			name:         "case 3: invalidConfigError returned when logger is missing",
+			name:         "case 1: invalidConfigError returned when logger is missing",
 			inputObj:     Config{},
 			errorMatcher: IsInvalidConfig,
 		},
