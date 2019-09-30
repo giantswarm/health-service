@@ -6,6 +6,7 @@ import (
 
 	apiextensionsfake "github.com/giantswarm/apiextensions/pkg/clientset/versioned/fake"
 	"github.com/giantswarm/micrologger/microloggertest"
+	"github.com/giantswarm/tenantcluster/tenantclustertest"
 )
 
 func Test_Health_New(t *testing.T) {
@@ -17,42 +18,47 @@ func Test_Health_New(t *testing.T) {
 		{
 			name: "case 0: a service is successfully created",
 			inputObj: Config{
-				G8sClient: apiextensionsfake.NewSimpleClientset(),
-				Logger:    microloggertest.New(),
-				Provider:  "aws",
+				G8sClient:     apiextensionsfake.NewSimpleClientset(),
+				Logger:        microloggertest.New(),
+				Provider:      "aws",
+				TenantCluster: tenantclustertest.New(tenantclustertest.Config{}),
 			},
 			errorMatcher: nil,
 		},
 		{
 			name: "case 1: invalidConfigError returned when provider is missing",
 			inputObj: Config{
-				G8sClient: apiextensionsfake.NewSimpleClientset(),
-				Logger:    microloggertest.New(),
+				G8sClient:     apiextensionsfake.NewSimpleClientset(),
+				Logger:        microloggertest.New(),
+				TenantCluster: tenantclustertest.New(tenantclustertest.Config{}),
 			},
 			errorMatcher: IsInvalidConfig,
 		},
 		{
 			name: "case 2: invalidConfigError returned when provider is not a known provider",
 			inputObj: Config{
-				G8sClient: apiextensionsfake.NewSimpleClientset(),
-				Logger:    microloggertest.New(),
-				Provider:  "invalid",
+				G8sClient:     apiextensionsfake.NewSimpleClientset(),
+				Logger:        microloggertest.New(),
+				Provider:      "invalid",
+				TenantCluster: tenantclustertest.New(tenantclustertest.Config{}),
 			},
 			errorMatcher: IsInvalidConfig,
 		},
 		{
 			name: "case 3: invalidConfigError returned when logger is missing",
 			inputObj: Config{
-				G8sClient: apiextensionsfake.NewSimpleClientset(),
-				Provider:  "aws",
+				G8sClient:     apiextensionsfake.NewSimpleClientset(),
+				Provider:      "aws",
+				TenantCluster: tenantclustertest.New(tenantclustertest.Config{}),
 			},
 			errorMatcher: IsInvalidConfig,
 		},
 		{
 			name: "case 4: invalidConfigError returned when g8sclient is missing",
 			inputObj: Config{
-				Logger:   microloggertest.New(),
-				Provider: "aws",
+				Logger:        microloggertest.New(),
+				Provider:      "aws",
+				TenantCluster: tenantclustertest.New(tenantclustertest.Config{}),
 			},
 			errorMatcher: IsInvalidConfig,
 		},

@@ -3,13 +3,17 @@ package main
 import (
 	"fmt"
 	"math/rand"
+	"strings"
 	"time"
 
+	"github.com/giantswarm/apiextensions/pkg/clientset/versioned"
+	"github.com/giantswarm/certs"
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/microkit/command"
 	microserver "github.com/giantswarm/microkit/server"
 	"github.com/giantswarm/micrologger"
 	"github.com/giantswarm/operatorkit/client/k8srestconfig"
+	"github.com/giantswarm/tenantcluster"
 	"github.com/spf13/viper"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
@@ -70,19 +74,54 @@ func mainWithError() error {
 			}
 		}
 
+		g8sClient, err := versioned.NewForConfig(restConfig)
+		if err != nil {
+			panic(fmt.Sprintf("%#v", err))
+		}
+
 		k8sClient, err := kubernetes.NewForConfig(restConfig)
 		if err != nil {
 			panic(fmt.Sprintf("%#v", err))
+		}
+
+		var certsSearcher certs.Interface
+		{
+			c := certs.Config{
+				K8sClient: k8sClient,
+				Logger:    newLogger,
+
+				WatchTimeout: 5 * time.Second,
+			}
+
+			certsSearcher, err = certs.NewSearcher(c)
+			if err != nil {
+				panic(fmt.Sprintf("%#v", err))
+			}
+		}
+
+		var tenantCluster tenantcluster.Interface
+		{
+			c := tenantcluster.Config{
+				CertsSearcher: certsSearcher,
+				Logger:        newLogger,
+
+				CertID: certs.NodeOperatorCert, // FIXME: create a new cert type
+			}
+
+			tenantCluster, err = tenantcluster.New(c)
+			if err != nil {
+				panic(fmt.Sprintf("%#v", err))
+			}
 		}
 
 		// Create a new custom service which implements business logic.
 		var newService *service.Service
 		{
 			serviceConfig := service.Config{
-				Flag:      f,
-				K8sClient: k8sClient,
-				Logger:    newLogger,
-				Viper:     v,
+				G8sClient:     g8sClient,
+				Logger:        newLogger,
+				TenantCluster: tenantCluster,
+				Provider:      strings.TrimSpace(v.GetString(f.Service.Provider.Kind)),
 
 				Description: project.Description(),
 				GitCommit:   project.GitSHA(),

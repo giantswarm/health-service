@@ -6,6 +6,7 @@ import (
 	"github.com/giantswarm/apiextensions/pkg/clientset/versioned"
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
+	"github.com/giantswarm/tenantcluster"
 	"k8s.io/apimachinery/pkg/api/errors"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
@@ -16,15 +17,18 @@ const clusterNamespace = "default"
 
 // Config represents the configuration used to create a new service object.
 type Config struct {
-	G8sClient versioned.Interface
-	Logger    micrologger.Logger
+	G8sClient     versioned.Interface
+	Logger        micrologger.Logger
+	TenantCluster tenantcluster.Interface
 
 	Provider string
 }
 
+// Service is an object representing the health searcher service.
 type Service struct {
-	g8sClient versioned.Interface
-	logger    micrologger.Logger
+	g8sClient     versioned.Interface
+	logger        micrologger.Logger
+	tenantCluster tenantcluster.Interface
 
 	provider string
 }
@@ -37,17 +41,20 @@ func New(config Config) (*Service, error) {
 	if config.Logger == nil {
 		return nil, microerror.Maskf(invalidConfigError, "%T.Logger must not be empty", config)
 	}
-
 	if config.Provider == "" {
 		return nil, microerror.Maskf(invalidConfigError, "%T.Provider must not be empty", config)
+	}
+	if config.TenantCluster == nil {
+		return nil, microerror.Maskf(invalidConfigError, "%T.TenantCluster must not be empty", config)
 	}
 	if !key.IsKnownProvider(config.Provider) {
 		return nil, microerror.Maskf(invalidConfigError, "%T.Provider must be one of %+v", config, key.Providers)
 	}
 
 	s := &Service{
-		g8sClient: config.G8sClient,
-		logger:    config.Logger,
+		g8sClient:     config.G8sClient,
+		logger:        config.Logger,
+		tenantCluster: config.TenantCluster,
 
 		provider: config.Provider,
 	}
@@ -64,7 +71,8 @@ func (s *Service) searchAWSInfo(ctx context.Context, clusterID string) (clusterI
 		return clusterInfo{}, microerror.Mask(err)
 	}
 	cluster := clusterInfo{
-		status: cr.Status.Cluster,
+		endpoint: cr.Spec.Cluster.Kubernetes.API.Domain,
+		status:   cr.Status.Cluster,
 	}
 	return cluster, nil
 }
@@ -78,7 +86,8 @@ func (s *Service) searchAzureInfo(ctx context.Context, clusterID string) (cluste
 		return clusterInfo{}, microerror.Mask(err)
 	}
 	cluster := clusterInfo{
-		status: cr.Status.Cluster,
+		endpoint: cr.Spec.Cluster.Kubernetes.API.Domain,
+		status:   cr.Status.Cluster,
 	}
 	return cluster, nil
 }
@@ -92,7 +101,8 @@ func (s *Service) searchKVMInfo(ctx context.Context, clusterID string) (clusterI
 		return clusterInfo{}, microerror.Mask(err)
 	}
 	cluster := clusterInfo{
-		status: cr.Status.Cluster,
+		endpoint: cr.Spec.Cluster.Kubernetes.API.Domain,
+		status:   cr.Status.Cluster,
 	}
 	return cluster, nil
 }
@@ -121,8 +131,22 @@ func (s *Service) Search(ctx context.Context, request Request) (*Response, error
 		}
 	}
 
+	{
+		// TODO: cache this?
+		k8sClient, err := s.tenantCluster.NewK8sClient(ctx, request.ClusterID, cluster.endpoint)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+		nodes, err := k8sClient.CoreV1().Nodes().List(v1.ListOptions{})
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+		cluster.nodes = nodes.Items
+	}
+
 	response := Response{
 		Cluster: NewClusterStatus(cluster),
+		Nodes:   NewNodesStatus(cluster),
 	}
 
 	return &response, nil

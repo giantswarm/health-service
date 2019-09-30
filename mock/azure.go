@@ -208,3 +208,8 @@ var AzureHealthy = `
   }
 }
 `
+
+// AzureHealthyTC is a JSON string representing a healthy Azure tenant cluster's node list.
+var AzureHealthyTC = `
+{}
+`
