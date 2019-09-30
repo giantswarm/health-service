@@ -15,7 +15,7 @@ import (
 	"github.com/giantswarm/health-service/server/endpoint"
 	"github.com/giantswarm/health-service/server/middleware"
 	"github.com/giantswarm/health-service/service"
-	healthsearcher "github.com/giantswarm/health-service/service/health/searcher"
+	clustersearcher "github.com/giantswarm/health-service/service/cluster/searcher"
 )
 
 // Config represents the configuration used to create a new server object.
@@ -125,7 +125,7 @@ func errorEncoder(ctx context.Context, err error, w http.ResponseWriter) {
 	rErr := err.(microserver.ResponseError)
 	uErr := rErr.Underlying()
 
-	if healthsearcher.IsClusterNotFound(uErr) {
+	if clustersearcher.IsClusterNotFound(uErr) {
 		rErr.SetCode(microserver.CodeResourceNotFound)
 		w.WriteHeader(http.StatusNotFound)
 
