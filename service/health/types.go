@@ -54,8 +54,10 @@ func NewNodeStatus(node v1.Node) NodeStatus {
 		}
 	}
 	return NodeStatus{
-		Name:  node.Name,
-		Ready: ready,
+		Name:     node.Name,
+		Ready:    ready,
+		IP:       ipFromAddresses(node.Status.Addresses),
+		Hostname: hostnameFromAddresses(node.Status.Addresses),
 	}
 }
 
@@ -65,4 +67,21 @@ func NewNodesStatus(nodes []v1.Node) []NodeStatus {
 		result = append(result, NewNodeStatus(node))
 	}
 	return result
+}
+
+func findInAddresses(addresses []v1.NodeAddress, address_type v1.NodeAddressType) string {
+	for _, entry := range addresses {
+		if entry.Type == address_type {
+			return entry.Address
+		}
+	}
+	return ""
+}
+
+func ipFromAddresses(addresses []v1.NodeAddress) string {
+	return findInAddresses(addresses, v1.NodeInternalIP)
+}
+
+func hostnameFromAddresses(addresses []v1.NodeAddress) string {
+	return findInAddresses(addresses, v1.NodeHostName)
 }

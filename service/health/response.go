@@ -17,6 +17,8 @@ type ClusterStatus struct {
 
 // NodeStatus holds data about the health/status of a node.
 type NodeStatus struct {
-	Name  string `jsno:"name"`
-	Ready bool   `json:"ready"`
+	Name     string `json:"name"`
+	Ready    bool   `json:"ready"`
+	IP       string `json:"ip"`
+	Hostname string `json:"hostname"`
 }
