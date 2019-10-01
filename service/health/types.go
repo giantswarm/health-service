@@ -54,10 +54,13 @@ func NewNodeStatus(node v1.Node) NodeStatus {
 		}
 	}
 	return NodeStatus{
-		Name:     node.Name,
-		Ready:    ready,
-		IP:       ipFromAddresses(node.Status.Addresses),
-		Hostname: hostnameFromAddresses(node.Status.Addresses),
+		Name:         node.Name,
+		Ready:        ready,
+		IP:           ipFromAddresses(node.Status.Addresses),
+		Hostname:     hostnameFromAddresses(node.Status.Addresses),
+		InstanceType: node.GetObjectMeta().GetLabels()["beta.kubernetes.io/instance-type"],
+		CPUCount:     node.Status.Capacity.Cpu().Value(),
+		Memory:       node.Status.Capacity.Memory().String(),
 	}
 }
 
@@ -69,9 +72,9 @@ func NewNodesStatus(nodes []v1.Node) []NodeStatus {
 	return result
 }
 
-func findInAddresses(addresses []v1.NodeAddress, address_type v1.NodeAddressType) string {
+func findInAddresses(addresses []v1.NodeAddress, addressType v1.NodeAddressType) string {
 	for _, entry := range addresses {
-		if entry.Type == address_type {
+		if entry.Type == addressType {
 			return entry.Address
 		}
 	}
