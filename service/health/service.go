@@ -1,58 +1,45 @@
-// Package cluster provides cluster specific business logic.
 package health
 
 import (
-	"github.com/giantswarm/apiextensions/pkg/clientset/versioned"
+	"context"
+
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
-	"github.com/giantswarm/tenantcluster"
-
-	"github.com/giantswarm/health-service/service/health/searcher"
 )
 
-// Config represents the configuration used to create a new service.
+// Config represents the configuration used to create a new service object.
 type Config struct {
-	G8sClient     versioned.Interface
-	Logger        micrologger.Logger
-	Provider      string
-	TenantCluster tenantcluster.Interface
+	Logger micrologger.Logger
 }
 
+// Service is an object representing the health searcher service.
 type Service struct {
-	Searcher *searcher.Service
+	logger micrologger.Logger
 }
 
 // New creates a new configured service object.
 func New(config Config) (*Service, error) {
-	if config.G8sClient == nil {
-		return nil, microerror.Maskf(invalidConfigError, "%T.G8sClient must not be empty", config)
-	}
-	if config.Provider == "" {
-		return nil, microerror.Maskf(invalidConfigError, "%T.Provider must not be empty", config)
-	}
-	if config.TenantCluster == nil {
-		return nil, microerror.Maskf(invalidConfigError, "%T.TenantCluster must not be empty", config)
+	if config.Logger == nil {
+		return nil, microerror.Maskf(invalidConfigError, "%T.Logger must not be empty", config)
 	}
 
-	var err error
-
-	var searcherService *searcher.Service
-	{
-		searcherConfig := searcher.Config{
-			G8sClient:     config.G8sClient,
-			Logger:        config.Logger,
-			Provider:      config.Provider,
-			TenantCluster: config.TenantCluster,
-		}
-		searcherService, err = searcher.New(searcherConfig)
-		if err != nil {
-			return nil, microerror.Mask(err)
-		}
+	s := &Service{
+		logger: config.Logger,
 	}
 
-	newService := &Service{
-		Searcher: searcherService,
+	return s, nil
+}
+
+// Search searches for the cluster information.
+// It try to find cluster information in CR and fallback to storage service when nothing is found.
+func (s *Service) Search(ctx context.Context, request Request) (*Response, error) {
+	clusterHealth := NewClusterStatus(request.Cluster)
+	nodesHealth := NewNodesStatus(request.Nodes)
+
+	response := Response{
+		Cluster: clusterHealth,
+		Nodes:   nodesHealth,
 	}
 
-	return newService, nil
+	return &response, nil
 }

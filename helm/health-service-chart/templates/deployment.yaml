@@ -24,12 +24,6 @@ spec:
           items:
           - key: config.yaml
             path: config.yaml
-      - name: health-service-secret
-        secret:
-          secretName: health-service-secret
-          items:
-          - key: secret.yaml
-            path: secret.yaml
       - name: certs
         hostPath:
           path: /etc/ssl/certs
@@ -55,9 +49,6 @@ spec:
         volumeMounts:
         - name: health-service-configmap
           mountPath: /var/run/health-service/configmap/
-        - name: health-service-secret
-          mountPath: /var/run/health-service/secret/
-          readOnly: true
         - name: certs
           mountPath: /etc/ssl/certs
         ports:
@@ -66,9 +57,7 @@ spec:
         args:
         - daemon
         - --config.dirs=/var/run/health-service/configmap/
-        - --config.dirs=/var/run/health-service/secret/
         - --config.files=config
-        - --config.files=secret
         livenessProbe:
           httpGet:
             path: /healthz

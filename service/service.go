@@ -14,6 +14,8 @@ import (
 	"github.com/giantswarm/tenantcluster"
 
 	"github.com/giantswarm/health-service/service/health"
+	"github.com/giantswarm/health-service/service/host"
+	"github.com/giantswarm/health-service/service/tenant"
 )
 
 const (
@@ -39,7 +41,9 @@ type Config struct {
 }
 
 type Service struct {
+	Host    *host.Service
 	Health  *health.Service
+	Tenant  *tenant.Service
 	Version *version.Service
 
 	bootOnce sync.Once
@@ -61,13 +65,37 @@ func New(config Config) (*Service, error) {
 	var healthService *health.Service
 	{
 		healthConfig := health.Config{
-			G8sClient:     config.G8sClient,
-			Logger:        config.Logger,
-			TenantCluster: config.TenantCluster,
-			Provider:      config.Provider,
+			Logger: config.Logger,
 		}
 
 		healthService, err = health.New(healthConfig)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+	}
+
+	var hostService *host.Service
+	{
+		hostConfig := host.Config{
+			G8sClient: config.G8sClient,
+			Logger:    config.Logger,
+			Provider:  config.Provider,
+		}
+
+		hostService, err = host.New(hostConfig)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+	}
+
+	var tenantService *tenant.Service
+	{
+		tenantConfig := tenant.Config{
+			Logger:        config.Logger,
+			TenantCluster: config.TenantCluster,
+		}
+
+		tenantService, err = tenant.New(tenantConfig)
 		if err != nil {
 			return nil, microerror.Mask(err)
 		}
@@ -90,7 +118,9 @@ func New(config Config) (*Service, error) {
 	}
 
 	s := &Service{
+		Host:    hostService,
 		Health:  healthService,
+		Tenant:  tenantService,
 		Version: versionService,
 
 		bootOnce: sync.Once{},

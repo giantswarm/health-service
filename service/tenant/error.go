@@ -1,4 +1,4 @@
-package health
+package tenant
 
 import (
 	"github.com/giantswarm/microerror"
