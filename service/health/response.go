@@ -1,4 +1,4 @@
-package searcher
+package health
 
 import "github.com/giantswarm/health-service/service/health/key"
 

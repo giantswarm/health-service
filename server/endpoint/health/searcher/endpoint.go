@@ -11,9 +11,12 @@ import (
 	kithttp "github.com/go-kit/kit/transport/http"
 	"github.com/gorilla/mux"
 
+	"github.com/giantswarm/health-service/pkg/errors"
 	"github.com/giantswarm/health-service/server/middleware"
 	"github.com/giantswarm/health-service/service"
-	"github.com/giantswarm/health-service/service/health/searcher"
+	"github.com/giantswarm/health-service/service/health"
+	"github.com/giantswarm/health-service/service/host"
+	"github.com/giantswarm/health-service/service/tenant"
 )
 
 const (
@@ -39,13 +42,13 @@ type Endpoint struct {
 
 func New(config Config) (*Endpoint, error) {
 	if config.Logger == nil {
-		return nil, microerror.Maskf(invalidConfigError, "config.Logger must not be empty")
+		return nil, microerror.Maskf(errors.InvalidConfigError, "config.Logger must not be empty")
 	}
 	if config.Middleware == nil {
-		return nil, microerror.Maskf(invalidConfigError, "config.Middleware must not be empty")
+		return nil, microerror.Maskf(errors.InvalidConfigError, "config.Middleware must not be empty")
 	}
 	if config.Service == nil {
-		return nil, microerror.Maskf(invalidConfigError, "config.Service must not be empty")
+		return nil, microerror.Maskf(errors.InvalidConfigError, "config.Service must not be empty")
 	}
 
 	e := &Endpoint{
@@ -77,23 +80,39 @@ func (e *Endpoint) Encoder() kithttp.EncodeResponseFunc {
 
 func (e *Endpoint) Endpoint() kitendpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
-		var serviceRequest searcher.Request
-		{
-			clusterID, ok := request.(string)
-			if !ok {
-				return nil, microerror.Mask(badRequestError)
-			}
-			serviceRequest = searcher.Request{
-				ClusterID: clusterID,
-			}
+		clusterID, ok := request.(string)
+		if !ok {
+			return nil, microerror.Mask(errors.BadRequestError)
 		}
 
-		serviceResponse, err := e.service.Health.Searcher.Search(ctx, serviceRequest)
+		hostRequest := host.Request{
+			ClusterID: clusterID,
+		}
+		hostResponse, err := e.service.Host.SearchStatusCluster(ctx, hostRequest)
 		if err != nil {
 			return nil, microerror.Mask(err)
 		}
 
-		return serviceResponse, nil
+		tenantRequest := tenant.Request{
+			ClusterID: clusterID,
+			Endpoint:  hostResponse.Endpoint,
+		}
+		tenantResponse, err := e.service.Tenant.ListNodes(ctx, tenantRequest)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+
+		healthRequest := health.Request{
+			Cluster:   hostResponse.Status,
+			ClusterID: clusterID,
+			Nodes:     tenantResponse.Nodes,
+		}
+		healthResponse, err := e.service.Health.Search(ctx, healthRequest)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+
+		return healthResponse, nil
 	}
 }
 
