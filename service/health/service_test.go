@@ -1,11 +1,10 @@
-package searcher
+package health
 
 import (
 	"strconv"
 	"testing"
 
 	"github.com/giantswarm/micrologger/microloggertest"
-	"github.com/giantswarm/tenantcluster/tenantclustertest"
 )
 
 func Test_Health_New(t *testing.T) {
@@ -17,23 +16,13 @@ func Test_Health_New(t *testing.T) {
 		{
 			name: "case 0: a service is successfully created",
 			inputObj: Config{
-				Logger:        microloggertest.New(),
-				TenantCluster: tenantclustertest.New(tenantclustertest.Config{}),
+				Logger: microloggertest.New(),
 			},
 			errorMatcher: nil,
 		},
 		{
-			name: "case 1: invalidConfigError returned when logger is missing",
-			inputObj: Config{
-				TenantCluster: tenantclustertest.New(tenantclustertest.Config{}),
-			},
-			errorMatcher: IsInvalidConfig,
-		},
-		{
-			name: "case 2: invalidConfigError returned when tenantcluster is missing",
-			inputObj: Config{
-				Logger: microloggertest.New(),
-			},
+			name:         "case 1: invalidConfigError returned when logger is missing",
+			inputObj:     Config{},
 			errorMatcher: IsInvalidConfig,
 		},
 	}

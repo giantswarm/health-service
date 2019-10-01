@@ -1,4 +1,5 @@
-package searcher
+// Package tenant provides information about resources in tenant clusters.
+package tenant
 
 import (
 	"context"
@@ -10,15 +11,13 @@ import (
 	"k8s.io/client-go/kubernetes"
 )
 
-const clusterNamespace = "default"
-
-// Config represents the configuration used to create a new service object.
+// Config represents the configuration used to create a new Tenant service.
 type Config struct {
 	Logger        micrologger.Logger
 	TenantCluster tenantcluster.Interface
 }
 
-// Service is an object representing the health searcher service.
+// Service holds the dependencies for the Tenant service.
 type Service struct {
 	logger        micrologger.Logger
 	tenantCluster tenantcluster.Interface
@@ -26,11 +25,11 @@ type Service struct {
 
 // New creates a new configured service object.
 func New(config Config) (*Service, error) {
-	if config.Logger == nil {
-		return nil, microerror.Maskf(invalidConfigError, "%T.Logger must not be empty", config)
-	}
 	if config.TenantCluster == nil {
 		return nil, microerror.Maskf(invalidConfigError, "%T.TenantCluster must not be empty", config)
+	}
+	if config.Logger == nil {
+		return nil, microerror.Maskf(invalidConfigError, "%T.Logger must not be empty", config)
 	}
 
 	s := &Service{
@@ -41,8 +40,8 @@ func New(config Config) (*Service, error) {
 	return s, nil
 }
 
-// Search searches a tenant cluster for information about nodes.
-func (s *Service) Search(ctx context.Context, request Request) (*Response, error) {
+// ListNodes returns a slice of Nodes in a tenant cluster.
+func (s *Service) ListNodes(ctx context.Context, request Request) (*Response, error) {
 	var err error
 	var response Response
 

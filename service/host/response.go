@@ -1,4 +1,4 @@
-package searcher
+package host
 
 import v1alpha1 "github.com/giantswarm/apiextensions/pkg/apis/provider/v1alpha1"
 

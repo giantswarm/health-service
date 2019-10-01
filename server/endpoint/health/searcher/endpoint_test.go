@@ -17,14 +17,13 @@ import (
 	"k8s.io/client-go/rest"
 
 	"github.com/giantswarm/health-service/mock"
+	"github.com/giantswarm/health-service/pkg/errors"
 	"github.com/giantswarm/health-service/server/middleware"
 	"github.com/giantswarm/health-service/service"
-	"github.com/giantswarm/health-service/service/cluster"
-	clustersearcher "github.com/giantswarm/health-service/service/cluster/searcher"
 	"github.com/giantswarm/health-service/service/health"
 	"github.com/giantswarm/health-service/service/health/key"
-	"github.com/giantswarm/health-service/service/health/searcher"
-	"github.com/giantswarm/health-service/service/node"
+	"github.com/giantswarm/health-service/service/host"
+	"github.com/giantswarm/health-service/service/tenant"
 )
 
 func Test_NotFound(t *testing.T) {
@@ -37,19 +36,19 @@ func Test_NotFound(t *testing.T) {
 		{
 			name:         "case 0: aws health for non-existent cluster returns error",
 			clusterID:    "abc",
-			errorMatcher: clustersearcher.IsClusterNotFound,
+			errorMatcher: errors.IsNotFound,
 			provider:     "aws",
 		},
 		{
 			name:         "case 1: azure health for non-existent cluster returns error",
 			clusterID:    "abc",
-			errorMatcher: clustersearcher.IsClusterNotFound,
+			errorMatcher: errors.IsNotFound,
 			provider:     "azure",
 		},
 		{
 			name:         "case 2: kvm health for non-existent cluster returns error",
 			clusterID:    "abc",
-			errorMatcher: clustersearcher.IsClusterNotFound,
+			errorMatcher: errors.IsNotFound,
 			provider:     "kvm",
 		},
 	}
@@ -86,32 +85,32 @@ func Test_NotFound(t *testing.T) {
 				t.Fatal("expected", nil, "got", err)
 			}
 
-			// Create node service.
-			var nodeService *node.Service
+			// Create tenant service.
+			var tenantService *tenant.Service
 			{
-				nodeConfig := node.Config{
+				tenantConfig := tenant.Config{
 					Logger:        microloggertest.New(),
 					TenantCluster: tenantclustertest.New(tenantclustertest.Config{}),
 				}
 
-				nodeService, err = node.New(nodeConfig)
+				tenantService, err = tenant.New(tenantConfig)
 				if err != nil {
-					t.Fatal("Error creating node service: ", err)
+					t.Fatal("Error creating tenant service: ", err)
 				}
 			}
 
-			// Create cluster service.
-			var clusterService *cluster.Service
+			// Create host service.
+			var hostService *host.Service
 			{
-				clusterConfig := cluster.Config{
+				hostConfig := host.Config{
 					G8sClient: g8sClient,
 					Logger:    microloggertest.New(),
 					Provider:  tc.provider,
 				}
 
-				clusterService, err = cluster.New(clusterConfig)
+				hostService, err = host.New(hostConfig)
 				if err != nil {
-					t.Fatal("Error creating cluster service: ", err)
+					t.Fatal("Error creating host service: ", err)
 				}
 			}
 
@@ -135,9 +134,9 @@ func Test_NotFound(t *testing.T) {
 					Logger:     microloggertest.New(),
 					Middleware: &middleware.Middleware{},
 					Service: &service.Service{
-						Health:  healthService,
-						Cluster: clusterService,
-						Node:    nodeService,
+						Health: healthService,
+						Host:   hostService,
+						Tenant: tenantService,
 					},
 				}
 				endpoint, err = New(c)
@@ -171,7 +170,7 @@ func Test_Health_Endpoint(t *testing.T) {
 		k8sCPAPIResponse string
 		k8sTCAPIResponse string
 		errorMatcher     func(err error) bool
-		expectedResponse searcher.Response
+		expectedResponse health.Response
 		provider         string
 	}{
 		{
@@ -180,26 +179,26 @@ func Test_Health_Endpoint(t *testing.T) {
 			errorMatcher:     nil,
 			k8sCPAPIResponse: mock.AWSHealthy,
 			k8sTCAPIResponse: mock.AWSHealthyTC,
-			expectedResponse: searcher.Response{
-				Cluster: searcher.ClusterStatus{
+			expectedResponse: health.Response{
+				Cluster: health.ClusterStatus{
 					Health:    key.Green,
 					State:     key.Normal,
 					NodeCount: 4,
 				},
-				Nodes: []searcher.NodeStatus{
-					searcher.NodeStatus{
+				Nodes: []health.NodeStatus{
+					health.NodeStatus{
 						Name:  "ip-10-1-1-104.eu-central-1.compute.internal",
 						Ready: true,
 					},
-					searcher.NodeStatus{
+					health.NodeStatus{
 						Name:  "ip-10-1-1-125.eu-central-1.compute.internal",
 						Ready: true,
 					},
-					searcher.NodeStatus{
+					health.NodeStatus{
 						Name:  "ip-10-1-1-57.eu-central-1.compute.internal",
 						Ready: true,
 					},
-					searcher.NodeStatus{
+					health.NodeStatus{
 						Name:  "ip-10-1-1-85.eu-central-1.compute.internal",
 						Ready: true,
 					},
@@ -213,26 +212,26 @@ func Test_Health_Endpoint(t *testing.T) {
 			errorMatcher:     nil,
 			k8sCPAPIResponse: mock.AzureHealthy,
 			k8sTCAPIResponse: mock.AWSHealthyTC,
-			expectedResponse: searcher.Response{
-				Cluster: searcher.ClusterStatus{
+			expectedResponse: health.Response{
+				Cluster: health.ClusterStatus{
 					Health:    "green",
 					State:     key.Normal,
 					NodeCount: 4,
 				},
-				Nodes: []searcher.NodeStatus{
-					searcher.NodeStatus{
+				Nodes: []health.NodeStatus{
+					health.NodeStatus{
 						Name:  "ip-10-1-1-104.eu-central-1.compute.internal",
 						Ready: true,
 					},
-					searcher.NodeStatus{
+					health.NodeStatus{
 						Name:  "ip-10-1-1-125.eu-central-1.compute.internal",
 						Ready: true,
 					},
-					searcher.NodeStatus{
+					health.NodeStatus{
 						Name:  "ip-10-1-1-57.eu-central-1.compute.internal",
 						Ready: true,
 					},
-					searcher.NodeStatus{
+					health.NodeStatus{
 						Name:  "ip-10-1-1-85.eu-central-1.compute.internal",
 						Ready: true,
 					},
@@ -246,26 +245,26 @@ func Test_Health_Endpoint(t *testing.T) {
 			errorMatcher:     nil,
 			k8sCPAPIResponse: mock.KVMHealthy,
 			k8sTCAPIResponse: mock.AWSHealthyTC,
-			expectedResponse: searcher.Response{
-				Cluster: searcher.ClusterStatus{
+			expectedResponse: health.Response{
+				Cluster: health.ClusterStatus{
 					Health:    "green",
 					State:     key.Normal,
 					NodeCount: 4,
 				},
-				Nodes: []searcher.NodeStatus{
-					searcher.NodeStatus{
+				Nodes: []health.NodeStatus{
+					health.NodeStatus{
 						Name:  "ip-10-1-1-104.eu-central-1.compute.internal",
 						Ready: true,
 					},
-					searcher.NodeStatus{
+					health.NodeStatus{
 						Name:  "ip-10-1-1-125.eu-central-1.compute.internal",
 						Ready: true,
 					},
-					searcher.NodeStatus{
+					health.NodeStatus{
 						Name:  "ip-10-1-1-57.eu-central-1.compute.internal",
 						Ready: true,
 					},
-					searcher.NodeStatus{
+					health.NodeStatus{
 						Name:  "ip-10-1-1-85.eu-central-1.compute.internal",
 						Ready: true,
 					},
@@ -336,34 +335,34 @@ func Test_Health_Endpoint(t *testing.T) {
 				t.Fatal("expected", nil, "got", err)
 			}
 
-			// Create node service.
-			var nodeService *node.Service
+			// Create tenant service.
+			var tenantService *tenant.Service
 			{
-				nodeConfig := node.Config{
+				tenantConfig := tenant.Config{
 					Logger: microloggertest.New(),
 					TenantCluster: tenantclustertest.New(tenantclustertest.Config{
 						K8sClient: k8sClientTC,
 					}),
 				}
 
-				nodeService, err = node.New(nodeConfig)
+				tenantService, err = tenant.New(tenantConfig)
 				if err != nil {
-					t.Fatal("Error creating node service: ", err)
+					t.Fatal("Error creating tenant service: ", err)
 				}
 			}
 
-			// Create cluster service.
-			var clusterService *cluster.Service
+			// Create host service.
+			var hostService *host.Service
 			{
-				clusterConfig := cluster.Config{
+				hostConfig := host.Config{
 					G8sClient: g8sClient,
 					Logger:    microloggertest.New(),
 					Provider:  tc.provider,
 				}
 
-				clusterService, err = cluster.New(clusterConfig)
+				hostService, err = host.New(hostConfig)
 				if err != nil {
-					t.Fatal("Error creating cluster service: ", err)
+					t.Fatal("Error creating host service: ", err)
 				}
 			}
 
@@ -387,9 +386,9 @@ func Test_Health_Endpoint(t *testing.T) {
 					Logger:     microloggertest.New(),
 					Middleware: &middleware.Middleware{},
 					Service: &service.Service{
-						Health:  healthService,
-						Cluster: clusterService,
-						Node:    nodeService,
+						Health: healthService,
+						Host:   hostService,
+						Tenant: tenantService,
 					},
 				}
 				endpoint, err = New(c)
@@ -413,7 +412,7 @@ func Test_Health_Endpoint(t *testing.T) {
 				t.Fatalf("error == %#v, want matching", err)
 			}
 
-			endpointResponseTyped, ok := endpointResponse.(*searcher.Response)
+			endpointResponseTyped, ok := endpointResponse.(*health.Response)
 			if !ok {
 				t.Fatalf("endpointResponse.(type) = %T, want %T", endpointResponse, endpointResponseTyped)
 			}

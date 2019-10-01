@@ -12,10 +12,10 @@ import (
 	"github.com/giantswarm/micrologger"
 	"github.com/spf13/viper"
 
+	"github.com/giantswarm/health-service/pkg/errors"
 	"github.com/giantswarm/health-service/server/endpoint"
 	"github.com/giantswarm/health-service/server/middleware"
 	"github.com/giantswarm/health-service/service"
-	clustersearcher "github.com/giantswarm/health-service/service/cluster/searcher"
 )
 
 // Config represents the configuration used to create a new server object.
@@ -40,17 +40,16 @@ type Server struct {
 // New creates a new configured server object.
 func New(config Config) (*Server, error) {
 	if config.Logger == nil {
-		return nil, microerror.Maskf(invalidConfigError, "%T.Logger must not be empty", config)
+		return nil, microerror.Maskf(errors.InvalidConfigError, "%T.Logger must not be empty", config)
 	}
 	if config.Service == nil {
-		return nil, microerror.Maskf(invalidConfigError, "%T.Service must not be empty", config)
+		return nil, microerror.Maskf(errors.InvalidConfigError, "%T.Service must not be empty", config)
 	}
 	if config.Viper == nil {
-		return nil, microerror.Maskf(invalidConfigError, "%T.Viper must not be empty", config)
+		return nil, microerror.Maskf(errors.InvalidConfigError, "%T.Viper must not be empty", config)
 	}
-
 	if config.ProjectName == "" {
-		return nil, microerror.Maskf(invalidConfigError, "%T.ProjectName must not be empty", config)
+		return nil, microerror.Maskf(errors.InvalidConfigError, "%T.ProjectName must not be empty", config)
 	}
 
 	var err error
@@ -125,7 +124,7 @@ func errorEncoder(ctx context.Context, err error, w http.ResponseWriter) {
 	rErr := err.(microserver.ResponseError)
 	uErr := rErr.Underlying()
 
-	if clustersearcher.IsClusterNotFound(uErr) {
+	if errors.IsNotFound(uErr) {
 		rErr.SetCode(microserver.CodeResourceNotFound)
 		w.WriteHeader(http.StatusNotFound)
 
