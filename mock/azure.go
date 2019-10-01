@@ -212,16 +212,19 @@ var AzureHealthy = `
 // AzureHealthyTC is a JSON string representing a healthy Azure tenant cluster's node list.
 var AzureHealthyTC = `
 {
+    "kind": "NodeList",
     "apiVersion": "v1",
+    "metadata": {
+        "selfLink": "/api/v1/nodes",
+        "resourceVersion": "87510157"
+    },
     "items": [
         {
-            "apiVersion": "v1",
-            "kind": "Node",
             "metadata": {
-                "annotations": {
-                    "node.alpha.kubernetes.io/ttl": "0",
-                    "volumes.kubernetes.io/controller-managed-attach-detach": "true"
-                },
+                "name": "6iec4-master-000000",
+                "selfLink": "/api/v1/nodes/6iec4-master-000000",
+                "uid": "fcaf3f98-a6db-11e9-aef7-000d3a43f679",
+                "resourceVersion": "87510144",
                 "creationTimestamp": "2019-07-15T08:38:57Z",
                 "labels": {
                     "azure-operator.giantswarm.io/version": "2.4.0",
@@ -240,41 +243,22 @@ var AzureHealthyTC = `
                     "node.kubernetes.io/master": "",
                     "role": "master"
                 },
-                "name": "6iec4-master-000000",
-                "resourceVersion": "87461875",
-                "selfLink": "/api/v1/nodes/6iec4-master-000000",
-                "uid": "fcaf3f98-a6db-11e9-aef7-000d3a43f679"
+                "annotations": {
+                    "node.alpha.kubernetes.io/ttl": "0",
+                    "volumes.kubernetes.io/controller-managed-attach-detach": "true"
+                }
             },
             "spec": {
                 "podCIDR": "10.15.128.0/24",
                 "providerID": "azure:///subscriptions/1be3b2e6-497b-45b9-915f-eb35cae23c6a/resourceGroups/6iec4/providers/Microsoft.Compute/virtualMachineScaleSets/6iec4-master/virtualMachines/0",
                 "taints": [
                     {
-                        "effect": "NoSchedule",
-                        "key": "node-role.kubernetes.io/master"
+                        "key": "node-role.kubernetes.io/master",
+                        "effect": "NoSchedule"
                     }
                 ]
             },
             "status": {
-                "addresses": [
-                    {
-                        "address": "10.15.0.5",
-                        "type": "InternalIP"
-                    },
-                    {
-                        "address": "6iec4-master-000000",
-                        "type": "Hostname"
-                    }
-                ],
-                "allocatable": {
-                    "attachable-volumes-azure-disk": "4",
-                    "cpu": "2",
-                    "ephemeral-storage": "28454196Ki",
-                    "hugepages-1Gi": "0",
-                    "hugepages-2Mi": "0",
-                    "memory": "7940436Ki",
-                    "pods": "110"
-                },
                 "capacity": {
                     "attachable-volumes-azure-disk": "4",
                     "cpu": "2",
@@ -284,52 +268,83 @@ var AzureHealthyTC = `
                     "memory": "8145236Ki",
                     "pods": "110"
                 },
+                "allocatable": {
+                    "attachable-volumes-azure-disk": "4",
+                    "cpu": "2",
+                    "ephemeral-storage": "28454196Ki",
+                    "hugepages-1Gi": "0",
+                    "hugepages-2Mi": "0",
+                    "memory": "7940436Ki",
+                    "pods": "110"
+                },
                 "conditions": [
                     {
+                        "type": "NetworkUnavailable",
+                        "status": "False",
                         "lastHeartbeatTime": "2019-07-15T08:41:06Z",
                         "lastTransitionTime": "2019-07-15T08:41:06Z",
-                        "message": "RouteController created a route",
                         "reason": "RouteCreated",
-                        "status": "False",
-                        "type": "NetworkUnavailable"
+                        "message": "RouteController created a route"
                     },
                     {
-                        "lastHeartbeatTime": "2019-10-01T09:09:47Z",
+                        "type": "MemoryPressure",
+                        "status": "False",
+                        "lastHeartbeatTime": "2019-10-01T13:41:32Z",
                         "lastTransitionTime": "2019-07-15T08:38:42Z",
-                        "message": "kubelet has sufficient memory available",
                         "reason": "KubeletHasSufficientMemory",
-                        "status": "False",
-                        "type": "MemoryPressure"
+                        "message": "kubelet has sufficient memory available"
                     },
                     {
-                        "lastHeartbeatTime": "2019-10-01T09:09:47Z",
+                        "type": "DiskPressure",
+                        "status": "False",
+                        "lastHeartbeatTime": "2019-10-01T13:41:32Z",
                         "lastTransitionTime": "2019-07-15T08:38:42Z",
-                        "message": "kubelet has no disk pressure",
                         "reason": "KubeletHasNoDiskPressure",
-                        "status": "False",
-                        "type": "DiskPressure"
+                        "message": "kubelet has no disk pressure"
                     },
                     {
-                        "lastHeartbeatTime": "2019-10-01T09:09:47Z",
+                        "type": "PIDPressure",
+                        "status": "False",
+                        "lastHeartbeatTime": "2019-10-01T13:41:32Z",
                         "lastTransitionTime": "2019-07-15T08:38:42Z",
-                        "message": "kubelet has sufficient PID available",
                         "reason": "KubeletHasSufficientPID",
-                        "status": "False",
-                        "type": "PIDPressure"
+                        "message": "kubelet has sufficient PID available"
                     },
                     {
-                        "lastHeartbeatTime": "2019-10-01T09:09:47Z",
-                        "lastTransitionTime": "2019-07-15T08:39:17Z",
-                        "message": "kubelet is posting ready status",
-                        "reason": "KubeletReady",
+                        "type": "Ready",
                         "status": "True",
-                        "type": "Ready"
+                        "lastHeartbeatTime": "2019-10-01T13:41:32Z",
+                        "lastTransitionTime": "2019-07-15T08:39:17Z",
+                        "reason": "KubeletReady",
+                        "message": "kubelet is posting ready status"
+                    }
+                ],
+                "addresses": [
+                    {
+                        "type": "InternalIP",
+                        "address": "10.15.0.5"
+                    },
+                    {
+                        "type": "Hostname",
+                        "address": "6iec4-master-000000"
                     }
                 ],
                 "daemonEndpoints": {
                     "kubeletEndpoint": {
                         "Port": 10250
                     }
+                },
+                "nodeInfo": {
+                    "machineID": "5a28fed7d6b6440fa30f780ca655c144",
+                    "systemUUID": "5f1191f6-564e-8043-90e9-ce171335f8c7",
+                    "bootID": "d127b0c9-b09a-47cb-868e-386b43b6d0d1",
+                    "kernelVersion": "4.19.50-coreos-r1",
+                    "osImage": "Container Linux by CoreOS 2135.4.0 (Rhyolite)",
+                    "containerRuntimeVersion": "docker://18.6.3",
+                    "kubeletVersion": "v1.14.3",
+                    "kubeProxyVersion": "v1.14.3",
+                    "operatingSystem": "linux",
+                    "architecture": "amd64"
                 },
                 "images": [
                     {
@@ -535,29 +550,15 @@ var AzureHealthyTC = `
                         ],
                         "sizeBytes": 742472
                     }
-                ],
-                "nodeInfo": {
-                    "architecture": "amd64",
-                    "bootID": "d127b0c9-b09a-47cb-868e-386b43b6d0d1",
-                    "containerRuntimeVersion": "docker://18.6.3",
-                    "kernelVersion": "4.19.50-coreos-r1",
-                    "kubeProxyVersion": "v1.14.3",
-                    "kubeletVersion": "v1.14.3",
-                    "machineID": "5a28fed7d6b6440fa30f780ca655c144",
-                    "operatingSystem": "linux",
-                    "osImage": "Container Linux by CoreOS 2135.4.0 (Rhyolite)",
-                    "systemUUID": "5f1191f6-564e-8043-90e9-ce171335f8c7"
-                }
+                ]
             }
         },
         {
-            "apiVersion": "v1",
-            "kind": "Node",
             "metadata": {
-                "annotations": {
-                    "node.alpha.kubernetes.io/ttl": "0",
-                    "volumes.kubernetes.io/controller-managed-attach-detach": "true"
-                },
+                "name": "6iec4-worker-000003",
+                "selfLink": "/api/v1/nodes/6iec4-worker-000003",
+                "uid": "605a0b14-a6dd-11e9-aef7-000d3a43f679",
+                "resourceVersion": "87510146",
                 "creationTimestamp": "2019-07-15T08:48:54Z",
                 "labels": {
                     "azure-operator.giantswarm.io/version": "2.4.0",
@@ -576,35 +577,16 @@ var AzureHealthyTC = `
                     "node.kubernetes.io/worker": "",
                     "role": "worker"
                 },
-                "name": "6iec4-worker-000003",
-                "resourceVersion": "87461874",
-                "selfLink": "/api/v1/nodes/6iec4-worker-000003",
-                "uid": "605a0b14-a6dd-11e9-aef7-000d3a43f679"
+                "annotations": {
+                    "node.alpha.kubernetes.io/ttl": "0",
+                    "volumes.kubernetes.io/controller-managed-attach-detach": "true"
+                }
             },
             "spec": {
                 "podCIDR": "10.15.129.0/24",
                 "providerID": "azure:///subscriptions/1be3b2e6-497b-45b9-915f-eb35cae23c6a/resourceGroups/6iec4/providers/Microsoft.Compute/virtualMachineScaleSets/6iec4-worker/virtualMachines/3"
             },
             "status": {
-                "addresses": [
-                    {
-                        "address": "10.15.1.7",
-                        "type": "InternalIP"
-                    },
-                    {
-                        "address": "6iec4-worker-000003",
-                        "type": "Hostname"
-                    }
-                ],
-                "allocatable": {
-                    "attachable-volumes-azure-disk": "4",
-                    "cpu": "2",
-                    "ephemeral-storage": "28454196Ki",
-                    "hugepages-1Gi": "0",
-                    "hugepages-2Mi": "0",
-                    "memory": "3811668Ki",
-                    "pods": "110"
-                },
                 "capacity": {
                     "attachable-volumes-azure-disk": "4",
                     "cpu": "2",
@@ -614,52 +596,83 @@ var AzureHealthyTC = `
                     "memory": "4016468Ki",
                     "pods": "110"
                 },
+                "allocatable": {
+                    "attachable-volumes-azure-disk": "4",
+                    "cpu": "2",
+                    "ephemeral-storage": "28454196Ki",
+                    "hugepages-1Gi": "0",
+                    "hugepages-2Mi": "0",
+                    "memory": "3811668Ki",
+                    "pods": "110"
+                },
                 "conditions": [
                     {
+                        "type": "NetworkUnavailable",
+                        "status": "False",
                         "lastHeartbeatTime": "2019-07-15T08:49:06Z",
                         "lastTransitionTime": "2019-07-15T08:49:06Z",
-                        "message": "RouteController created a route",
                         "reason": "RouteCreated",
-                        "status": "False",
-                        "type": "NetworkUnavailable"
+                        "message": "RouteController created a route"
                     },
                     {
-                        "lastHeartbeatTime": "2019-10-01T09:09:47Z",
+                        "type": "MemoryPressure",
+                        "status": "False",
+                        "lastHeartbeatTime": "2019-10-01T13:41:32Z",
                         "lastTransitionTime": "2019-07-15T08:48:54Z",
-                        "message": "kubelet has sufficient memory available",
                         "reason": "KubeletHasSufficientMemory",
-                        "status": "False",
-                        "type": "MemoryPressure"
+                        "message": "kubelet has sufficient memory available"
                     },
                     {
-                        "lastHeartbeatTime": "2019-10-01T09:09:47Z",
+                        "type": "DiskPressure",
+                        "status": "False",
+                        "lastHeartbeatTime": "2019-10-01T13:41:32Z",
                         "lastTransitionTime": "2019-07-15T08:48:54Z",
-                        "message": "kubelet has no disk pressure",
                         "reason": "KubeletHasNoDiskPressure",
-                        "status": "False",
-                        "type": "DiskPressure"
+                        "message": "kubelet has no disk pressure"
                     },
                     {
-                        "lastHeartbeatTime": "2019-10-01T09:09:47Z",
+                        "type": "PIDPressure",
+                        "status": "False",
+                        "lastHeartbeatTime": "2019-10-01T13:41:32Z",
                         "lastTransitionTime": "2019-07-15T08:48:54Z",
-                        "message": "kubelet has sufficient PID available",
                         "reason": "KubeletHasSufficientPID",
-                        "status": "False",
-                        "type": "PIDPressure"
+                        "message": "kubelet has sufficient PID available"
                     },
                     {
-                        "lastHeartbeatTime": "2019-10-01T09:09:47Z",
-                        "lastTransitionTime": "2019-07-15T08:49:24Z",
-                        "message": "kubelet is posting ready status",
-                        "reason": "KubeletReady",
+                        "type": "Ready",
                         "status": "True",
-                        "type": "Ready"
+                        "lastHeartbeatTime": "2019-10-01T13:41:32Z",
+                        "lastTransitionTime": "2019-07-15T08:49:24Z",
+                        "reason": "KubeletReady",
+                        "message": "kubelet is posting ready status"
+                    }
+                ],
+                "addresses": [
+                    {
+                        "type": "InternalIP",
+                        "address": "10.15.1.7"
+                    },
+                    {
+                        "type": "Hostname",
+                        "address": "6iec4-worker-000003"
                     }
                 ],
                 "daemonEndpoints": {
                     "kubeletEndpoint": {
                         "Port": 10250
                     }
+                },
+                "nodeInfo": {
+                    "machineID": "dde62c02a4444f919bafc765b43d4dcd",
+                    "systemUUID": "cf52146f-5351-d34c-a657-5e3e3aee3067",
+                    "bootID": "d2c2f7a9-5284-4ab6-b4c9-e06aaf98ff69",
+                    "kernelVersion": "4.19.50-coreos-r1",
+                    "osImage": "Container Linux by CoreOS 2135.4.0 (Rhyolite)",
+                    "containerRuntimeVersion": "docker://18.6.3",
+                    "kubeletVersion": "v1.14.3",
+                    "kubeProxyVersion": "v1.14.3",
+                    "operatingSystem": "linux",
+                    "architecture": "amd64"
                 },
                 "images": [
                     {
@@ -1012,29 +1025,15 @@ var AzureHealthyTC = `
                         ],
                         "sizeBytes": 14471305
                     }
-                ],
-                "nodeInfo": {
-                    "architecture": "amd64",
-                    "bootID": "d2c2f7a9-5284-4ab6-b4c9-e06aaf98ff69",
-                    "containerRuntimeVersion": "docker://18.6.3",
-                    "kernelVersion": "4.19.50-coreos-r1",
-                    "kubeProxyVersion": "v1.14.3",
-                    "kubeletVersion": "v1.14.3",
-                    "machineID": "dde62c02a4444f919bafc765b43d4dcd",
-                    "operatingSystem": "linux",
-                    "osImage": "Container Linux by CoreOS 2135.4.0 (Rhyolite)",
-                    "systemUUID": "cf52146f-5351-d34c-a657-5e3e3aee3067"
-                }
+                ]
             }
         },
         {
-            "apiVersion": "v1",
-            "kind": "Node",
             "metadata": {
-                "annotations": {
-                    "node.alpha.kubernetes.io/ttl": "0",
-                    "volumes.kubernetes.io/controller-managed-attach-detach": "true"
-                },
+                "name": "6iec4-worker-000004",
+                "selfLink": "/api/v1/nodes/6iec4-worker-000004",
+                "uid": "6978bf91-a6df-11e9-aef7-000d3a43f679",
+                "resourceVersion": "87510130",
                 "creationTimestamp": "2019-07-15T09:03:28Z",
                 "labels": {
                     "azure-operator.giantswarm.io/version": "2.4.0",
@@ -1053,35 +1052,16 @@ var AzureHealthyTC = `
                     "node.kubernetes.io/worker": "",
                     "role": "worker"
                 },
-                "name": "6iec4-worker-000004",
-                "resourceVersion": "87461866",
-                "selfLink": "/api/v1/nodes/6iec4-worker-000004",
-                "uid": "6978bf91-a6df-11e9-aef7-000d3a43f679"
+                "annotations": {
+                    "node.alpha.kubernetes.io/ttl": "0",
+                    "volumes.kubernetes.io/controller-managed-attach-detach": "true"
+                }
             },
             "spec": {
                 "podCIDR": "10.15.130.0/24",
                 "providerID": "azure:///subscriptions/1be3b2e6-497b-45b9-915f-eb35cae23c6a/resourceGroups/6iec4/providers/Microsoft.Compute/virtualMachineScaleSets/6iec4-worker/virtualMachines/4"
             },
             "status": {
-                "addresses": [
-                    {
-                        "address": "10.15.1.4",
-                        "type": "InternalIP"
-                    },
-                    {
-                        "address": "6iec4-worker-000004",
-                        "type": "Hostname"
-                    }
-                ],
-                "allocatable": {
-                    "attachable-volumes-azure-disk": "4",
-                    "cpu": "2",
-                    "ephemeral-storage": "28454196Ki",
-                    "hugepages-1Gi": "0",
-                    "hugepages-2Mi": "0",
-                    "memory": "3811668Ki",
-                    "pods": "110"
-                },
                 "capacity": {
                     "attachable-volumes-azure-disk": "4",
                     "cpu": "2",
@@ -1091,52 +1071,83 @@ var AzureHealthyTC = `
                     "memory": "4016468Ki",
                     "pods": "110"
                 },
+                "allocatable": {
+                    "attachable-volumes-azure-disk": "4",
+                    "cpu": "2",
+                    "ephemeral-storage": "28454196Ki",
+                    "hugepages-1Gi": "0",
+                    "hugepages-2Mi": "0",
+                    "memory": "3811668Ki",
+                    "pods": "110"
+                },
                 "conditions": [
                     {
+                        "type": "NetworkUnavailable",
+                        "status": "False",
                         "lastHeartbeatTime": "2019-07-15T09:05:07Z",
                         "lastTransitionTime": "2019-07-15T09:05:07Z",
-                        "message": "RouteController created a route",
                         "reason": "RouteCreated",
-                        "status": "False",
-                        "type": "NetworkUnavailable"
+                        "message": "RouteController created a route"
                     },
                     {
-                        "lastHeartbeatTime": "2019-10-01T09:09:44Z",
+                        "type": "MemoryPressure",
+                        "status": "False",
+                        "lastHeartbeatTime": "2019-10-01T13:41:27Z",
                         "lastTransitionTime": "2019-07-15T09:03:28Z",
-                        "message": "kubelet has sufficient memory available",
                         "reason": "KubeletHasSufficientMemory",
-                        "status": "False",
-                        "type": "MemoryPressure"
+                        "message": "kubelet has sufficient memory available"
                     },
                     {
-                        "lastHeartbeatTime": "2019-10-01T09:09:44Z",
+                        "type": "DiskPressure",
+                        "status": "False",
+                        "lastHeartbeatTime": "2019-10-01T13:41:27Z",
                         "lastTransitionTime": "2019-07-15T09:03:28Z",
-                        "message": "kubelet has no disk pressure",
                         "reason": "KubeletHasNoDiskPressure",
-                        "status": "False",
-                        "type": "DiskPressure"
+                        "message": "kubelet has no disk pressure"
                     },
                     {
-                        "lastHeartbeatTime": "2019-10-01T09:09:44Z",
+                        "type": "PIDPressure",
+                        "status": "False",
+                        "lastHeartbeatTime": "2019-10-01T13:41:27Z",
                         "lastTransitionTime": "2019-07-15T09:03:28Z",
-                        "message": "kubelet has sufficient PID available",
                         "reason": "KubeletHasSufficientPID",
-                        "status": "False",
-                        "type": "PIDPressure"
+                        "message": "kubelet has sufficient PID available"
                     },
                     {
-                        "lastHeartbeatTime": "2019-10-01T09:09:44Z",
-                        "lastTransitionTime": "2019-07-15T09:03:49Z",
-                        "message": "kubelet is posting ready status",
-                        "reason": "KubeletReady",
+                        "type": "Ready",
                         "status": "True",
-                        "type": "Ready"
+                        "lastHeartbeatTime": "2019-10-01T13:41:27Z",
+                        "lastTransitionTime": "2019-07-15T09:03:49Z",
+                        "reason": "KubeletReady",
+                        "message": "kubelet is posting ready status"
+                    }
+                ],
+                "addresses": [
+                    {
+                        "type": "InternalIP",
+                        "address": "10.15.1.4"
+                    },
+                    {
+                        "type": "Hostname",
+                        "address": "6iec4-worker-000004"
                     }
                 ],
                 "daemonEndpoints": {
                     "kubeletEndpoint": {
                         "Port": 10250
                     }
+                },
+                "nodeInfo": {
+                    "machineID": "44c8140d28b143c6922607325da224cb",
+                    "systemUUID": "d3242c82-08d9-5042-8305-123f0a1c9d21",
+                    "bootID": "890be693-cc30-45a7-84b9-596d37ab67e2",
+                    "kernelVersion": "4.19.50-coreos-r1",
+                    "osImage": "Container Linux by CoreOS 2135.4.0 (Rhyolite)",
+                    "containerRuntimeVersion": "docker://18.6.3",
+                    "kubeletVersion": "v1.14.3",
+                    "kubeProxyVersion": "v1.14.3",
+                    "operatingSystem": "linux",
+                    "architecture": "amd64"
                 },
                 "images": [
                     {
@@ -1427,37 +1438,23 @@ var AzureHealthyTC = `
                         "sizeBytes": 742472
                     }
                 ],
-                "nodeInfo": {
-                    "architecture": "amd64",
-                    "bootID": "890be693-cc30-45a7-84b9-596d37ab67e2",
-                    "containerRuntimeVersion": "docker://18.6.3",
-                    "kernelVersion": "4.19.50-coreos-r1",
-                    "kubeProxyVersion": "v1.14.3",
-                    "kubeletVersion": "v1.14.3",
-                    "machineID": "44c8140d28b143c6922607325da224cb",
-                    "operatingSystem": "linux",
-                    "osImage": "Container Linux by CoreOS 2135.4.0 (Rhyolite)",
-                    "systemUUID": "d3242c82-08d9-5042-8305-123f0a1c9d21"
-                },
-                "volumesAttached": [
-                    {
-                        "devicePath": "-1",
-                        "name": "kubernetes.io/azure-disk//subscriptions/1be3b2e6-497b-45b9-915f-eb35cae23c6a/resourceGroups/6iec4/providers/Microsoft.Compute/disks/kubernetes-dynamic-pvc-d16e45f2-6810-11e9-870a-000d3a43f679"
-                    }
-                ],
                 "volumesInUse": [
                     "kubernetes.io/azure-disk//subscriptions/1be3b2e6-497b-45b9-915f-eb35cae23c6a/resourceGroups/6iec4/providers/Microsoft.Compute/disks/kubernetes-dynamic-pvc-d16e45f2-6810-11e9-870a-000d3a43f679"
+                ],
+                "volumesAttached": [
+                    {
+                        "name": "kubernetes.io/azure-disk//subscriptions/1be3b2e6-497b-45b9-915f-eb35cae23c6a/resourceGroups/6iec4/providers/Microsoft.Compute/disks/kubernetes-dynamic-pvc-d16e45f2-6810-11e9-870a-000d3a43f679",
+                        "devicePath": "-1"
+                    }
                 ]
             }
         },
         {
-            "apiVersion": "v1",
-            "kind": "Node",
             "metadata": {
-                "annotations": {
-                    "node.alpha.kubernetes.io/ttl": "0",
-                    "volumes.kubernetes.io/controller-managed-attach-detach": "true"
-                },
+                "name": "6iec4-worker-000009",
+                "selfLink": "/api/v1/nodes/6iec4-worker-000009",
+                "uid": "96661340-a6e5-11e9-aef7-000d3a43f679",
+                "resourceVersion": "87510070",
                 "creationTimestamp": "2019-07-15T09:47:41Z",
                 "labels": {
                     "azure-operator.giantswarm.io/version": "2.4.0",
@@ -1476,35 +1473,16 @@ var AzureHealthyTC = `
                     "node.kubernetes.io/worker": "",
                     "role": "worker"
                 },
-                "name": "6iec4-worker-000009",
-                "resourceVersion": "87461890",
-                "selfLink": "/api/v1/nodes/6iec4-worker-000009",
-                "uid": "96661340-a6e5-11e9-aef7-000d3a43f679"
+                "annotations": {
+                    "node.alpha.kubernetes.io/ttl": "0",
+                    "volumes.kubernetes.io/controller-managed-attach-detach": "true"
+                }
             },
             "spec": {
                 "podCIDR": "10.15.131.0/24",
                 "providerID": "azure:///subscriptions/1be3b2e6-497b-45b9-915f-eb35cae23c6a/resourceGroups/6iec4/providers/Microsoft.Compute/virtualMachineScaleSets/6iec4-worker/virtualMachines/9"
             },
             "status": {
-                "addresses": [
-                    {
-                        "address": "10.15.1.10",
-                        "type": "InternalIP"
-                    },
-                    {
-                        "address": "6iec4-worker-000009",
-                        "type": "Hostname"
-                    }
-                ],
-                "allocatable": {
-                    "attachable-volumes-azure-disk": "4",
-                    "cpu": "2",
-                    "ephemeral-storage": "28454196Ki",
-                    "hugepages-1Gi": "0",
-                    "hugepages-2Mi": "0",
-                    "memory": "3811660Ki",
-                    "pods": "110"
-                },
                 "capacity": {
                     "attachable-volumes-azure-disk": "4",
                     "cpu": "2",
@@ -1514,52 +1492,83 @@ var AzureHealthyTC = `
                     "memory": "4016460Ki",
                     "pods": "110"
                 },
+                "allocatable": {
+                    "attachable-volumes-azure-disk": "4",
+                    "cpu": "2",
+                    "ephemeral-storage": "28454196Ki",
+                    "hugepages-1Gi": "0",
+                    "hugepages-2Mi": "0",
+                    "memory": "3811660Ki",
+                    "pods": "110"
+                },
                 "conditions": [
                     {
+                        "type": "NetworkUnavailable",
+                        "status": "False",
                         "lastHeartbeatTime": "2019-07-15T09:49:07Z",
                         "lastTransitionTime": "2019-07-15T09:49:07Z",
-                        "message": "RouteController created a route",
                         "reason": "RouteCreated",
-                        "status": "False",
-                        "type": "NetworkUnavailable"
+                        "message": "RouteController created a route"
                     },
                     {
-                        "lastHeartbeatTime": "2019-10-01T09:09:52Z",
+                        "type": "MemoryPressure",
+                        "status": "False",
+                        "lastHeartbeatTime": "2019-10-01T13:41:05Z",
                         "lastTransitionTime": "2019-07-15T09:47:41Z",
-                        "message": "kubelet has sufficient memory available",
                         "reason": "KubeletHasSufficientMemory",
-                        "status": "False",
-                        "type": "MemoryPressure"
+                        "message": "kubelet has sufficient memory available"
                     },
                     {
-                        "lastHeartbeatTime": "2019-10-01T09:09:52Z",
+                        "type": "DiskPressure",
+                        "status": "False",
+                        "lastHeartbeatTime": "2019-10-01T13:41:05Z",
                         "lastTransitionTime": "2019-07-15T09:47:41Z",
-                        "message": "kubelet has no disk pressure",
                         "reason": "KubeletHasNoDiskPressure",
-                        "status": "False",
-                        "type": "DiskPressure"
+                        "message": "kubelet has no disk pressure"
                     },
                     {
-                        "lastHeartbeatTime": "2019-10-01T09:09:52Z",
+                        "type": "PIDPressure",
+                        "status": "False",
+                        "lastHeartbeatTime": "2019-10-01T13:41:05Z",
                         "lastTransitionTime": "2019-07-15T09:47:41Z",
-                        "message": "kubelet has sufficient PID available",
                         "reason": "KubeletHasSufficientPID",
-                        "status": "False",
-                        "type": "PIDPressure"
+                        "message": "kubelet has sufficient PID available"
                     },
                     {
-                        "lastHeartbeatTime": "2019-10-01T09:09:52Z",
-                        "lastTransitionTime": "2019-07-15T09:48:01Z",
-                        "message": "kubelet is posting ready status",
-                        "reason": "KubeletReady",
+                        "type": "Ready",
                         "status": "True",
-                        "type": "Ready"
+                        "lastHeartbeatTime": "2019-10-01T13:41:05Z",
+                        "lastTransitionTime": "2019-07-15T09:48:01Z",
+                        "reason": "KubeletReady",
+                        "message": "kubelet is posting ready status"
+                    }
+                ],
+                "addresses": [
+                    {
+                        "type": "InternalIP",
+                        "address": "10.15.1.10"
+                    },
+                    {
+                        "type": "Hostname",
+                        "address": "6iec4-worker-000009"
                     }
                 ],
                 "daemonEndpoints": {
                     "kubeletEndpoint": {
                         "Port": 10250
                     }
+                },
+                "nodeInfo": {
+                    "machineID": "0ddc0c742bea4698993705304979a4d1",
+                    "systemUUID": "6def17a5-ff20-b448-a511-23a36260d237",
+                    "bootID": "0d588ad5-2590-4581-bf22-12fde4d8855d",
+                    "kernelVersion": "4.19.50-coreos-r1",
+                    "osImage": "Container Linux by CoreOS 2135.4.0 (Rhyolite)",
+                    "containerRuntimeVersion": "docker://18.6.3",
+                    "kubeletVersion": "v1.14.3",
+                    "kubeProxyVersion": "v1.14.3",
+                    "operatingSystem": "linux",
+                    "architecture": "amd64"
                 },
                 "images": [
                     {
@@ -1912,29 +1921,15 @@ var AzureHealthyTC = `
                         ],
                         "sizeBytes": 14471305
                     }
-                ],
-                "nodeInfo": {
-                    "architecture": "amd64",
-                    "bootID": "0d588ad5-2590-4581-bf22-12fde4d8855d",
-                    "containerRuntimeVersion": "docker://18.6.3",
-                    "kernelVersion": "4.19.50-coreos-r1",
-                    "kubeProxyVersion": "v1.14.3",
-                    "kubeletVersion": "v1.14.3",
-                    "machineID": "0ddc0c742bea4698993705304979a4d1",
-                    "operatingSystem": "linux",
-                    "osImage": "Container Linux by CoreOS 2135.4.0 (Rhyolite)",
-                    "systemUUID": "6def17a5-ff20-b448-a511-23a36260d237"
-                }
+                ]
             }
         },
         {
-            "apiVersion": "v1",
-            "kind": "Node",
             "metadata": {
-                "annotations": {
-                    "node.alpha.kubernetes.io/ttl": "0",
-                    "volumes.kubernetes.io/controller-managed-attach-detach": "true"
-                },
+                "name": "6iec4-worker-00000j",
+                "selfLink": "/api/v1/nodes/6iec4-worker-00000j",
+                "uid": "0098bc0c-a6e7-11e9-aef7-000d3a43f679",
+                "resourceVersion": "87508102",
                 "creationTimestamp": "2019-07-15T09:57:48Z",
                 "labels": {
                     "azure-operator.giantswarm.io/version": "2.4.0",
@@ -1953,35 +1948,16 @@ var AzureHealthyTC = `
                     "node.kubernetes.io/worker": "",
                     "role": "worker"
                 },
-                "name": "6iec4-worker-00000j",
-                "resourceVersion": "87461883",
-                "selfLink": "/api/v1/nodes/6iec4-worker-00000j",
-                "uid": "0098bc0c-a6e7-11e9-aef7-000d3a43f679"
+                "annotations": {
+                    "node.alpha.kubernetes.io/ttl": "0",
+                    "volumes.kubernetes.io/controller-managed-attach-detach": "true"
+                }
             },
             "spec": {
                 "podCIDR": "10.15.132.0/24",
                 "providerID": "azure:///subscriptions/1be3b2e6-497b-45b9-915f-eb35cae23c6a/resourceGroups/6iec4/providers/Microsoft.Compute/virtualMachineScaleSets/6iec4-worker/virtualMachines/19"
             },
             "status": {
-                "addresses": [
-                    {
-                        "address": "10.15.1.8",
-                        "type": "InternalIP"
-                    },
-                    {
-                        "address": "6iec4-worker-00000j",
-                        "type": "Hostname"
-                    }
-                ],
-                "allocatable": {
-                    "attachable-volumes-azure-disk": "4",
-                    "cpu": "2",
-                    "ephemeral-storage": "28454196Ki",
-                    "hugepages-1Gi": "0",
-                    "hugepages-2Mi": "0",
-                    "memory": "3811668Ki",
-                    "pods": "110"
-                },
                 "capacity": {
                     "attachable-volumes-azure-disk": "4",
                     "cpu": "2",
@@ -1991,52 +1967,83 @@ var AzureHealthyTC = `
                     "memory": "4016468Ki",
                     "pods": "110"
                 },
+                "allocatable": {
+                    "attachable-volumes-azure-disk": "4",
+                    "cpu": "2",
+                    "ephemeral-storage": "28454196Ki",
+                    "hugepages-1Gi": "0",
+                    "hugepages-2Mi": "0",
+                    "memory": "3811668Ki",
+                    "pods": "110"
+                },
                 "conditions": [
                     {
+                        "type": "NetworkUnavailable",
+                        "status": "False",
                         "lastHeartbeatTime": "2019-07-15T09:59:08Z",
                         "lastTransitionTime": "2019-07-15T09:59:08Z",
-                        "message": "RouteController created a route",
                         "reason": "RouteCreated",
-                        "status": "False",
-                        "type": "NetworkUnavailable"
+                        "message": "RouteController created a route"
                     },
                     {
-                        "lastHeartbeatTime": "2019-10-01T09:09:50Z",
+                        "type": "MemoryPressure",
+                        "status": "False",
+                        "lastHeartbeatTime": "2019-10-01T13:29:25Z",
                         "lastTransitionTime": "2019-07-15T09:57:48Z",
-                        "message": "kubelet has sufficient memory available",
                         "reason": "KubeletHasSufficientMemory",
-                        "status": "False",
-                        "type": "MemoryPressure"
+                        "message": "kubelet has sufficient memory available"
                     },
                     {
-                        "lastHeartbeatTime": "2019-10-01T09:09:50Z",
+                        "type": "DiskPressure",
+                        "status": "False",
+                        "lastHeartbeatTime": "2019-10-01T13:29:25Z",
                         "lastTransitionTime": "2019-07-15T09:57:48Z",
-                        "message": "kubelet has no disk pressure",
                         "reason": "KubeletHasNoDiskPressure",
-                        "status": "False",
-                        "type": "DiskPressure"
+                        "message": "kubelet has no disk pressure"
                     },
                     {
-                        "lastHeartbeatTime": "2019-10-01T09:09:50Z",
+                        "type": "PIDPressure",
+                        "status": "False",
+                        "lastHeartbeatTime": "2019-10-01T13:29:25Z",
                         "lastTransitionTime": "2019-07-15T09:57:48Z",
-                        "message": "kubelet has sufficient PID available",
                         "reason": "KubeletHasSufficientPID",
-                        "status": "False",
-                        "type": "PIDPressure"
+                        "message": "kubelet has sufficient PID available"
                     },
                     {
-                        "lastHeartbeatTime": "2019-10-01T09:09:50Z",
-                        "lastTransitionTime": "2019-07-15T09:58:09Z",
-                        "message": "kubelet is posting ready status",
-                        "reason": "KubeletReady",
+                        "type": "Ready",
                         "status": "True",
-                        "type": "Ready"
+                        "lastHeartbeatTime": "2019-10-01T13:29:25Z",
+                        "lastTransitionTime": "2019-07-15T09:58:09Z",
+                        "reason": "KubeletReady",
+                        "message": "kubelet is posting ready status"
+                    }
+                ],
+                "addresses": [
+                    {
+                        "type": "InternalIP",
+                        "address": "10.15.1.8"
+                    },
+                    {
+                        "type": "Hostname",
+                        "address": "6iec4-worker-00000j"
                     }
                 ],
                 "daemonEndpoints": {
                     "kubeletEndpoint": {
                         "Port": 10250
                     }
+                },
+                "nodeInfo": {
+                    "machineID": "7306f9854a684a1c840039b47be9fb3d",
+                    "systemUUID": "ef99aeca-56cd-2049-9cd4-d0b8a7efdb6a",
+                    "bootID": "f79eff7e-99dc-4e0a-9bbd-dbf2e30f9145",
+                    "kernelVersion": "4.19.50-coreos-r1",
+                    "osImage": "Container Linux by CoreOS 2135.4.0 (Rhyolite)",
+                    "containerRuntimeVersion": "docker://18.6.3",
+                    "kubeletVersion": "v1.14.3",
+                    "kubeProxyVersion": "v1.14.3",
+                    "operatingSystem": "linux",
+                    "architecture": "amd64"
                 },
                 "images": [
                     {
@@ -2223,15 +2230,15 @@ var AzureHealthyTC = `
                     },
                     {
                         "names": [
-                            "quay.io/giantswarm/net-exporter@sha256:600d067e2a257bc036719ae5c0387f00ca64f5ed65ff5bdad8e65e42b2483a2f",
-                            "quay.io/giantswarm/net-exporter:dc80ec9f5e2603bc01626fe8ffa7e5f2c2c6f005"
+                            "quay.io/giantswarm/net-exporter@sha256:32839177290abb6d2f455c09b7d37d9400e29bd30a5a55d8f021195743ce5879",
+                            "quay.io/giantswarm/net-exporter:b2fb626131b1ebc941d3fc7f0eac89cd4abfbf41"
                         ],
                         "sizeBytes": 32577822
                     },
                     {
                         "names": [
-                            "quay.io/giantswarm/net-exporter@sha256:8bc26239349b8ab0f93e7b00683b79616a5b3424d595a8553086404c13eda46b",
-                            "quay.io/giantswarm/net-exporter:90df7e1dce71e7cf6fcb924e93dcdea2306fc6a2"
+                            "quay.io/giantswarm/net-exporter@sha256:600d067e2a257bc036719ae5c0387f00ca64f5ed65ff5bdad8e65e42b2483a2f",
+                            "quay.io/giantswarm/net-exporter:dc80ec9f5e2603bc01626fe8ffa7e5f2c2c6f005"
                         ],
                         "sizeBytes": 32577822
                     },
@@ -2244,8 +2251,8 @@ var AzureHealthyTC = `
                     },
                     {
                         "names": [
-                            "quay.io/giantswarm/net-exporter@sha256:32839177290abb6d2f455c09b7d37d9400e29bd30a5a55d8f021195743ce5879",
-                            "quay.io/giantswarm/net-exporter:b2fb626131b1ebc941d3fc7f0eac89cd4abfbf41"
+                            "quay.io/giantswarm/net-exporter@sha256:8bc26239349b8ab0f93e7b00683b79616a5b3424d595a8553086404c13eda46b",
+                            "quay.io/giantswarm/net-exporter:90df7e1dce71e7cf6fcb924e93dcdea2306fc6a2"
                         ],
                         "sizeBytes": 32577822
                     },
@@ -2335,15 +2342,15 @@ var AzureHealthyTC = `
                     },
                     {
                         "names": [
-                            "quay.io/giantswarm/cert-exporter@sha256:6ca6e09972957c61964d904ca371fe778a2c710f2cdfca6fc98b29b19f3d92b8",
-                            "quay.io/giantswarm/cert-exporter:84f8029d53a89549301fa4c1148571ca9aac8175"
+                            "quay.io/giantswarm/cert-exporter@sha256:cbcb2ce76df7bdcc61ed6cc447a8e32a00dd8ad1aab7fea781c0861abfb27bcc",
+                            "quay.io/giantswarm/cert-exporter:afbc779ea4835d5fa6e7d3c3450846a3a701b835"
                         ],
                         "sizeBytes": 14489266
                     },
                     {
                         "names": [
-                            "quay.io/giantswarm/cert-exporter@sha256:cbcb2ce76df7bdcc61ed6cc447a8e32a00dd8ad1aab7fea781c0861abfb27bcc",
-                            "quay.io/giantswarm/cert-exporter:afbc779ea4835d5fa6e7d3c3450846a3a701b835"
+                            "quay.io/giantswarm/cert-exporter@sha256:6ca6e09972957c61964d904ca371fe778a2c710f2cdfca6fc98b29b19f3d92b8",
+                            "quay.io/giantswarm/cert-exporter:84f8029d53a89549301fa4c1148571ca9aac8175"
                         ],
                         "sizeBytes": 14489266
                     },
@@ -2389,29 +2396,15 @@ var AzureHealthyTC = `
                         ],
                         "sizeBytes": 9337158
                     }
-                ],
-                "nodeInfo": {
-                    "architecture": "amd64",
-                    "bootID": "f79eff7e-99dc-4e0a-9bbd-dbf2e30f9145",
-                    "containerRuntimeVersion": "docker://18.6.3",
-                    "kernelVersion": "4.19.50-coreos-r1",
-                    "kubeProxyVersion": "v1.14.3",
-                    "kubeletVersion": "v1.14.3",
-                    "machineID": "7306f9854a684a1c840039b47be9fb3d",
-                    "operatingSystem": "linux",
-                    "osImage": "Container Linux by CoreOS 2135.4.0 (Rhyolite)",
-                    "systemUUID": "ef99aeca-56cd-2049-9cd4-d0b8a7efdb6a"
-                }
+                ]
             }
         },
         {
-            "apiVersion": "v1",
-            "kind": "Node",
             "metadata": {
-                "annotations": {
-                    "node.alpha.kubernetes.io/ttl": "0",
-                    "volumes.kubernetes.io/controller-managed-attach-detach": "true"
-                },
+                "name": "6iec4-worker-00000k",
+                "selfLink": "/api/v1/nodes/6iec4-worker-00000k",
+                "uid": "e0b4c51b-a6ec-11e9-aef7-000d3a43f679",
+                "resourceVersion": "87509838",
                 "creationTimestamp": "2019-07-15T10:39:52Z",
                 "labels": {
                     "azure-operator.giantswarm.io/version": "2.4.0",
@@ -2430,35 +2423,16 @@ var AzureHealthyTC = `
                     "node.kubernetes.io/worker": "",
                     "role": "worker"
                 },
-                "name": "6iec4-worker-00000k",
-                "resourceVersion": "87461880",
-                "selfLink": "/api/v1/nodes/6iec4-worker-00000k",
-                "uid": "e0b4c51b-a6ec-11e9-aef7-000d3a43f679"
+                "annotations": {
+                    "node.alpha.kubernetes.io/ttl": "0",
+                    "volumes.kubernetes.io/controller-managed-attach-detach": "true"
+                }
             },
             "spec": {
                 "podCIDR": "10.15.133.0/24",
                 "providerID": "azure:///subscriptions/1be3b2e6-497b-45b9-915f-eb35cae23c6a/resourceGroups/6iec4/providers/Microsoft.Compute/virtualMachineScaleSets/6iec4-worker/virtualMachines/20"
             },
             "status": {
-                "addresses": [
-                    {
-                        "address": "10.15.1.9",
-                        "type": "InternalIP"
-                    },
-                    {
-                        "address": "6iec4-worker-00000k",
-                        "type": "Hostname"
-                    }
-                ],
-                "allocatable": {
-                    "attachable-volumes-azure-disk": "4",
-                    "cpu": "2",
-                    "ephemeral-storage": "28454196Ki",
-                    "hugepages-1Gi": "0",
-                    "hugepages-2Mi": "0",
-                    "memory": "3811668Ki",
-                    "pods": "110"
-                },
                 "capacity": {
                     "attachable-volumes-azure-disk": "4",
                     "cpu": "2",
@@ -2468,52 +2442,83 @@ var AzureHealthyTC = `
                     "memory": "4016468Ki",
                     "pods": "110"
                 },
+                "allocatable": {
+                    "attachable-volumes-azure-disk": "4",
+                    "cpu": "2",
+                    "ephemeral-storage": "28454196Ki",
+                    "hugepages-1Gi": "0",
+                    "hugepages-2Mi": "0",
+                    "memory": "3811668Ki",
+                    "pods": "110"
+                },
                 "conditions": [
                     {
+                        "type": "NetworkUnavailable",
+                        "status": "False",
                         "lastHeartbeatTime": "2019-07-15T10:41:08Z",
                         "lastTransitionTime": "2019-07-15T10:41:08Z",
-                        "message": "RouteController created a route",
                         "reason": "RouteCreated",
-                        "status": "False",
-                        "type": "NetworkUnavailable"
+                        "message": "RouteController created a route"
                     },
                     {
-                        "lastHeartbeatTime": "2019-10-01T09:09:49Z",
+                        "type": "MemoryPressure",
+                        "status": "False",
+                        "lastHeartbeatTime": "2019-10-01T13:39:38Z",
                         "lastTransitionTime": "2019-07-15T10:39:52Z",
-                        "message": "kubelet has sufficient memory available",
                         "reason": "KubeletHasSufficientMemory",
-                        "status": "False",
-                        "type": "MemoryPressure"
+                        "message": "kubelet has sufficient memory available"
                     },
                     {
-                        "lastHeartbeatTime": "2019-10-01T09:09:49Z",
+                        "type": "DiskPressure",
+                        "status": "False",
+                        "lastHeartbeatTime": "2019-10-01T13:39:38Z",
                         "lastTransitionTime": "2019-07-15T10:39:52Z",
-                        "message": "kubelet has no disk pressure",
                         "reason": "KubeletHasNoDiskPressure",
-                        "status": "False",
-                        "type": "DiskPressure"
+                        "message": "kubelet has no disk pressure"
                     },
                     {
-                        "lastHeartbeatTime": "2019-10-01T09:09:49Z",
+                        "type": "PIDPressure",
+                        "status": "False",
+                        "lastHeartbeatTime": "2019-10-01T13:39:38Z",
                         "lastTransitionTime": "2019-07-15T10:39:52Z",
-                        "message": "kubelet has sufficient PID available",
                         "reason": "KubeletHasSufficientPID",
-                        "status": "False",
-                        "type": "PIDPressure"
+                        "message": "kubelet has sufficient PID available"
                     },
                     {
-                        "lastHeartbeatTime": "2019-10-01T09:09:49Z",
-                        "lastTransitionTime": "2019-07-15T10:40:22Z",
-                        "message": "kubelet is posting ready status",
-                        "reason": "KubeletReady",
+                        "type": "Ready",
                         "status": "True",
-                        "type": "Ready"
+                        "lastHeartbeatTime": "2019-10-01T13:39:38Z",
+                        "lastTransitionTime": "2019-07-15T10:40:22Z",
+                        "reason": "KubeletReady",
+                        "message": "kubelet is posting ready status"
+                    }
+                ],
+                "addresses": [
+                    {
+                        "type": "InternalIP",
+                        "address": "10.15.1.9"
+                    },
+                    {
+                        "type": "Hostname",
+                        "address": "6iec4-worker-00000k"
                     }
                 ],
                 "daemonEndpoints": {
                     "kubeletEndpoint": {
                         "Port": 10250
                     }
+                },
+                "nodeInfo": {
+                    "machineID": "83aa371dfab6418f9861d4e85885c982",
+                    "systemUUID": "a226ae85-be22-e14b-9ebd-845ef572cc20",
+                    "bootID": "26d03867-50e7-49ad-80a5-2c4bcb5c0676",
+                    "kernelVersion": "4.19.50-coreos-r1",
+                    "osImage": "Container Linux by CoreOS 2135.4.0 (Rhyolite)",
+                    "containerRuntimeVersion": "docker://18.6.3",
+                    "kubeletVersion": "v1.14.3",
+                    "kubeProxyVersion": "v1.14.3",
+                    "operatingSystem": "linux",
+                    "architecture": "amd64"
                 },
                 "images": [
                     {
@@ -2735,6 +2740,13 @@ var AzureHealthyTC = `
                     },
                     {
                         "names": [
+                            "quay.io/giantswarm/net-exporter@sha256:8bc26239349b8ab0f93e7b00683b79616a5b3424d595a8553086404c13eda46b",
+                            "quay.io/giantswarm/net-exporter:90df7e1dce71e7cf6fcb924e93dcdea2306fc6a2"
+                        ],
+                        "sizeBytes": 32577822
+                    },
+                    {
+                        "names": [
                             "quay.io/giantswarm/net-exporter@sha256:600d067e2a257bc036719ae5c0387f00ca64f5ed65ff5bdad8e65e42b2483a2f",
                             "quay.io/giantswarm/net-exporter:dc80ec9f5e2603bc01626fe8ffa7e5f2c2c6f005"
                         ],
@@ -2756,10 +2768,10 @@ var AzureHealthyTC = `
                     },
                     {
                         "names": [
-                            "quay.io/giantswarm/net-exporter@sha256:8bc26239349b8ab0f93e7b00683b79616a5b3424d595a8553086404c13eda46b",
-                            "quay.io/giantswarm/net-exporter:90df7e1dce71e7cf6fcb924e93dcdea2306fc6a2"
+                            "quay.io/giantswarm/net-exporter@sha256:5421106383aa8be7d7482e3c1da6defab40b0f904c18942652520dba84ec95cb",
+                            "quay.io/giantswarm/net-exporter:441558237c0023a6a54d11fc4f1d1b2deec3fca9"
                         ],
-                        "sizeBytes": 32577822
+                        "sizeBytes": 32559983
                     },
                     {
                         "names": [
@@ -2770,22 +2782,15 @@ var AzureHealthyTC = `
                     },
                     {
                         "names": [
-                            "quay.io/giantswarm/net-exporter@sha256:5421106383aa8be7d7482e3c1da6defab40b0f904c18942652520dba84ec95cb",
-                            "quay.io/giantswarm/net-exporter:441558237c0023a6a54d11fc4f1d1b2deec3fca9"
-                        ],
-                        "sizeBytes": 32559983
-                    },
-                    {
-                        "names": [
-                            "quay.io/giantswarm/net-exporter@sha256:a6f03bb5dfb4b8fc6a40f54299b49602529f9495e7c9e42f22c6d92b948abee7",
-                            "quay.io/giantswarm/net-exporter:812f6c6a537582ea0a1011236f76da15bd4f8146"
+                            "quay.io/giantswarm/net-exporter@sha256:88d962ca443a338309228922b8fc851da6569056c7144efb389701811098a6fe",
+                            "quay.io/giantswarm/net-exporter:3a18405a2445d217c423ba4bca915cb1047d20d0"
                         ],
                         "sizeBytes": 32294939
                     },
                     {
                         "names": [
-                            "quay.io/giantswarm/net-exporter@sha256:88d962ca443a338309228922b8fc851da6569056c7144efb389701811098a6fe",
-                            "quay.io/giantswarm/net-exporter:3a18405a2445d217c423ba4bca915cb1047d20d0"
+                            "quay.io/giantswarm/net-exporter@sha256:a6f03bb5dfb4b8fc6a40f54299b49602529f9495e7c9e42f22c6d92b948abee7",
+                            "quay.io/giantswarm/net-exporter:812f6c6a537582ea0a1011236f76da15bd4f8146"
                         ],
                         "sizeBytes": 32294939
                     },
@@ -2866,29 +2871,15 @@ var AzureHealthyTC = `
                         ],
                         "sizeBytes": 14471305
                     }
-                ],
-                "nodeInfo": {
-                    "architecture": "amd64",
-                    "bootID": "26d03867-50e7-49ad-80a5-2c4bcb5c0676",
-                    "containerRuntimeVersion": "docker://18.6.3",
-                    "kernelVersion": "4.19.50-coreos-r1",
-                    "kubeProxyVersion": "v1.14.3",
-                    "kubeletVersion": "v1.14.3",
-                    "machineID": "83aa371dfab6418f9861d4e85885c982",
-                    "operatingSystem": "linux",
-                    "osImage": "Container Linux by CoreOS 2135.4.0 (Rhyolite)",
-                    "systemUUID": "a226ae85-be22-e14b-9ebd-845ef572cc20"
-                }
+                ]
             }
         },
         {
-            "apiVersion": "v1",
-            "kind": "Node",
             "metadata": {
-                "annotations": {
-                    "node.alpha.kubernetes.io/ttl": "0",
-                    "volumes.kubernetes.io/controller-managed-attach-detach": "true"
-                },
+                "name": "6iec4-worker-00000m",
+                "selfLink": "/api/v1/nodes/6iec4-worker-00000m",
+                "uid": "cdc2ca54-a6ed-11e9-aef7-000d3a43f679",
+                "resourceVersion": "87508938",
                 "creationTimestamp": "2019-07-15T10:46:30Z",
                 "labels": {
                     "azure-operator.giantswarm.io/version": "2.4.0",
@@ -2907,35 +2898,16 @@ var AzureHealthyTC = `
                     "node.kubernetes.io/worker": "",
                     "role": "worker"
                 },
-                "name": "6iec4-worker-00000m",
-                "resourceVersion": "87461885",
-                "selfLink": "/api/v1/nodes/6iec4-worker-00000m",
-                "uid": "cdc2ca54-a6ed-11e9-aef7-000d3a43f679"
+                "annotations": {
+                    "node.alpha.kubernetes.io/ttl": "0",
+                    "volumes.kubernetes.io/controller-managed-attach-detach": "true"
+                }
             },
             "spec": {
                 "podCIDR": "10.15.134.0/24",
                 "providerID": "azure:///subscriptions/1be3b2e6-497b-45b9-915f-eb35cae23c6a/resourceGroups/6iec4/providers/Microsoft.Compute/virtualMachineScaleSets/6iec4-worker/virtualMachines/22"
             },
             "status": {
-                "addresses": [
-                    {
-                        "address": "10.15.1.11",
-                        "type": "InternalIP"
-                    },
-                    {
-                        "address": "6iec4-worker-00000m",
-                        "type": "Hostname"
-                    }
-                ],
-                "allocatable": {
-                    "attachable-volumes-azure-disk": "4",
-                    "cpu": "2",
-                    "ephemeral-storage": "28454196Ki",
-                    "hugepages-1Gi": "0",
-                    "hugepages-2Mi": "0",
-                    "memory": "3811668Ki",
-                    "pods": "110"
-                },
                 "capacity": {
                     "attachable-volumes-azure-disk": "4",
                     "cpu": "2",
@@ -2945,52 +2917,83 @@ var AzureHealthyTC = `
                     "memory": "4016468Ki",
                     "pods": "110"
                 },
+                "allocatable": {
+                    "attachable-volumes-azure-disk": "4",
+                    "cpu": "2",
+                    "ephemeral-storage": "28454196Ki",
+                    "hugepages-1Gi": "0",
+                    "hugepages-2Mi": "0",
+                    "memory": "3811668Ki",
+                    "pods": "110"
+                },
                 "conditions": [
                     {
+                        "type": "NetworkUnavailable",
+                        "status": "False",
                         "lastHeartbeatTime": "2019-07-15T10:47:09Z",
                         "lastTransitionTime": "2019-07-15T10:47:09Z",
-                        "message": "RouteController created a route",
                         "reason": "RouteCreated",
-                        "status": "False",
-                        "type": "NetworkUnavailable"
+                        "message": "RouteController created a route"
                     },
                     {
-                        "lastHeartbeatTime": "2019-10-01T09:09:50Z",
+                        "type": "MemoryPressure",
+                        "status": "False",
+                        "lastHeartbeatTime": "2019-10-01T13:34:16Z",
                         "lastTransitionTime": "2019-07-15T10:46:30Z",
-                        "message": "kubelet has sufficient memory available",
                         "reason": "KubeletHasSufficientMemory",
-                        "status": "False",
-                        "type": "MemoryPressure"
+                        "message": "kubelet has sufficient memory available"
                     },
                     {
-                        "lastHeartbeatTime": "2019-10-01T09:09:50Z",
+                        "type": "DiskPressure",
+                        "status": "False",
+                        "lastHeartbeatTime": "2019-10-01T13:34:16Z",
                         "lastTransitionTime": "2019-07-15T10:46:30Z",
-                        "message": "kubelet has no disk pressure",
                         "reason": "KubeletHasNoDiskPressure",
-                        "status": "False",
-                        "type": "DiskPressure"
+                        "message": "kubelet has no disk pressure"
                     },
                     {
-                        "lastHeartbeatTime": "2019-10-01T09:09:50Z",
+                        "type": "PIDPressure",
+                        "status": "False",
+                        "lastHeartbeatTime": "2019-10-01T13:34:16Z",
                         "lastTransitionTime": "2019-07-15T10:46:30Z",
-                        "message": "kubelet has sufficient PID available",
                         "reason": "KubeletHasSufficientPID",
-                        "status": "False",
-                        "type": "PIDPressure"
+                        "message": "kubelet has sufficient PID available"
                     },
                     {
-                        "lastHeartbeatTime": "2019-10-01T09:09:50Z",
-                        "lastTransitionTime": "2019-07-15T10:46:50Z",
-                        "message": "kubelet is posting ready status",
-                        "reason": "KubeletReady",
+                        "type": "Ready",
                         "status": "True",
-                        "type": "Ready"
+                        "lastHeartbeatTime": "2019-10-01T13:34:16Z",
+                        "lastTransitionTime": "2019-07-15T10:46:50Z",
+                        "reason": "KubeletReady",
+                        "message": "kubelet is posting ready status"
+                    }
+                ],
+                "addresses": [
+                    {
+                        "type": "InternalIP",
+                        "address": "10.15.1.11"
+                    },
+                    {
+                        "type": "Hostname",
+                        "address": "6iec4-worker-00000m"
                     }
                 ],
                 "daemonEndpoints": {
                     "kubeletEndpoint": {
                         "Port": 10250
                     }
+                },
+                "nodeInfo": {
+                    "machineID": "c276027411724184b24cb6a2e26fd8c1",
+                    "systemUUID": "62e2daf9-bf40-ca4a-a87e-04a34d280d82",
+                    "bootID": "ca2cb440-3431-44f2-867e-4459643d435f",
+                    "kernelVersion": "4.19.50-coreos-r1",
+                    "osImage": "Container Linux by CoreOS 2135.4.0 (Rhyolite)",
+                    "containerRuntimeVersion": "docker://18.6.3",
+                    "kubeletVersion": "v1.14.3",
+                    "kubeProxyVersion": "v1.14.3",
+                    "operatingSystem": "linux",
+                    "architecture": "amd64"
                 },
                 "images": [
                     {
@@ -3343,26 +3346,9 @@ var AzureHealthyTC = `
                         ],
                         "sizeBytes": 14489266
                     }
-                ],
-                "nodeInfo": {
-                    "architecture": "amd64",
-                    "bootID": "ca2cb440-3431-44f2-867e-4459643d435f",
-                    "containerRuntimeVersion": "docker://18.6.3",
-                    "kernelVersion": "4.19.50-coreos-r1",
-                    "kubeProxyVersion": "v1.14.3",
-                    "kubeletVersion": "v1.14.3",
-                    "machineID": "c276027411724184b24cb6a2e26fd8c1",
-                    "operatingSystem": "linux",
-                    "osImage": "Container Linux by CoreOS 2135.4.0 (Rhyolite)",
-                    "systemUUID": "62e2daf9-bf40-ca4a-a87e-04a34d280d82"
-                }
+                ]
             }
         }
-    ],
-    "kind": "List",
-    "metadata": {
-        "resourceVersion": "",
-        "selfLink": ""
-    }
+    ]
 }
 `
