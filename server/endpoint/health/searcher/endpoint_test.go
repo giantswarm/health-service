@@ -190,7 +190,7 @@ func Test_Health_Endpoint(t *testing.T) {
 			clusterID:        "0cu4f",
 			errorMatcher:     nil,
 			k8sCPAPIResponse: mock.AzureHealthy,
-			k8sTCAPIResponse: mock.AzureHealthyTC,
+			k8sTCAPIResponse: mock.AWSHealthyTC, // TODO: Change to Azure
 			expectedResponse: searcher.Response{
 				Cluster: searcher.ClusterStatus{
 					Health:    "green",
@@ -201,26 +201,26 @@ func Test_Health_Endpoint(t *testing.T) {
 					searcher.NodeStatus{
 						Name:     "ip-10-1-1-104.eu-central-1.compute.internal",
 						Ready:    true,
-						IP:       "",
-						Hostname: "",
+						IP:       "10.1.1.104",
+						Hostname: "ip-10-1-1-104.eu-central-1.compute.internal",
 					},
 					searcher.NodeStatus{
 						Name:     "ip-10-1-1-125.eu-central-1.compute.internal",
 						Ready:    true,
-						IP:       "",
-						Hostname: "",
+						IP:       "10.1.1.125",
+						Hostname: "ip-10-1-1-125.eu-central-1.compute.internal",
 					},
 					searcher.NodeStatus{
 						Name:     "ip-10-1-1-57.eu-central-1.compute.internal",
 						Ready:    true,
-						IP:       "",
-						Hostname: "",
+						IP:       "10.1.1.57",
+						Hostname: "ip-10-1-1-57.eu-central-1.compute.internal",
 					},
 					searcher.NodeStatus{
 						Name:     "ip-10-1-1-85.eu-central-1.compute.internal",
 						Ready:    true,
-						IP:       "",
-						Hostname: "",
+						IP:       "10.1.1.85",
+						Hostname: "ip-10-1-1-85.eu-central-1.compute.internal",
 					},
 				},
 			},
@@ -231,7 +231,7 @@ func Test_Health_Endpoint(t *testing.T) {
 			clusterID:        "cxx2e",
 			errorMatcher:     nil,
 			k8sCPAPIResponse: mock.KVMHealthy,
-			k8sTCAPIResponse: mock.AWSHealthyTC,
+			k8sTCAPIResponse: mock.AWSHealthyTC, // TODO: Change to KVM
 			expectedResponse: searcher.Response{
 				Cluster: searcher.ClusterStatus{
 					Health:    "green",
@@ -242,26 +242,26 @@ func Test_Health_Endpoint(t *testing.T) {
 					searcher.NodeStatus{
 						Name:     "ip-10-1-1-104.eu-central-1.compute.internal",
 						Ready:    true,
-						IP:       "",
-						Hostname: "",
+						IP:       "10.1.1.104",
+						Hostname: "ip-10-1-1-104.eu-central-1.compute.internal",
 					},
 					searcher.NodeStatus{
 						Name:     "ip-10-1-1-125.eu-central-1.compute.internal",
 						Ready:    true,
-						IP:       "",
-						Hostname: "",
+						IP:       "10.1.1.125",
+						Hostname: "ip-10-1-1-125.eu-central-1.compute.internal",
 					},
 					searcher.NodeStatus{
 						Name:     "ip-10-1-1-57.eu-central-1.compute.internal",
 						Ready:    true,
-						IP:       "",
-						Hostname: "",
+						IP:       "10.1.1.57",
+						Hostname: "ip-10-1-1-57.eu-central-1.compute.internal",
 					},
 					searcher.NodeStatus{
 						Name:     "ip-10-1-1-85.eu-central-1.compute.internal",
 						Ready:    true,
-						IP:       "",
-						Hostname: "",
+						IP:       "10.1.1.85",
+						Hostname: "ip-10-1-1-85.eu-central-1.compute.internal",
 					},
 				},
 			},
