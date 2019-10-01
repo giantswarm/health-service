@@ -185,8 +185,8 @@ func Test_Health_Endpoint(t *testing.T) {
 					State:     key.Normal,
 					NodeCount: 4,
 				},
-				Nodes: []searcher.NodeStatus{
-					searcher.NodeStatus{
+				Nodes: []health.NodeStatus{
+					health.NodeStatus{
 						Name:         "ip-10-1-1-104.eu-central-1.compute.internal",
 						Ready:        true,
 						IP:           "10.1.1.104",
@@ -195,7 +195,7 @@ func Test_Health_Endpoint(t *testing.T) {
 						CPUCount:     4,
 						Memory:       "16423784Ki",
 					},
-					searcher.NodeStatus{
+					health.NodeStatus{
 						Name:         "ip-10-1-1-125.eu-central-1.compute.internal",
 						Ready:        true,
 						IP:           "10.1.1.125",
@@ -204,7 +204,7 @@ func Test_Health_Endpoint(t *testing.T) {
 						CPUCount:     4,
 						Memory:       "16423784Ki",
 					},
-					searcher.NodeStatus{
+					health.NodeStatus{
 						Name:         "ip-10-1-1-57.eu-central-1.compute.internal",
 						Ready:        true,
 						IP:           "10.1.1.57",
@@ -213,7 +213,7 @@ func Test_Health_Endpoint(t *testing.T) {
 						CPUCount:     4,
 						Memory:       "16423784Ki",
 					},
-					searcher.NodeStatus{
+					health.NodeStatus{
 						Name:         "ip-10-1-1-85.eu-central-1.compute.internal",
 						Ready:        true,
 						IP:           "10.1.1.85",
@@ -238,8 +238,8 @@ func Test_Health_Endpoint(t *testing.T) {
 					State:     key.Normal,
 					NodeCount: 4,
 				},
-				Nodes: []searcher.NodeStatus{
-					searcher.NodeStatus{
+				Nodes: []health.NodeStatus{
+					health.NodeStatus{
 						Name:         "6iec4-master-000000",
 						Ready:        true,
 						IP:           "10.15.0.5",
@@ -248,7 +248,7 @@ func Test_Health_Endpoint(t *testing.T) {
 						CPUCount:     2,
 						Memory:       "8145236Ki",
 					},
-					searcher.NodeStatus{
+					health.NodeStatus{
 						Name:         "6iec4-worker-000003",
 						Ready:        true,
 						IP:           "10.15.1.7",
@@ -257,7 +257,7 @@ func Test_Health_Endpoint(t *testing.T) {
 						CPUCount:     2,
 						Memory:       "4016468Ki",
 					},
-					searcher.NodeStatus{
+					health.NodeStatus{
 						Name:         "6iec4-worker-000004",
 						Ready:        true,
 						IP:           "10.15.1.4",
@@ -266,7 +266,7 @@ func Test_Health_Endpoint(t *testing.T) {
 						CPUCount:     2,
 						Memory:       "4016468Ki",
 					},
-					searcher.NodeStatus{
+					health.NodeStatus{
 						Name:         "6iec4-worker-000009",
 						Ready:        true,
 						IP:           "10.15.1.10",
@@ -275,7 +275,7 @@ func Test_Health_Endpoint(t *testing.T) {
 						CPUCount:     2,
 						Memory:       "4016460Ki",
 					},
-					searcher.NodeStatus{
+					health.NodeStatus{
 						Name:         "6iec4-worker-00000j",
 						Ready:        true,
 						IP:           "10.15.1.8",
@@ -284,7 +284,7 @@ func Test_Health_Endpoint(t *testing.T) {
 						CPUCount:     2,
 						Memory:       "4016468Ki",
 					},
-					searcher.NodeStatus{
+					health.NodeStatus{
 						Name:         "6iec4-worker-00000k",
 						Ready:        true,
 						IP:           "10.15.1.9",
@@ -293,7 +293,7 @@ func Test_Health_Endpoint(t *testing.T) {
 						CPUCount:     2,
 						Memory:       "4016468Ki",
 					},
-					searcher.NodeStatus{
+					health.NodeStatus{
 						Name:         "6iec4-worker-00000m",
 						Ready:        true,
 						IP:           "10.15.1.11",
@@ -318,8 +318,8 @@ func Test_Health_Endpoint(t *testing.T) {
 					State:     key.Normal,
 					NodeCount: 4,
 				},
-				Nodes: []searcher.NodeStatus{
-					searcher.NodeStatus{
+				Nodes: []health.NodeStatus{
+					health.NodeStatus{
 						Name:         "ip-10-1-1-104.eu-central-1.compute.internal",
 						Ready:        true,
 						IP:           "10.1.1.104",
@@ -328,7 +328,7 @@ func Test_Health_Endpoint(t *testing.T) {
 						CPUCount:     4,
 						Memory:       "16423784Ki",
 					},
-					searcher.NodeStatus{
+					health.NodeStatus{
 						Name:         "ip-10-1-1-125.eu-central-1.compute.internal",
 						Ready:        true,
 						IP:           "10.1.1.125",
@@ -337,7 +337,7 @@ func Test_Health_Endpoint(t *testing.T) {
 						CPUCount:     4,
 						Memory:       "16423784Ki",
 					},
-					searcher.NodeStatus{
+					health.NodeStatus{
 						Name:         "ip-10-1-1-57.eu-central-1.compute.internal",
 						Ready:        true,
 						IP:           "10.1.1.57",
@@ -346,7 +346,7 @@ func Test_Health_Endpoint(t *testing.T) {
 						CPUCount:     4,
 						Memory:       "16423784Ki",
 					},
-					searcher.NodeStatus{
+					health.NodeStatus{
 						Name:         "ip-10-1-1-85.eu-central-1.compute.internal",
 						Ready:        true,
 						IP:           "10.1.1.85",
