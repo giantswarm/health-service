@@ -190,7 +190,7 @@ func Test_Health_Endpoint(t *testing.T) {
 			clusterID:        "0cu4f",
 			errorMatcher:     nil,
 			k8sCPAPIResponse: mock.AzureHealthy,
-			k8sTCAPIResponse: mock.AWSHealthyTC, // TODO: Change to Azure
+			k8sTCAPIResponse: mock.AzureHealthyTC,
 			expectedResponse: searcher.Response{
 				Cluster: searcher.ClusterStatus{
 					Health:    "green",
@@ -201,7 +201,7 @@ func Test_Health_Endpoint(t *testing.T) {
 					searcher.NodeStatus{
 						Name:     "ip-10-1-1-104.eu-central-1.compute.internal",
 						Ready:    true,
-						IP:       "10.1.1.104",
+						IP:       "10.15.0.5",
 						Hostname: "ip-10-1-1-104.eu-central-1.compute.internal",
 					},
 					searcher.NodeStatus{
