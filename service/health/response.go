@@ -23,6 +23,5 @@ type NodeStatus struct {
 	Hostname     string `json:"hostname"`
 	InstanceType string `json:"instance_type"`
 	CPUCount     int64  `json:"cpu_count"`
-	// Memory is the available memory value in bytes
-	Memory int64 `json:"available_memory_bytes"`
+	MemoryBytes  int64  `json:"available_memory_bytes"`
 }

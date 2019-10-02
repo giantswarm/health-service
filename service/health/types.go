@@ -61,7 +61,7 @@ func NewNodeStatus(node v1.Node) NodeStatus {
 		Hostname:     hostnameFromAddresses(node.Status.Addresses),
 		InstanceType: node.GetObjectMeta().GetLabels()["beta.kubernetes.io/instance-type"],
 		CPUCount:     node.Status.Capacity.Cpu().Value(),
-		Memory:       nodeMemoryToInt(node.Status.Capacity.Memory()),
+		MemoryBytes:  nodeMemoryToInt(node.Status.Capacity.Memory()),
 	}
 }
 
@@ -73,6 +73,7 @@ func NewNodesStatus(nodes []v1.Node) []NodeStatus {
 	return result
 }
 
+// findInAddresses searches a list of NodeAddresses for an address of a given type and returns its value.
 func findInAddresses(addresses []v1.NodeAddress, addressType v1.NodeAddressType) string {
 	for _, entry := range addresses {
 		if entry.Type == addressType {
@@ -91,9 +92,9 @@ func hostnameFromAddresses(addresses []v1.NodeAddress) string {
 }
 
 func nodeMemoryToInt(nodeMemory *resource.Quantity) int64 {
-	memKB, ok := nodeMemory.AsInt64()
+	memBytes, ok := nodeMemory.AsInt64()
 	if !ok {
 		return 0
 	}
-	return memKB
+	return memBytes
 }
