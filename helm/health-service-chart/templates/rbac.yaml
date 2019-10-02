@@ -10,29 +10,6 @@ rules:
     verbs:
       - "*"
   - apiGroups:
-      - extensions
-    resources:
-      - thirdpartyresources
-    verbs:
-      - "*"
-  - apiGroups:
-      - cluster.k8s.io
-    resources:
-      - clusters
-      - machinedeployments
-    verbs:
-      - get
-      - list
-  - apiGroups:
-      - core.giantswarm.io
-    resources:
-      - awsclusterconfigs
-      - azureclusterconfigs
-      - kvmclusterconfigs
-      - storageconfigs
-    verbs:
-      - "*"
-  - apiGroups:
       - provider.giantswarm.io
     resources:
       - awsconfigs
@@ -45,20 +22,12 @@ rules:
       - get
       - list
   - apiGroups:
-      - giantswarm.io
-    resources:
-      - tprstorages
-    verbs:
-      - get
-      - create
-  - apiGroups:
       - ""
     resources:
       - nodes
     verbs:
       - get
       - list
-      - watch
   - apiGroups:
       - ""
     resources:
@@ -66,6 +35,7 @@ rules:
     verbs:
       - get
       - list
+      - watch
   - apiGroups:
       - ""
     resources:
