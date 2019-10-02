@@ -1,13 +1,13 @@
 apiVersion: apiregistration.k8s.io/v1
 kind: APIService
 metadata:
-  name: '{{ .Values.APIVersion }}'.'{{ .Values.APIGroup }}'
+  name: v1alpha1.cluster.giantswarm.io
 spec:
   caBundle: '{{ .Values.CA }}'
-  group: '{{ .Values.APIGroup }}'
-  version: '{{ .Values.APIVersion }}'
+  group: cluster.giantswarm.io
+  version: v1alpha1
   groupPriorityMinimum: 1000
   versionPriority: 15
   service:
-    name: '{{ .Values.ServiceName }}'
-    namespace: '{{ .Values.ServiceNamespace }}'
+    name: health-service
+    namespace: giantswarm
