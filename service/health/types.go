@@ -3,6 +3,7 @@ package health
 import (
 	v1alpha1 "github.com/giantswarm/apiextensions/pkg/apis/provider/v1alpha1"
 	v1 "k8s.io/api/core/v1"
+	"k8s.io/apimachinery/pkg/api/resource"
 
 	"github.com/giantswarm/health-service/service/health/key"
 )
@@ -54,10 +55,13 @@ func NewNodeStatus(node v1.Node) NodeStatus {
 		}
 	}
 	return NodeStatus{
-		Name:     node.Name,
-		Ready:    ready,
-		IP:       ipFromAddresses(node.Status.Addresses),
-		Hostname: hostnameFromAddresses(node.Status.Addresses),
+		Name:         node.Name,
+		Ready:        ready,
+		IP:           ipFromAddresses(node.Status.Addresses),
+		Hostname:     hostnameFromAddresses(node.Status.Addresses),
+		InstanceType: node.GetObjectMeta().GetLabels()["beta.kubernetes.io/instance-type"],
+		CPUCount:     node.Status.Capacity.Cpu().Value(),
+		MemoryBytes:  nodeMemoryToInt(node.Status.Capacity.Memory()),
 	}
 }
 
@@ -69,9 +73,10 @@ func NewNodesStatus(nodes []v1.Node) []NodeStatus {
 	return result
 }
 
-func findInAddresses(addresses []v1.NodeAddress, address_type v1.NodeAddressType) string {
+// findInAddresses searches a list of NodeAddresses for an address of a given type and returns its value.
+func findInAddresses(addresses []v1.NodeAddress, addressType v1.NodeAddressType) string {
 	for _, entry := range addresses {
-		if entry.Type == address_type {
+		if entry.Type == addressType {
 			return entry.Address
 		}
 	}
@@ -84,4 +89,12 @@ func ipFromAddresses(addresses []v1.NodeAddress) string {
 
 func hostnameFromAddresses(addresses []v1.NodeAddress) string {
 	return findInAddresses(addresses, v1.NodeHostName)
+}
+
+func nodeMemoryToInt(nodeMemory *resource.Quantity) int64 {
+	memBytes, ok := nodeMemory.AsInt64()
+	if !ok {
+		return 0
+	}
+	return memBytes
 }
