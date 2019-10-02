@@ -3,6 +3,7 @@ package health
 import (
 	v1alpha1 "github.com/giantswarm/apiextensions/pkg/apis/provider/v1alpha1"
 	v1 "k8s.io/api/core/v1"
+	"k8s.io/apimachinery/pkg/api/resource"
 
 	"github.com/giantswarm/health-service/service/health/key"
 )
@@ -60,7 +61,7 @@ func NewNodeStatus(node v1.Node) NodeStatus {
 		Hostname:     hostnameFromAddresses(node.Status.Addresses),
 		InstanceType: node.GetObjectMeta().GetLabels()["beta.kubernetes.io/instance-type"],
 		CPUCount:     node.Status.Capacity.Cpu().Value(),
-		Memory:       node.Status.Capacity.Memory().String(),
+		Memory:       nodeMemoryToInt(node.Status.Capacity.Memory()),
 	}
 }
 
@@ -87,4 +88,12 @@ func ipFromAddresses(addresses []v1.NodeAddress) string {
 
 func hostnameFromAddresses(addresses []v1.NodeAddress) string {
 	return findInAddresses(addresses, v1.NodeHostName)
+}
+
+func nodeMemoryToInt(nodeMemory *resource.Quantity) int64 {
+	memKB, ok := nodeMemory.AsInt64()
+	if !ok {
+		return 0
+	}
+	return memKB
 }

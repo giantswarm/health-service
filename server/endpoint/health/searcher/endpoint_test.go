@@ -193,7 +193,7 @@ func Test_Health_Endpoint(t *testing.T) {
 						Hostname:     "ip-10-1-1-104.eu-central-1.compute.internal",
 						InstanceType: "m4.xlarge",
 						CPUCount:     4,
-						Memory:       "16423784Ki",
+						Memory:       16817954816,
 					},
 					health.NodeStatus{
 						Name:         "ip-10-1-1-125.eu-central-1.compute.internal",
@@ -202,7 +202,7 @@ func Test_Health_Endpoint(t *testing.T) {
 						Hostname:     "ip-10-1-1-125.eu-central-1.compute.internal",
 						InstanceType: "m4.xlarge",
 						CPUCount:     4,
-						Memory:       "16423784Ki",
+						Memory:       16817954816,
 					},
 					health.NodeStatus{
 						Name:         "ip-10-1-1-57.eu-central-1.compute.internal",
@@ -211,7 +211,7 @@ func Test_Health_Endpoint(t *testing.T) {
 						Hostname:     "ip-10-1-1-57.eu-central-1.compute.internal",
 						InstanceType: "m4.xlarge",
 						CPUCount:     4,
-						Memory:       "16423784Ki",
+						Memory:       16817954816,
 					},
 					health.NodeStatus{
 						Name:         "ip-10-1-1-85.eu-central-1.compute.internal",
@@ -220,7 +220,7 @@ func Test_Health_Endpoint(t *testing.T) {
 						Hostname:     "ip-10-1-1-85.eu-central-1.compute.internal",
 						InstanceType: "m4.xlarge",
 						CPUCount:     4,
-						Memory:       "16423784Ki",
+						Memory:       16817954816,
 					},
 				},
 			},
@@ -246,7 +246,7 @@ func Test_Health_Endpoint(t *testing.T) {
 						Hostname:     "6iec4-master-000000",
 						InstanceType: "Standard_D2s_v3",
 						CPUCount:     2,
-						Memory:       "8145236Ki",
+						Memory:       8340721664,
 					},
 					health.NodeStatus{
 						Name:         "6iec4-worker-000003",
@@ -255,7 +255,7 @@ func Test_Health_Endpoint(t *testing.T) {
 						Hostname:     "6iec4-worker-000003",
 						InstanceType: "Standard_A2_v2",
 						CPUCount:     2,
-						Memory:       "4016468Ki",
+						Memory:       4112863232,
 					},
 					health.NodeStatus{
 						Name:         "6iec4-worker-000004",
@@ -264,7 +264,7 @@ func Test_Health_Endpoint(t *testing.T) {
 						Hostname:     "6iec4-worker-000004",
 						InstanceType: "Standard_A2_v2",
 						CPUCount:     2,
-						Memory:       "4016468Ki",
+						Memory:       4112863232,
 					},
 					health.NodeStatus{
 						Name:         "6iec4-worker-000009",
@@ -273,7 +273,7 @@ func Test_Health_Endpoint(t *testing.T) {
 						Hostname:     "6iec4-worker-000009",
 						InstanceType: "Standard_A2_v2",
 						CPUCount:     2,
-						Memory:       "4016460Ki",
+						Memory:       4112855040,
 					},
 					health.NodeStatus{
 						Name:         "6iec4-worker-00000j",
@@ -282,7 +282,7 @@ func Test_Health_Endpoint(t *testing.T) {
 						Hostname:     "6iec4-worker-00000j",
 						InstanceType: "Standard_A2_v2",
 						CPUCount:     2,
-						Memory:       "4016468Ki",
+						Memory:       4112863232,
 					},
 					health.NodeStatus{
 						Name:         "6iec4-worker-00000k",
@@ -291,7 +291,7 @@ func Test_Health_Endpoint(t *testing.T) {
 						Hostname:     "6iec4-worker-00000k",
 						InstanceType: "Standard_A2_v2",
 						CPUCount:     2,
-						Memory:       "4016468Ki",
+						Memory:       4112863232,
 					},
 					health.NodeStatus{
 						Name:         "6iec4-worker-00000m",
@@ -300,7 +300,7 @@ func Test_Health_Endpoint(t *testing.T) {
 						Hostname:     "6iec4-worker-00000m",
 						InstanceType: "Standard_A2_v2",
 						CPUCount:     2,
-						Memory:       "4016468Ki",
+						Memory:       4112863232,
 					},
 				},
 			},
@@ -326,7 +326,7 @@ func Test_Health_Endpoint(t *testing.T) {
 						Hostname:     "ip-10-1-1-104.eu-central-1.compute.internal",
 						InstanceType: "m4.xlarge",
 						CPUCount:     4,
-						Memory:       "16423784Ki",
+						Memory:       16817954816,
 					},
 					health.NodeStatus{
 						Name:         "ip-10-1-1-125.eu-central-1.compute.internal",
@@ -335,7 +335,7 @@ func Test_Health_Endpoint(t *testing.T) {
 						Hostname:     "ip-10-1-1-125.eu-central-1.compute.internal",
 						InstanceType: "m4.xlarge",
 						CPUCount:     4,
-						Memory:       "16423784Ki",
+						Memory:       16817954816,
 					},
 					health.NodeStatus{
 						Name:         "ip-10-1-1-57.eu-central-1.compute.internal",
@@ -344,7 +344,7 @@ func Test_Health_Endpoint(t *testing.T) {
 						Hostname:     "ip-10-1-1-57.eu-central-1.compute.internal",
 						InstanceType: "m4.xlarge",
 						CPUCount:     4,
-						Memory:       "16423784Ki",
+						Memory:       16817954816,
 					},
 					health.NodeStatus{
 						Name:         "ip-10-1-1-85.eu-central-1.compute.internal",
@@ -353,7 +353,7 @@ func Test_Health_Endpoint(t *testing.T) {
 						Hostname:     "ip-10-1-1-85.eu-central-1.compute.internal",
 						InstanceType: "m4.xlarge",
 						CPUCount:     4,
-						Memory:       "16423784Ki",
+						Memory:       16817954816,
 					},
 				},
 			},
