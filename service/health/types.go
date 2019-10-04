@@ -21,6 +21,9 @@ func NewClusterStatus(cluster v1alpha1.StatusCluster, nodes []v1.Node) ClusterSt
 	for _, node := range nodes {
 		role := nodeRole(node.Labels)
 		nodeHealth := calculateNodeHealth(node)
+		if roleHealthCounts[role] == nil {
+			roleHealthCounts[role] = map[key.Health]int{}
+		}
 		roleHealthCounts[role][nodeHealth]++
 		if role == "worker" {
 			workerCount++

@@ -181,9 +181,8 @@ func Test_Health_Endpoint(t *testing.T) {
 			k8sTCAPIResponse: mock.AWSHealthyTC,
 			expectedResponse: health.Response{
 				Cluster: health.ClusterStatus{
-					Health:    key.Green,
-					State:     key.Normal,
-					NodeCount: 4,
+					Health: key.Green,
+					State:  key.Normal,
 				},
 				Nodes: []health.NodeStatus{
 					health.NodeStatus{
@@ -194,6 +193,8 @@ func Test_Health_Endpoint(t *testing.T) {
 						InstanceType: "m4.xlarge",
 						CPUCount:     4,
 						MemoryBytes:  16817954816,
+						Role:         "worker",
+						Health:       "green",
 					},
 					health.NodeStatus{
 						Name:         "ip-10-1-1-125.eu-central-1.compute.internal",
@@ -203,6 +204,8 @@ func Test_Health_Endpoint(t *testing.T) {
 						InstanceType: "m4.xlarge",
 						CPUCount:     4,
 						MemoryBytes:  16817954816,
+						Role:         "worker",
+						Health:       "green",
 					},
 					health.NodeStatus{
 						Name:         "ip-10-1-1-57.eu-central-1.compute.internal",
@@ -212,6 +215,8 @@ func Test_Health_Endpoint(t *testing.T) {
 						InstanceType: "m4.xlarge",
 						CPUCount:     4,
 						MemoryBytes:  16817954816,
+						Role:         "master",
+						Health:       "green",
 					},
 					health.NodeStatus{
 						Name:         "ip-10-1-1-85.eu-central-1.compute.internal",
@@ -221,6 +226,8 @@ func Test_Health_Endpoint(t *testing.T) {
 						InstanceType: "m4.xlarge",
 						CPUCount:     4,
 						MemoryBytes:  16817954816,
+						Role:         "worker",
+						Health:       "green",
 					},
 				},
 			},
@@ -234,9 +241,8 @@ func Test_Health_Endpoint(t *testing.T) {
 			k8sTCAPIResponse: mock.AzureHealthyTC,
 			expectedResponse: health.Response{
 				Cluster: health.ClusterStatus{
-					Health:    "green",
-					State:     key.Normal,
-					NodeCount: 4,
+					Health: "green",
+					State:  key.Normal,
 				},
 				Nodes: []health.NodeStatus{
 					health.NodeStatus{
@@ -247,6 +253,8 @@ func Test_Health_Endpoint(t *testing.T) {
 						InstanceType: "Standard_D2s_v3",
 						CPUCount:     2,
 						MemoryBytes:  8340721664,
+						Role:         "master",
+						Health:       "green",
 					},
 					health.NodeStatus{
 						Name:         "6iec4-worker-000003",
@@ -256,6 +264,8 @@ func Test_Health_Endpoint(t *testing.T) {
 						InstanceType: "Standard_A2_v2",
 						CPUCount:     2,
 						MemoryBytes:  4112863232,
+						Role:         "worker",
+						Health:       "green",
 					},
 					health.NodeStatus{
 						Name:         "6iec4-worker-000004",
@@ -265,6 +275,8 @@ func Test_Health_Endpoint(t *testing.T) {
 						InstanceType: "Standard_A2_v2",
 						CPUCount:     2,
 						MemoryBytes:  4112863232,
+						Role:         "worker",
+						Health:       "green",
 					},
 					health.NodeStatus{
 						Name:         "6iec4-worker-000009",
@@ -274,6 +286,8 @@ func Test_Health_Endpoint(t *testing.T) {
 						InstanceType: "Standard_A2_v2",
 						CPUCount:     2,
 						MemoryBytes:  4112855040,
+						Role:         "worker",
+						Health:       "green",
 					},
 					health.NodeStatus{
 						Name:         "6iec4-worker-00000j",
@@ -283,6 +297,8 @@ func Test_Health_Endpoint(t *testing.T) {
 						InstanceType: "Standard_A2_v2",
 						CPUCount:     2,
 						MemoryBytes:  4112863232,
+						Role:         "worker",
+						Health:       "green",
 					},
 					health.NodeStatus{
 						Name:         "6iec4-worker-00000k",
@@ -292,6 +308,8 @@ func Test_Health_Endpoint(t *testing.T) {
 						InstanceType: "Standard_A2_v2",
 						CPUCount:     2,
 						MemoryBytes:  4112863232,
+						Role:         "worker",
+						Health:       "green",
 					},
 					health.NodeStatus{
 						Name:         "6iec4-worker-00000m",
@@ -301,6 +319,8 @@ func Test_Health_Endpoint(t *testing.T) {
 						InstanceType: "Standard_A2_v2",
 						CPUCount:     2,
 						MemoryBytes:  4112863232,
+						Role:         "worker",
+						Health:       "green",
 					},
 				},
 			},
@@ -314,9 +334,8 @@ func Test_Health_Endpoint(t *testing.T) {
 			k8sTCAPIResponse: mock.KVMHealthyTC,
 			expectedResponse: health.Response{
 				Cluster: health.ClusterStatus{
-					Health:    "green",
-					State:     key.Normal,
-					NodeCount: 4,
+					Health: "red",
+					State:  key.Normal,
 				},
 				Nodes: []health.NodeStatus{
 					health.NodeStatus{
@@ -326,6 +345,8 @@ func Test_Health_Endpoint(t *testing.T) {
 						Hostname:    "master-8w5xy-58494dd955-7x4px",
 						CPUCount:    2,
 						MemoryBytes: 8364433408,
+						Role:        "master",
+						Health:      "green",
 					},
 					health.NodeStatus{
 						Name:        "worker-3505b-57c995659f-55shv",
@@ -334,6 +355,8 @@ func Test_Health_Endpoint(t *testing.T) {
 						Hostname:    "worker-3505b-57c995659f-55shv",
 						CPUCount:    2,
 						MemoryBytes: 3079614464,
+						Role:        "worker",
+						Health:      "green",
 					},
 					health.NodeStatus{
 						Name:        "worker-fqu7z-6b4d5d9cf5-vkrxt",
@@ -342,6 +365,8 @@ func Test_Health_Endpoint(t *testing.T) {
 						Hostname:    "worker-fqu7z-6b4d5d9cf5-vkrxt",
 						CPUCount:    2,
 						MemoryBytes: 3079598080,
+						Role:        "worker",
+						Health:      "green",
 					},
 				},
 			},
