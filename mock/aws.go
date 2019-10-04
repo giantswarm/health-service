@@ -333,7 +333,7 @@ var AWSHealthyTC = `
   "items": [
     {
       "metadata": {
-        "name": "ip-10-1-1-104.eu-central-1.compute.internal",
+        "name": "ip-10-1-0-172.eu-central-1.compute.internal",
         "selfLink": "/api/v1/nodes/ip-10-1-1-104.eu-central-1.compute.internal",
         "uid": "35c333ba-e10e-11e9-b8a6-0ab414f5eb72",
         "resourceVersion": "50304",
