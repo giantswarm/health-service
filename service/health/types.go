@@ -1,6 +1,8 @@
 package health
 
 import (
+	"strings"
+
 	v1alpha1 "github.com/giantswarm/apiextensions/pkg/apis/provider/v1alpha1"
 	v1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
@@ -8,25 +10,46 @@ import (
 	"github.com/giantswarm/health-service/service/health/key"
 )
 
-func NewClusterStatus(cluster v1alpha1.StatusCluster) ClusterStatus {
+func NewClusterStatus(cluster v1alpha1.StatusCluster, nodes []v1.Node) ClusterStatus {
 	health := key.Default
-
-	desiredNodes := cluster.Scaling.DesiredCapacity
-	currentNodes := len(cluster.Nodes)
-
-	if currentNodes < desiredNodes {
-		health = key.Yellow
-	}
-
+	roleHealthCounts := map[string]map[key.Health]int{}
+	workerCount := 0
 	creating := cluster.HasCreatingCondition()
 	updating := cluster.HasUpdatingCondition()
-	deleted := cluster.HasDeletedCondition()
 	deleting := cluster.HasDeletingCondition()
 
-	if deleted || deleting {
-		health = key.Red
-	} else if updating || creating { // TODO: Account for draining/scaling
-		health = key.Yellow
+	for _, node := range nodes {
+		role := nodeRole(node.Labels)
+		nodeHealth := calculateNodeHealth(node)
+		if roleHealthCounts[role] == nil {
+			roleHealthCounts[role] = map[key.Health]int{}
+		}
+		roleHealthCounts[role][nodeHealth]++
+		if role == "worker" {
+			workerCount++
+		} else if role == "master" && nodeHealth != key.Green {
+			if updating {
+				health = key.Yellow
+			} else {
+				health = key.Red
+			}
+		}
+	}
+
+	if health != key.Red {
+		if creating || deleting {
+			health = key.Yellow
+		}
+		healthyWorkersProportion := float32(roleHealthCounts["worker"][key.Green]) / float32(workerCount)
+		if healthyWorkersProportion < 0.75 {
+			health = key.Yellow
+		}
+		if workerCount >= 20 && healthyWorkersProportion < 0.5 {
+			health = key.Red
+		}
+		if roleHealthCounts["worker"][key.Green] < 3 {
+			health = key.Red
+		}
 	}
 
 	state := key.Normal
@@ -40,23 +63,17 @@ func NewClusterStatus(cluster v1alpha1.StatusCluster) ClusterStatus {
 	}
 
 	return ClusterStatus{
-		Health:    health,
-		State:     state,
-		NodeCount: currentNodes,
+		Health: health,
+		State:  state,
 	}
 }
 
 func NewNodeStatus(node v1.Node) NodeStatus {
-	ready := false
-	for _, condition := range node.Status.Conditions {
-		if condition.Type == v1.NodeReady {
-			ready = condition.Status == "True"
-			break
-		}
-	}
 	return NodeStatus{
 		Name:                   node.Name,
-		Ready:                  ready,
+		Role:                   nodeRole(node.Labels),
+		Health:                 calculateNodeHealth(node),
+		Ready:                  nodeHasCondition(node.Status.Conditions, v1.ConditionTrue, v1.NodeReady),
 		IP:                     ipFromAddresses(node.Status.Addresses),
 		Hostname:               hostnameFromAddresses(node.Status.Addresses),
 		InstanceType:           node.GetLabels()["beta.kubernetes.io/instance-type"],
@@ -96,6 +113,21 @@ func NewNodesStatus(nodes []v1.Node) []NodeStatus {
 	return result
 }
 
+func nodeRole(labels map[string]string) string {
+	roleKey := "kubernetes.io/role"
+	roleKeyAlt := "node-role.kubernetes.io/"
+	for key, value := range labels {
+		if key == roleKey {
+			return value
+		} else if strings.HasPrefix(key, roleKeyAlt) && value == "" {
+			runes := []rune(key)
+			role := string(runes[len(roleKeyAlt):])
+			return role
+		}
+	}
+	return ""
+}
+
 // findInAddresses searches a list of NodeAddresses for an address of a given type and returns its value.
 func findInAddresses(addresses []v1.NodeAddress, addressType v1.NodeAddressType) string {
 	for _, entry := range addresses {
@@ -120,4 +152,26 @@ func nodeMemoryToInt(nodeMemory *resource.Quantity) int64 {
 		return 0
 	}
 	return memBytes
+}
+
+func nodeHasCondition(conditions []v1.NodeCondition, s v1.ConditionStatus, t v1.NodeConditionType) bool {
+	for _, c := range conditions {
+		if c.Status == s && c.Type == t {
+			return true
+		}
+	}
+
+	return false
+}
+
+func calculateNodeHealth(node v1.Node) key.Health {
+	ready := nodeHasCondition(node.Status.Conditions, v1.ConditionTrue, v1.NodeReady)
+	if ready {
+		return key.Green
+	}
+	role := nodeRole(node.ObjectMeta.Labels)
+	if role == "master" {
+		return key.Red
+	}
+	return key.Yellow
 }

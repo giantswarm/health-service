@@ -181,9 +181,8 @@ func Test_Health_Endpoint(t *testing.T) {
 			k8sTCAPIResponse: mock.AWSHealthyTC,
 			expectedResponse: health.Response{
 				Cluster: health.ClusterStatus{
-					Health:    key.Green,
-					State:     key.Normal,
-					NodeCount: 4,
+					Health: key.Green,
+					State:  key.Normal,
 				},
 				Nodes: []health.NodeStatus{
 					health.NodeStatus{
@@ -201,6 +200,8 @@ func Test_Health_Endpoint(t *testing.T) {
 						MemoryAllocatableBytes: 16608239616,
 						EphemeralStorageCap:    107321753600,
 						EphemeralStorageAvail:  107321753600,
+						Role:                   "worker",
+						Health:                 "green",
 					},
 					health.NodeStatus{
 						Name:                   "ip-10-1-1-125.eu-central-1.compute.internal",
@@ -216,6 +217,8 @@ func Test_Health_Endpoint(t *testing.T) {
 						MemoryAllocatableBytes: 16608239616,
 						EphemeralStorageCap:    107321753600,
 						EphemeralStorageAvail:  107321753600,
+						Role:                   "worker",
+						Health:                 "green",
 					},
 					health.NodeStatus{
 						Name:                   "ip-10-1-1-57.eu-central-1.compute.internal",
@@ -231,6 +234,8 @@ func Test_Health_Endpoint(t *testing.T) {
 						MemoryAllocatableBytes: 16608239616,
 						EphemeralStorageCap:    5843333120,
 						EphemeralStorageAvail:  5843333120,
+						Role:                   "master",
+						Health:                 "green",
 					},
 					health.NodeStatus{
 						Name:                   "ip-10-1-1-85.eu-central-1.compute.internal",
@@ -246,6 +251,8 @@ func Test_Health_Endpoint(t *testing.T) {
 						MemoryAllocatableBytes: 16608239616,
 						EphemeralStorageCap:    107321753600,
 						EphemeralStorageAvail:  107321753600,
+						Role:                   "worker",
+						Health:                 "green",
 					},
 				},
 			},
@@ -259,9 +266,8 @@ func Test_Health_Endpoint(t *testing.T) {
 			k8sTCAPIResponse: mock.AzureHealthyTC,
 			expectedResponse: health.Response{
 				Cluster: health.ClusterStatus{
-					Health:    "green",
-					State:     key.Normal,
-					NodeCount: 4,
+					Health: "green",
+					State:  key.Normal,
 				},
 				Nodes: []health.NodeStatus{
 					health.NodeStatus{
@@ -278,6 +284,8 @@ func Test_Health_Endpoint(t *testing.T) {
 						MemoryAllocatableBytes: 8131006464,
 						EphemeralStorageCap:    29137096704,
 						EphemeralStorageAvail:  29137096704,
+						Role:                   "master",
+						Health:                 "green",
 					},
 					health.NodeStatus{
 						Name:                   "6iec4-worker-000003",
@@ -293,6 +301,8 @@ func Test_Health_Endpoint(t *testing.T) {
 						MemoryAllocatableBytes: 3903148032,
 						EphemeralStorageCap:    29137096704,
 						EphemeralStorageAvail:  29137096704,
+						Role:                   "worker",
+						Health:                 "green",
 					},
 					health.NodeStatus{
 						Name:                   "6iec4-worker-000004",
@@ -308,6 +318,8 @@ func Test_Health_Endpoint(t *testing.T) {
 						MemoryAllocatableBytes: 3903148032,
 						EphemeralStorageCap:    29137096704,
 						EphemeralStorageAvail:  29137096704,
+						Role:                   "worker",
+						Health:                 "green",
 					},
 					health.NodeStatus{
 						Name:                   "6iec4-worker-000009",
@@ -323,6 +335,8 @@ func Test_Health_Endpoint(t *testing.T) {
 						MemoryAllocatableBytes: 3903139840,
 						EphemeralStorageCap:    29137096704,
 						EphemeralStorageAvail:  29137096704,
+						Role:                   "worker",
+						Health:                 "green",
 					},
 					health.NodeStatus{
 						Name:                   "6iec4-worker-00000j",
@@ -338,6 +352,8 @@ func Test_Health_Endpoint(t *testing.T) {
 						MemoryAllocatableBytes: 3903148032,
 						EphemeralStorageCap:    29137096704,
 						EphemeralStorageAvail:  29137096704,
+						Role:                   "worker",
+						Health:                 "green",
 					},
 					health.NodeStatus{
 						Name:                   "6iec4-worker-00000k",
@@ -353,6 +369,8 @@ func Test_Health_Endpoint(t *testing.T) {
 						MemoryAllocatableBytes: 3903148032,
 						EphemeralStorageCap:    29137096704,
 						EphemeralStorageAvail:  29137096704,
+						Role:                   "worker",
+						Health:                 "green",
 					},
 					health.NodeStatus{
 						Name:                   "6iec4-worker-00000m",
@@ -368,6 +386,8 @@ func Test_Health_Endpoint(t *testing.T) {
 						MemoryAllocatableBytes: 3903148032,
 						EphemeralStorageCap:    29137096704,
 						EphemeralStorageAvail:  29137096704,
+						Role:                   "worker",
+						Health:                 "green",
 					},
 				},
 			},
@@ -381,9 +401,8 @@ func Test_Health_Endpoint(t *testing.T) {
 			k8sTCAPIResponse: mock.KVMHealthyTC,
 			expectedResponse: health.Response{
 				Cluster: health.ClusterStatus{
-					Health:    "green",
-					State:     key.Normal,
-					NodeCount: 4,
+					Health: "red",
+					State:  key.Normal,
 				},
 				Nodes: []health.NodeStatus{
 					health.NodeStatus{
@@ -397,6 +416,8 @@ func Test_Health_Endpoint(t *testing.T) {
 						MemoryAllocatableBytes: 6409887744,
 						EphemeralStorageCap:    5358223360,
 						EphemeralStorageAvail:  4284481536,
+						Role:                   "master",
+						Health:                 "green",
 					},
 					health.NodeStatus{
 						Name:                   "worker-3505b-57c995659f-55shv",
@@ -409,6 +430,8 @@ func Test_Health_Endpoint(t *testing.T) {
 						MemoryAllocatableBytes: 1661939712,
 						EphemeralStorageCap:    10726932480,
 						EphemeralStorageAvail:  9653190656,
+						Role:                   "worker",
+						Health:                 "green",
 					},
 					health.NodeStatus{
 						Name:                   "worker-fqu7z-6b4d5d9cf5-vkrxt",
@@ -421,6 +444,8 @@ func Test_Health_Endpoint(t *testing.T) {
 						MemoryAllocatableBytes: 1661923328,
 						EphemeralStorageCap:    10726932480,
 						EphemeralStorageAvail:  9653190656,
+						Role:                   "worker",
+						Health:                 "green",
 					},
 				},
 			},
