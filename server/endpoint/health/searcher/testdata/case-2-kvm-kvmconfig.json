@@ -1,1 +1,254 @@
-{}
+{
+    "apiVersion": "provider.giantswarm.io/v1alpha1",
+    "kind": "KVMConfig",
+    "metadata": {
+        "creationTimestamp": "2019-10-04T14:01:22Z",
+        "finalizers": [
+            "operatorkit.giantswarm.io/kvm-operator-deleter",
+            "operatorkit.giantswarm.io/kvm-operator"
+        ],
+        "generation": 1,
+        "name": "2k227",
+        "namespace": "default",
+        "resourceVersion": "137950708",
+        "selfLink": "/apis/provider.giantswarm.io/v1alpha1/namespaces/default/kvmconfigs/2k227",
+        "uid": "7224d558-e6af-11e9-b220-322c59f94502"
+    },
+    "spec": {
+        "cluster": {
+            "calico": {
+                "cidr": 16,
+                "mtu": 1430,
+                "subnet": "192.168.0.0"
+            },
+            "customer": {
+                "id": "giantswarm"
+            },
+            "docker": {
+                "daemon": {
+                    "cidr": "172.17.0.1/16"
+                }
+            },
+            "etcd": {
+                "altNames": "",
+                "domain": "etcd.2k227.k8s.gorgoth.gridscale.kvm.gigantic.io",
+                "port": 2379,
+                "prefix": "giantswarm.io"
+            },
+            "id": "2k227",
+            "kubernetes": {
+                "api": {
+                    "clusterIPRange": "172.31.0.0/16",
+                    "domain": "api.2k227.k8s.gorgoth.gridscale.kvm.gigantic.io",
+                    "securePort": 443
+                },
+                "cloudProvider": "",
+                "dns": {
+                    "ip": "172.31.0.10"
+                },
+                "domain": "cluster.local",
+                "ingressController": {
+                    "domain": "ingress.2k227.k8s.gorgoth.gridscale.kvm.gigantic.io",
+                    "insecurePort": 30010,
+                    "securePort": 30011,
+                    "wildcardDomain": "*.2k227.k8s.gorgoth.gridscale.kvm.gigantic.io"
+                },
+                "kubelet": {
+                    "altNames": "kubernetes,kubernetes.default,kubernetes.default.svc,kubernetes.default.svc.cluster.local",
+                    "domain": "worker.2k227.k8s.gorgoth.gridscale.kvm.gigantic.io",
+                    "labels": "kvm-operator.giantswarm.io/version=3.8.0,giantswarm.io/provider=kvm",
+                    "port": 10250
+                }
+            },
+            "masters": [
+                {
+                    "id": "m73hu"
+                }
+            ],
+            "scaling": {
+                "max": 3,
+                "min": 3
+            },
+            "version": "",
+            "workers": [
+                {
+                    "id": "hc97q"
+                },
+                {
+                    "id": "e8r4m"
+                },
+                {
+                    "id": "243rn"
+                }
+            ]
+        },
+        "kvm": {
+            "endpointUpdater": {
+            },
+            "k8sKVM": {
+                "storageType": "hostPath"
+            },
+            "masters": [
+                {
+                    "cpus": 2,
+                    "disk": 40,
+                    "dockerVolumeSizeGB": 0,
+                    "memory": "8G"
+                }
+            ],
+            "network": {
+                "flannel": {
+                    "vni": 48
+                }
+            },
+            "nodeController": {
+            },
+            "portMappings": [
+                {
+                    "name": "ingress-http",
+                    "nodePort": 30308,
+                    "targetPort": 30010
+                },
+                {
+                    "name": "ingress-https",
+                    "nodePort": 30309,
+                    "targetPort": 30011
+                }
+            ],
+            "workers": [
+                {
+                    "cpus": 2,
+                    "disk": 10,
+                    "dockerVolumeSizeGB": 0,
+                    "memory": "3G"
+                },
+                {
+                    "cpus": 2,
+                    "disk": 10,
+                    "dockerVolumeSizeGB": 0,
+                    "memory": "3G"
+                },
+                {
+                    "cpus": 2,
+                    "disk": 10,
+                    "dockerVolumeSizeGB": 0,
+                    "memory": "3G"
+                }
+            ]
+        },
+        "versionBundle": {
+            "version": "3.8.0"
+        }
+    },
+    "status": {
+        "cluster": {
+            "conditions": [
+                {
+                    "lastTransitionTime": "2019-10-04T14:15:27.897713693Z",
+                    "status": "True",
+                    "type": "Created"
+                }
+            ],
+            "network": {
+                "cidr": ""
+            },
+            "nodes": [
+                {
+                    "labels": {
+                        "beta.kubernetes.io/arch": "amd64",
+                        "beta.kubernetes.io/os": "linux",
+                        "giantswarm.io/provider": "kvm",
+                        "ip": "172.23.2.254",
+                        "kubernetes.io/arch": "amd64",
+                        "kubernetes.io/hostname": "master-m73hu-5bfc5479b-pd52d",
+                        "kubernetes.io/os": "linux",
+                        "kubernetes.io/role": "master",
+                        "kvm-operator.giantswarm.io/version": "3.8.0",
+                        "node-role.kubernetes.io/master": "",
+                        "node.kubernetes.io/master": "",
+                        "role": "master"
+                    },
+                    "lastTransitionTime": "2019-10-04T14:15:27.82677263Z",
+                    "name": "master-m73hu-5bfc5479b-pd52d",
+                    "version": "3.8.0"
+                },
+                {
+                    "labels": {
+                        "beta.kubernetes.io/arch": "amd64",
+                        "beta.kubernetes.io/os": "linux",
+                        "giantswarm.io/provider": "kvm",
+                        "ip": "172.23.2.206",
+                        "kubernetes.io/arch": "amd64",
+                        "kubernetes.io/hostname": "worker-243rn-6944445cd4-zd6g9",
+                        "kubernetes.io/os": "linux",
+                        "kubernetes.io/role": "worker",
+                        "kvm-operator.giantswarm.io/version": "3.8.0",
+                        "node-role.kubernetes.io/worker": "",
+                        "node.kubernetes.io/worker": "",
+                        "role": "worker"
+                    },
+                    "lastTransitionTime": "2019-10-04T14:15:27.826773486Z",
+                    "name": "worker-243rn-6944445cd4-zd6g9",
+                    "version": "3.8.0"
+                },
+                {
+                    "labels": {
+                        "beta.kubernetes.io/arch": "amd64",
+                        "beta.kubernetes.io/os": "linux",
+                        "giantswarm.io/provider": "kvm",
+                        "ip": "172.23.2.122",
+                        "kubernetes.io/arch": "amd64",
+                        "kubernetes.io/hostname": "worker-e8r4m-5dcb8ffd8d-xdjt5",
+                        "kubernetes.io/os": "linux",
+                        "kubernetes.io/role": "worker",
+                        "kvm-operator.giantswarm.io/version": "3.8.0",
+                        "node-role.kubernetes.io/worker": "",
+                        "node.kubernetes.io/worker": "",
+                        "role": "worker"
+                    },
+                    "lastTransitionTime": "2019-10-04T14:15:27.826774073Z",
+                    "name": "worker-e8r4m-5dcb8ffd8d-xdjt5",
+                    "version": "3.8.0"
+                },
+                {
+                    "labels": {
+                        "beta.kubernetes.io/arch": "amd64",
+                        "beta.kubernetes.io/os": "linux",
+                        "giantswarm.io/provider": "kvm",
+                        "ip": "172.23.2.242",
+                        "kubernetes.io/arch": "amd64",
+                        "kubernetes.io/hostname": "worker-hc97q-58487c888-jcbdd",
+                        "kubernetes.io/os": "linux",
+                        "kubernetes.io/role": "worker",
+                        "kvm-operator.giantswarm.io/version": "3.8.0",
+                        "node-role.kubernetes.io/worker": "",
+                        "node.kubernetes.io/worker": "",
+                        "role": "worker"
+                    },
+                    "lastTransitionTime": "2019-10-04T14:15:27.826774538Z",
+                    "name": "worker-hc97q-58487c888-jcbdd",
+                    "version": "3.8.0"
+                }
+            ],
+            "resources": null,
+            "scaling": {
+                "desiredCapacity": 0
+            },
+            "versions": [
+                {
+                    "date": "0001-01-01T00:00:00Z",
+                    "lastTransitionTime": "2019-10-04T14:15:27.940600839Z",
+                    "semver": "3.8.0"
+                }
+            ]
+        },
+        "kvm": {
+            "nodeIndexes": {
+                "243rn": 4,
+                "e8r4m": 3,
+                "hc97q": 2,
+                "m73hu": 1
+            }
+        }
+    }
+}

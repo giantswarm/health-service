@@ -1,1 +1,477 @@
-{}
+{
+    "kind": "NodeList",
+    "apiVersion": "v1",
+    "metadata": {
+        "selfLink": "/api/v1/nodes",
+        "resourceVersion": "5700"
+    },
+    "items": [
+        {
+            "metadata": {
+                "name": "master-m73hu-5bfc5479b-pd52d",
+                "selfLink": "/api/v1/nodes/master-m73hu-5bfc5479b-pd52d",
+                "uid": "91c48076-e6b0-11e9-af79-deadbe835803",
+                "resourceVersion": "5643",
+                "creationTimestamp": "2019-10-04T14:09:24Z",
+                "labels": {
+                    "beta.kubernetes.io/arch": "amd64",
+                    "beta.kubernetes.io/os": "linux",
+                    "giantswarm.io/provider": "kvm",
+                    "ip": "172.23.2.254",
+                    "kubernetes.io/arch": "amd64",
+                    "kubernetes.io/hostname": "master-m73hu-5bfc5479b-pd52d",
+                    "kubernetes.io/os": "linux",
+                    "kubernetes.io/role": "master",
+                    "kvm-operator.giantswarm.io/version": "3.8.0",
+                    "node-role.kubernetes.io/master": "",
+                    "node.kubernetes.io/master": "",
+                    "role": "master"
+                },
+                "annotations": {
+                    "node.alpha.kubernetes.io/ttl": "0",
+                    "volumes.kubernetes.io/controller-managed-attach-detach": "true"
+                }
+            },
+            "spec": {
+                "taints": [
+                    {
+                        "key": "node-role.kubernetes.io/master",
+                        "effect": "NoSchedule"
+                    }
+                ]
+            },
+            "status": {
+                "capacity": {
+                    "cpu": "2",
+                    "ephemeral-storage": "5110Mi",
+                    "hugepages-1Gi": "0",
+                    "hugepages-2Mi": "0",
+                    "memory": "8168392Ki",
+                    "pods": "110"
+                },
+                "allocatable": {
+                    "cpu": "1400m",
+                    "ephemeral-storage": "4086Mi",
+                    "hugepages-1Gi": "0",
+                    "hugepages-2Mi": "0",
+                    "memory": "6259656Ki",
+                    "pods": "110"
+                },
+                "conditions": [
+                    {
+                        "type": "NetworkUnavailable",
+                        "status": "False",
+                        "lastHeartbeatTime": "2019-10-04T14:12:14Z",
+                        "lastTransitionTime": "2019-10-04T14:12:14Z",
+                        "reason": "CalicoIsUp",
+                        "message": "Calico is running on this node"
+                    },
+                    {
+                        "type": "MemoryPressure",
+                        "status": "False",
+                        "lastHeartbeatTime": "2019-10-04T14:53:34Z",
+                        "lastTransitionTime": "2019-10-04T14:09:16Z",
+                        "reason": "KubeletHasSufficientMemory",
+                        "message": "kubelet has sufficient memory available"
+                    },
+                    {
+                        "type": "DiskPressure",
+                        "status": "False",
+                        "lastHeartbeatTime": "2019-10-04T14:53:34Z",
+                        "lastTransitionTime": "2019-10-04T14:09:16Z",
+                        "reason": "KubeletHasNoDiskPressure",
+                        "message": "kubelet has no disk pressure"
+                    },
+                    {
+                        "type": "PIDPressure",
+                        "status": "False",
+                        "lastHeartbeatTime": "2019-10-04T14:53:34Z",
+                        "lastTransitionTime": "2019-10-04T14:09:16Z",
+                        "reason": "KubeletHasSufficientPID",
+                        "message": "kubelet has sufficient PID available"
+                    },
+                    {
+                        "type": "Ready",
+                        "status": "True",
+                        "lastHeartbeatTime": "2019-10-04T14:53:34Z",
+                        "lastTransitionTime": "2019-10-04T14:13:50Z",
+                        "reason": "KubeletReady",
+                        "message": "kubelet is posting ready status"
+                    }
+                ],
+                "addresses": [
+                    {
+                        "type": "InternalIP",
+                        "address": "172.23.2.254"
+                    },
+                    {
+                        "type": "Hostname",
+                        "address": "master-m73hu-5bfc5479b-pd52d"
+                    }
+                ],
+                "daemonEndpoints": {
+                    "kubeletEndpoint": {
+                        "Port": 10250
+                    }
+                },
+                "nodeInfo": {
+                    "machineID": "7cd158ee39054c81bb9da41d73688c56",
+                    "systemUUID": "311936e2303b034fe7ef70182235b8cb",
+                    "bootID": "71f5e94e-1175-4ac6-8c7c-31ad9dc80d93",
+                    "kernelVersion": "4.19.50-coreos-r1",
+                    "osImage": "Container Linux by CoreOS 2135.4.0 (Rhyolite)",
+                    "containerRuntimeVersion": "docker://18.6.3",
+                    "kubeletVersion": "v1.14.6",
+                    "kubeProxyVersion": "v1.14.6",
+                    "operatingSystem": "linux",
+                    "architecture": "amd64"
+                }
+            }
+        },
+        {
+            "metadata": {
+                "name": "worker-243rn-6944445cd4-zd6g9",
+                "selfLink": "/api/v1/nodes/worker-243rn-6944445cd4-zd6g9",
+                "uid": "a6963976-e6b0-11e9-af79-deadbe835803",
+                "resourceVersion": "5624",
+                "creationTimestamp": "2019-10-04T14:09:59Z",
+                "labels": {
+                    "beta.kubernetes.io/arch": "amd64",
+                    "beta.kubernetes.io/os": "linux",
+                    "giantswarm.io/provider": "kvm",
+                    "ip": "172.23.2.206",
+                    "kubernetes.io/arch": "amd64",
+                    "kubernetes.io/hostname": "worker-243rn-6944445cd4-zd6g9",
+                    "kubernetes.io/os": "linux",
+                    "kubernetes.io/role": "worker",
+                    "kvm-operator.giantswarm.io/version": "3.8.0",
+                    "node-role.kubernetes.io/worker": "",
+                    "node.kubernetes.io/worker": "",
+                    "role": "worker"
+                },
+                "annotations": {
+                    "node.alpha.kubernetes.io/ttl": "0",
+                    "volumes.kubernetes.io/controller-managed-attach-detach": "true"
+                }
+            },
+            "spec": {},
+            "status": {
+                "capacity": {
+                    "cpu": "2",
+                    "ephemeral-storage": "10230Mi",
+                    "hugepages-1Gi": "0",
+                    "hugepages-2Mi": "0",
+                    "memory": "3007436Ki",
+                    "pods": "110"
+                },
+                "allocatable": {
+                    "cpu": "1500m",
+                    "ephemeral-storage": "9206Mi",
+                    "hugepages-1Gi": "0",
+                    "hugepages-2Mi": "0",
+                    "memory": "1622988Ki",
+                    "pods": "110"
+                },
+                "conditions": [
+                    {
+                        "type": "NetworkUnavailable",
+                        "status": "False",
+                        "lastHeartbeatTime": "2019-10-04T14:12:00Z",
+                        "lastTransitionTime": "2019-10-04T14:12:00Z",
+                        "reason": "CalicoIsUp",
+                        "message": "Calico is running on this node"
+                    },
+                    {
+                        "type": "MemoryPressure",
+                        "status": "False",
+                        "lastHeartbeatTime": "2019-10-04T14:53:23Z",
+                        "lastTransitionTime": "2019-10-04T14:09:59Z",
+                        "reason": "KubeletHasSufficientMemory",
+                        "message": "kubelet has sufficient memory available"
+                    },
+                    {
+                        "type": "DiskPressure",
+                        "status": "False",
+                        "lastHeartbeatTime": "2019-10-04T14:53:23Z",
+                        "lastTransitionTime": "2019-10-04T14:09:59Z",
+                        "reason": "KubeletHasNoDiskPressure",
+                        "message": "kubelet has no disk pressure"
+                    },
+                    {
+                        "type": "PIDPressure",
+                        "status": "False",
+                        "lastHeartbeatTime": "2019-10-04T14:53:23Z",
+                        "lastTransitionTime": "2019-10-04T14:09:59Z",
+                        "reason": "KubeletHasSufficientPID",
+                        "message": "kubelet has sufficient PID available"
+                    },
+                    {
+                        "type": "Ready",
+                        "status": "True",
+                        "lastHeartbeatTime": "2019-10-04T14:53:23Z",
+                        "lastTransitionTime": "2019-10-04T14:11:59Z",
+                        "reason": "KubeletReady",
+                        "message": "kubelet is posting ready status"
+                    }
+                ],
+                "addresses": [
+                    {
+                        "type": "InternalIP",
+                        "address": "172.23.2.206"
+                    },
+                    {
+                        "type": "Hostname",
+                        "address": "worker-243rn-6944445cd4-zd6g9"
+                    }
+                ],
+                "daemonEndpoints": {
+                    "kubeletEndpoint": {
+                        "Port": 10250
+                    }
+                },
+                "nodeInfo": {
+                    "machineID": "414782c42a56465cb51eff885a580305",
+                    "systemUUID": "311936e2303b034fe7ef70182235b8cb",
+                    "bootID": "7e162b35-06b0-4532-a47e-c46212aa4868",
+                    "kernelVersion": "4.19.50-coreos-r1",
+                    "osImage": "Container Linux by CoreOS 2135.4.0 (Rhyolite)",
+                    "containerRuntimeVersion": "docker://18.6.3",
+                    "kubeletVersion": "v1.14.6",
+                    "kubeProxyVersion": "v1.14.6",
+                    "operatingSystem": "linux",
+                    "architecture": "amd64"
+                }
+            }
+        },
+        {
+            "metadata": {
+                "name": "worker-e8r4m-5dcb8ffd8d-xdjt5",
+                "selfLink": "/api/v1/nodes/worker-e8r4m-5dcb8ffd8d-xdjt5",
+                "uid": "a695de72-e6b0-11e9-af79-deadbe835803",
+                "resourceVersion": "5625",
+                "creationTimestamp": "2019-10-04T14:09:59Z",
+                "labels": {
+                    "beta.kubernetes.io/arch": "amd64",
+                    "beta.kubernetes.io/os": "linux",
+                    "giantswarm.io/provider": "kvm",
+                    "ip": "172.23.2.122",
+                    "kubernetes.io/arch": "amd64",
+                    "kubernetes.io/hostname": "worker-e8r4m-5dcb8ffd8d-xdjt5",
+                    "kubernetes.io/os": "linux",
+                    "kubernetes.io/role": "worker",
+                    "kvm-operator.giantswarm.io/version": "3.8.0",
+                    "node-role.kubernetes.io/worker": "",
+                    "node.kubernetes.io/worker": "",
+                    "role": "worker"
+                },
+                "annotations": {
+                    "node.alpha.kubernetes.io/ttl": "0",
+                    "volumes.kubernetes.io/controller-managed-attach-detach": "true"
+                }
+            },
+            "spec": {},
+            "status": {
+                "capacity": {
+                    "cpu": "2",
+                    "ephemeral-storage": "10230Mi",
+                    "hugepages-1Gi": "0",
+                    "hugepages-2Mi": "0",
+                    "memory": "3007420Ki",
+                    "pods": "110"
+                },
+                "allocatable": {
+                    "cpu": "1500m",
+                    "ephemeral-storage": "9206Mi",
+                    "hugepages-1Gi": "0",
+                    "hugepages-2Mi": "0",
+                    "memory": "1622972Ki",
+                    "pods": "110"
+                },
+                "conditions": [
+                    {
+                        "type": "NetworkUnavailable",
+                        "status": "False",
+                        "lastHeartbeatTime": "2019-10-04T14:12:04Z",
+                        "lastTransitionTime": "2019-10-04T14:12:04Z",
+                        "reason": "CalicoIsUp",
+                        "message": "Calico is running on this node"
+                    },
+                    {
+                        "type": "MemoryPressure",
+                        "status": "False",
+                        "lastHeartbeatTime": "2019-10-04T14:53:23Z",
+                        "lastTransitionTime": "2019-10-04T14:09:59Z",
+                        "reason": "KubeletHasSufficientMemory",
+                        "message": "kubelet has sufficient memory available"
+                    },
+                    {
+                        "type": "DiskPressure",
+                        "status": "False",
+                        "lastHeartbeatTime": "2019-10-04T14:53:23Z",
+                        "lastTransitionTime": "2019-10-04T14:09:59Z",
+                        "reason": "KubeletHasNoDiskPressure",
+                        "message": "kubelet has no disk pressure"
+                    },
+                    {
+                        "type": "PIDPressure",
+                        "status": "False",
+                        "lastHeartbeatTime": "2019-10-04T14:53:23Z",
+                        "lastTransitionTime": "2019-10-04T14:09:59Z",
+                        "reason": "KubeletHasSufficientPID",
+                        "message": "kubelet has sufficient PID available"
+                    },
+                    {
+                        "type": "Ready",
+                        "status": "True",
+                        "lastHeartbeatTime": "2019-10-04T14:53:23Z",
+                        "lastTransitionTime": "2019-10-04T14:11:59Z",
+                        "reason": "KubeletReady",
+                        "message": "kubelet is posting ready status"
+                    }
+                ],
+                "addresses": [
+                    {
+                        "type": "InternalIP",
+                        "address": "172.23.2.122"
+                    },
+                    {
+                        "type": "Hostname",
+                        "address": "worker-e8r4m-5dcb8ffd8d-xdjt5"
+                    }
+                ],
+                "daemonEndpoints": {
+                    "kubeletEndpoint": {
+                        "Port": 10250
+                    }
+                },
+                "nodeInfo": {
+                    "machineID": "2a7daf8f733347e291108c94e4010581",
+                    "systemUUID": "311936e2303b034fe7ef70182235b8cb",
+                    "bootID": "af1976ea-f610-4baf-b67d-c620186059eb",
+                    "kernelVersion": "4.19.50-coreos-r1",
+                    "osImage": "Container Linux by CoreOS 2135.4.0 (Rhyolite)",
+                    "containerRuntimeVersion": "docker://18.6.3",
+                    "kubeletVersion": "v1.14.6",
+                    "kubeProxyVersion": "v1.14.6",
+                    "operatingSystem": "linux",
+                    "architecture": "amd64"
+                }
+            }
+        },
+        {
+            "metadata": {
+                "name": "worker-hc97q-58487c888-jcbdd",
+                "selfLink": "/api/v1/nodes/worker-hc97q-58487c888-jcbdd",
+                "uid": "ec53b6a4-e6b0-11e9-af79-deadbe835803",
+                "resourceVersion": "5682",
+                "creationTimestamp": "2019-10-04T14:11:56Z",
+                "labels": {
+                    "beta.kubernetes.io/arch": "amd64",
+                    "beta.kubernetes.io/os": "linux",
+                    "giantswarm.io/provider": "kvm",
+                    "ip": "172.23.2.242",
+                    "kubernetes.io/arch": "amd64",
+                    "kubernetes.io/hostname": "worker-hc97q-58487c888-jcbdd",
+                    "kubernetes.io/os": "linux",
+                    "kubernetes.io/role": "worker",
+                    "kvm-operator.giantswarm.io/version": "3.8.0",
+                    "node-role.kubernetes.io/worker": "",
+                    "node.kubernetes.io/worker": "",
+                    "role": "worker"
+                },
+                "annotations": {
+                    "node.alpha.kubernetes.io/ttl": "0",
+                    "volumes.kubernetes.io/controller-managed-attach-detach": "true"
+                }
+            },
+            "spec": {},
+            "status": {
+                "capacity": {
+                    "cpu": "2",
+                    "ephemeral-storage": "10230Mi",
+                    "hugepages-1Gi": "0",
+                    "hugepages-2Mi": "0",
+                    "memory": "3007420Ki",
+                    "pods": "110"
+                },
+                "allocatable": {
+                    "cpu": "1500m",
+                    "ephemeral-storage": "9206Mi",
+                    "hugepages-1Gi": "0",
+                    "hugepages-2Mi": "0",
+                    "memory": "1622972Ki",
+                    "pods": "110"
+                },
+                "conditions": [
+                    {
+                        "type": "NetworkUnavailable",
+                        "status": "False",
+                        "lastHeartbeatTime": "2019-10-04T14:12:43Z",
+                        "lastTransitionTime": "2019-10-04T14:12:43Z",
+                        "reason": "CalicoIsUp",
+                        "message": "Calico is running on this node"
+                    },
+                    {
+                        "type": "MemoryPressure",
+                        "status": "False",
+                        "lastHeartbeatTime": "2019-10-04T14:54:00Z",
+                        "lastTransitionTime": "2019-10-04T14:11:56Z",
+                        "reason": "KubeletHasSufficientMemory",
+                        "message": "kubelet has sufficient memory available"
+                    },
+                    {
+                        "type": "DiskPressure",
+                        "status": "False",
+                        "lastHeartbeatTime": "2019-10-04T14:54:00Z",
+                        "lastTransitionTime": "2019-10-04T14:11:56Z",
+                        "reason": "KubeletHasNoDiskPressure",
+                        "message": "kubelet has no disk pressure"
+                    },
+                    {
+                        "type": "PIDPressure",
+                        "status": "False",
+                        "lastHeartbeatTime": "2019-10-04T14:54:00Z",
+                        "lastTransitionTime": "2019-10-04T14:11:56Z",
+                        "reason": "KubeletHasSufficientPID",
+                        "message": "kubelet has sufficient PID available"
+                    },
+                    {
+                        "type": "Ready",
+                        "status": "True",
+                        "lastHeartbeatTime": "2019-10-04T14:54:00Z",
+                        "lastTransitionTime": "2019-10-04T14:12:36Z",
+                        "reason": "KubeletReady",
+                        "message": "kubelet is posting ready status"
+                    }
+                ],
+                "addresses": [
+                    {
+                        "type": "InternalIP",
+                        "address": "172.23.2.242"
+                    },
+                    {
+                        "type": "Hostname",
+                        "address": "worker-hc97q-58487c888-jcbdd"
+                    }
+                ],
+                "daemonEndpoints": {
+                    "kubeletEndpoint": {
+                        "Port": 10250
+                    }
+                },
+                "nodeInfo": {
+                    "machineID": "84b6ffdd94fb489b869b37fedb4c3be4",
+                    "systemUUID": "311936e2303b034fe7ef70182235b8cb",
+                    "bootID": "e7f7d7f7-c07f-44a7-81d1-ee19410c7e2e",
+                    "kernelVersion": "4.19.50-coreos-r1",
+                    "osImage": "Container Linux by CoreOS 2135.4.0 (Rhyolite)",
+                    "containerRuntimeVersion": "docker://18.6.3",
+                    "kubeletVersion": "v1.14.6",
+                    "kubeProxyVersion": "v1.14.6",
+                    "operatingSystem": "linux",
+                    "architecture": "amd64"
+                }
+            }
+        }
+    ]
+}
