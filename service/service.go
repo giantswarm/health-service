@@ -11,13 +11,11 @@ import (
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
 	"github.com/giantswarm/microstorage"
-	"github.com/giantswarm/operatorkit/client/k8srestconfig"
-	"github.com/spf13/viper"
-	"k8s.io/client-go/kubernetes"
-	"k8s.io/client-go/rest"
+	"github.com/giantswarm/tenantcluster"
 
-	"github.com/giantswarm/health-service/flag"
 	"github.com/giantswarm/health-service/service/health"
+	"github.com/giantswarm/health-service/service/host"
+	"github.com/giantswarm/health-service/service/tenant"
 )
 
 const (
@@ -29,12 +27,11 @@ const (
 
 // Config represents the configuration used to create a new service.
 type Config struct {
-	K8sClient kubernetes.Interface
-	Logger    micrologger.Logger
-	Storage   microstorage.Storage
-
-	Flag  *flag.Flag
-	Viper *viper.Viper
+	G8sClient     versioned.Interface
+	Logger        micrologger.Logger
+	Storage       microstorage.Storage
+	TenantCluster tenantcluster.Interface
+	Provider      string
 
 	Description string
 	GitCommit   string
@@ -44,7 +41,9 @@ type Config struct {
 }
 
 type Service struct {
+	Host    *host.Service
 	Health  *health.Service
+	Tenant  *tenant.Service
 	Version *version.Service
 
 	bootOnce sync.Once
@@ -52,56 +51,51 @@ type Service struct {
 
 // New creates a new configured service object.
 func New(config Config) (*Service, error) {
-	if config.K8sClient == nil {
-		return nil, microerror.Maskf(invalidConfigError, "%T.K8SClient must not be empty", config)
+	if config.G8sClient == nil {
+		return nil, microerror.Maskf(invalidConfigError, "%T.G8sClient must not be empty", config)
 	}
-
-	if config.Flag == nil {
-		return nil, microerror.Maskf(invalidConfigError, "%T.Flag must not be empty", config)
+	if config.Provider == "" {
+		return nil, microerror.Maskf(invalidConfigError, "%T.Provider must not be empty", config)
 	}
-	if config.Viper == nil {
-		return nil, microerror.Maskf(invalidConfigError, "%T.Viper must not be empty", config)
+	if config.TenantCluster == nil {
+		return nil, microerror.Maskf(invalidConfigError, "%T.TenantCluster must not be empty", config)
 	}
 
 	var err error
-
-	var restConfig *rest.Config
+	var healthService *health.Service
 	{
-		c := k8srestconfig.Config{
+		healthConfig := health.Config{
 			Logger: config.Logger,
-
-			Address:    config.Viper.GetString(config.Flag.Service.Kubernetes.Address),
-			InCluster:  config.Viper.GetBool(config.Flag.Service.Kubernetes.InCluster),
-			KubeConfig: config.Viper.GetString(config.Flag.Service.Kubernetes.KubeConfig),
-			TLS: k8srestconfig.ConfigTLS{
-				CAFile:  config.Viper.GetString(config.Flag.Service.Kubernetes.TLS.CAFile),
-				CrtFile: config.Viper.GetString(config.Flag.Service.Kubernetes.TLS.CrtFile),
-				KeyFile: config.Viper.GetString(config.Flag.Service.Kubernetes.TLS.KeyFile),
-			},
 		}
 
-		restConfig, err = k8srestconfig.New(c)
+		healthService, err = health.New(healthConfig)
 		if err != nil {
 			return nil, microerror.Mask(err)
 		}
 	}
 
-	g8sClient, err := versioned.NewForConfig(restConfig)
-	if err != nil {
-		return nil, microerror.Mask(err)
-	}
-
-	var healthService *health.Service
+	var hostService *host.Service
 	{
-		healthConfig := health.Config{
-			K8sClient: config.K8sClient,
+		hostConfig := host.Config{
+			G8sClient: config.G8sClient,
 			Logger:    config.Logger,
-			G8sClient: g8sClient,
-			Flag:      config.Flag,
-			Viper:     config.Viper,
+			Provider:  config.Provider,
 		}
 
-		healthService, err = health.New(healthConfig)
+		hostService, err = host.New(hostConfig)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+	}
+
+	var tenantService *tenant.Service
+	{
+		tenantConfig := tenant.Config{
+			Logger:        config.Logger,
+			TenantCluster: config.TenantCluster,
+		}
+
+		tenantService, err = tenant.New(tenantConfig)
 		if err != nil {
 			return nil, microerror.Mask(err)
 		}
@@ -124,7 +118,9 @@ func New(config Config) (*Service, error) {
 	}
 
 	s := &Service{
+		Host:    hostService,
 		Health:  healthService,
+		Tenant:  tenantService,
 		Version: versionService,
 
 		bootOnce: sync.Once{},
