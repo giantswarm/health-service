@@ -2,6 +2,7 @@ package host
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/giantswarm/apiextensions/pkg/clientset/versioned"
 	"github.com/giantswarm/microerror"
@@ -123,6 +124,8 @@ func (s *Service) SearchStatusCluster(ctx context.Context, request Request) (*Re
 			return nil, microerror.Mask(err)
 		}
 	}
+
+	fmt.Printf("%#v", response)
 
 	return &response, nil
 }

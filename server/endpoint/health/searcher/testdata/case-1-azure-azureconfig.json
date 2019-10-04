@@ -1,0 +1,237 @@
+{
+  "apiVersion": "provider.giantswarm.io/v1alpha1",
+  "kind": "AzureConfig",
+  "metadata": {
+      "creationTimestamp": "2019-10-04T14:29:42Z",
+      "finalizers": [
+          "operatorkit.giantswarm.io/azure-operator"
+      ],
+      "generation": 1,
+      "name": "fg0ge",
+      "namespace": "default",
+      "resourceVersion": "107098032",
+      "selfLink": "/apis/provider.giantswarm.io/v1alpha1/namespaces/default/azureconfigs/fg0ge",
+      "uid": "67ed5db3-e6b3-11e9-9ace-000d3a280152"
+  },
+  "spec": {
+      "azure": {
+          "credentialSecret": {
+              "name": "credential-default",
+              "namespace": "giantswarm"
+          },
+          "dnsZones": {
+              "api": {
+                  "name": "godsmack.westeurope.azure.gigantic.io",
+                  "resourceGroup": "godsmack"
+              },
+              "etcd": {
+                  "name": "godsmack.westeurope.azure.gigantic.io",
+                  "resourceGroup": "godsmack"
+              },
+              "ingress": {
+                  "name": "godsmack.westeurope.azure.gigantic.io",
+                  "resourceGroup": "godsmack"
+              }
+          },
+          "masters": [
+              {
+                  "dockerVolumeSizeGB": 0,
+                  "vmSize": "Standard_D2s_v3"
+              }
+          ],
+          "virtualNetwork": {
+              "calicoSubnetCIDR": "10.2.128.0/17",
+              "cidr": "10.2.0.0/16",
+              "masterSubnetCIDR": "10.2.0.0/24",
+              "workerSubnetCIDR": "10.2.1.0/24"
+          },
+          "workers": [
+              {
+                  "dockerVolumeSizeGB": 0,
+                  "vmSize": "Standard_D2s_v3"
+              },
+              {
+                  "dockerVolumeSizeGB": 0,
+                  "vmSize": "Standard_D2s_v3"
+              },
+              {
+                  "dockerVolumeSizeGB": 0,
+                  "vmSize": "Standard_D2s_v3"
+              }
+          ]
+      },
+      "cluster": {
+          "calico": {
+              "cidr": 0,
+              "mtu": 1430,
+              "subnet": ""
+          },
+          "customer": {
+              "id": "giantswarm"
+          },
+          "docker": {
+              "daemon": {
+                  "cidr": "172.17.0.1/16"
+              }
+          },
+          "id": "fg0ge",
+          "kubernetes": {
+              "api": {
+                  "clusterIPRange": "172.31.0.0/16",
+                  "domain": "api.fg0ge.k8s.godsmack.westeurope.azure.gigantic.io",
+                  "securePort": 443
+              }
+          },
+          "masters": [
+              {
+                  "id": "95j96"
+              }
+          ],
+          "scaling": {
+              "max": 3,
+              "min": 3
+          },
+          "version": "",
+          "workers": [
+              {
+                  "id": "w66ej"
+              },
+              {
+                  "id": "m24d7"
+              },
+              {
+                  "id": "q70a2"
+              }
+          ]
+      },
+      "versionBundle": {
+          "version": "2.6.1"
+      }
+  },
+  "status": {
+      "cluster": {
+          "conditions": [
+              {
+                  "lastTransitionTime": "2019-10-04T14:45:26.646395346Z",
+                  "status": "True",
+                  "type": "Created"
+              }
+          ],
+          "network": {
+              "cidr": ""
+          },
+          "nodes": [
+              {
+                  "labels": {
+                      "azure-operator.giantswarm.io/version": "2.6.1",
+                      "beta.kubernetes.io/arch": "amd64",
+                      "beta.kubernetes.io/instance-type": "Standard_D2s_v3",
+                      "beta.kubernetes.io/os": "linux",
+                      "failure-domain.beta.kubernetes.io/region": "westeurope",
+                      "failure-domain.beta.kubernetes.io/zone": "0",
+                      "giantswarm.io/provider": "azure",
+                      "ip": "10.2.0.5",
+                      "kubernetes.io/arch": "amd64",
+                      "kubernetes.io/hostname": "fg0ge-master-000000",
+                      "kubernetes.io/os": "linux",
+                      "kubernetes.io/role": "master",
+                      "node-role.kubernetes.io/master": "",
+                      "node.kubernetes.io/master": "",
+                      "role": "master"
+                  },
+                  "lastTransitionTime": "2019-10-04T14:42:24.649223299Z",
+                  "name": "fg0ge-master-000000",
+                  "version": "2.6.1"
+              },
+              {
+                  "labels": {
+                      "azure-operator.giantswarm.io/version": "2.6.1",
+                      "beta.kubernetes.io/arch": "amd64",
+                      "beta.kubernetes.io/instance-type": "Standard_D2s_v3",
+                      "beta.kubernetes.io/os": "linux",
+                      "failure-domain.beta.kubernetes.io/region": "westeurope",
+                      "failure-domain.beta.kubernetes.io/zone": "0",
+                      "giantswarm.io/provider": "azure",
+                      "ip": "10.2.1.4",
+                      "kubernetes.io/arch": "amd64",
+                      "kubernetes.io/hostname": "fg0ge-worker-000000",
+                      "kubernetes.io/os": "linux",
+                      "kubernetes.io/role": "worker",
+                      "node-role.kubernetes.io/worker": "",
+                      "node.kubernetes.io/worker": "",
+                      "role": "worker"
+                  },
+                  "lastTransitionTime": "2019-10-04T14:42:24.649224399Z",
+                  "name": "fg0ge-worker-000000",
+                  "version": "2.6.1"
+              },
+              {
+                  "labels": {
+                      "azure-operator.giantswarm.io/version": "2.6.1",
+                      "beta.kubernetes.io/arch": "amd64",
+                      "beta.kubernetes.io/instance-type": "Standard_D2s_v3",
+                      "beta.kubernetes.io/os": "linux",
+                      "failure-domain.beta.kubernetes.io/region": "westeurope",
+                      "failure-domain.beta.kubernetes.io/zone": "1",
+                      "giantswarm.io/provider": "azure",
+                      "ip": "10.2.1.5",
+                      "kubernetes.io/arch": "amd64",
+                      "kubernetes.io/hostname": "fg0ge-worker-000001",
+                      "kubernetes.io/os": "linux",
+                      "kubernetes.io/role": "worker",
+                      "node-role.kubernetes.io/worker": "",
+                      "node.kubernetes.io/worker": "",
+                      "role": "worker"
+                  },
+                  "lastTransitionTime": "2019-10-04T14:42:24.649224899Z",
+                  "name": "fg0ge-worker-000001",
+                  "version": "2.6.1"
+              },
+              {
+                  "labels": {
+                      "azure-operator.giantswarm.io/version": "2.6.1",
+                      "beta.kubernetes.io/arch": "amd64",
+                      "beta.kubernetes.io/instance-type": "Standard_D2s_v3",
+                      "beta.kubernetes.io/os": "linux",
+                      "failure-domain.beta.kubernetes.io/region": "westeurope",
+                      "failure-domain.beta.kubernetes.io/zone": "4",
+                      "giantswarm.io/provider": "azure",
+                      "ip": "10.2.1.8",
+                      "kubernetes.io/arch": "amd64",
+                      "kubernetes.io/hostname": "fg0ge-worker-000004",
+                      "kubernetes.io/os": "linux",
+                      "kubernetes.io/role": "worker",
+                      "node-role.kubernetes.io/worker": "",
+                      "node.kubernetes.io/worker": "",
+                      "role": "worker"
+                  },
+                  "lastTransitionTime": "2019-10-04T14:42:24.649225399Z",
+                  "name": "fg0ge-worker-000004",
+                  "version": "2.6.1"
+              }
+          ],
+          "resources": [
+              {
+                  "conditions": [
+                      {
+                          "lastTransitionTime": "0001-01-01T00:00:00Z",
+                          "status": "InstancesUpgrading",
+                          "type": "Stage"
+                      }
+                  ],
+                  "name": "instancev10patch1"
+              }
+          ],
+          "scaling": {
+              "desiredCapacity": 0
+          },
+          "versions": [
+              {
+                  "date": "0001-01-01T00:00:00Z",
+                  "lastTransitionTime": "2019-10-04T14:48:28.655112226Z",
+                  "semver": "2.6.1"
+              }
+          ]
+      }
+  }
+}
