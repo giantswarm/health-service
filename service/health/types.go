@@ -55,14 +55,37 @@ func NewNodeStatus(node v1.Node) NodeStatus {
 		}
 	}
 	return NodeStatus{
-		Name:         node.Name,
-		Ready:        ready,
-		IP:           ipFromAddresses(node.Status.Addresses),
-		Hostname:     hostnameFromAddresses(node.Status.Addresses),
-		InstanceType: node.GetObjectMeta().GetLabels()["beta.kubernetes.io/instance-type"],
-		CPUCount:     node.Status.Capacity.Cpu().Value(),
-		MemoryBytes:  nodeMemoryToInt(node.Status.Capacity.Memory()),
+		Name:                   node.Name,
+		Ready:                  ready,
+		IP:                     ipFromAddresses(node.Status.Addresses),
+		Hostname:               hostnameFromAddresses(node.Status.Addresses),
+		InstanceType:           node.GetLabels()["beta.kubernetes.io/instance-type"],
+		AvailabilityZone:       node.GetLabels()["failure-domain.beta.kubernetes.io/zone"],
+		AvailabilityRegion:     node.GetLabels()["failure-domain.beta.kubernetes.io/region"],
+		KubeletVersion:         node.Status.NodeInfo.KubeletVersion,
+		CPUCount:               node.Status.Capacity.Cpu().Value(),
+		MemoryCapacityBytes:    nodeMemoryToInt(node.Status.Capacity.Memory()),
+		MemoryAllocatableBytes: nodeMemoryToInt(node.Status.Allocatable.Memory()),
+		EphemeralStorageCap:    nodeMemoryToInt(node.Status.Capacity.StorageEphemeral()),
+		EphemeralStorageAvail:  nodeMemoryToInt(node.Status.Allocatable.StorageEphemeral()),
 	}
+}
+
+// FillNodeVersions takes node version information available at the cluster level and stores it in the associated node-level status
+func FillNodeVersions(nodes []NodeStatus, versions []v1alpha1.StatusClusterNode) []NodeStatus {
+	for i, node := range nodes {
+		nodes[i].OperatorVersion = findVersionForNode(node.Name, versions)
+	}
+	return nodes
+}
+
+func findVersionForNode(name string, nodes []v1alpha1.StatusClusterNode) string {
+	for _, node := range nodes {
+		if node.Name == name {
+			return node.Version
+		}
+	}
+	return ""
 }
 
 func NewNodesStatus(nodes []v1.Node) []NodeStatus {

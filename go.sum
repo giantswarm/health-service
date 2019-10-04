@@ -57,6 +57,7 @@ github.com/ghodss/yaml v1.0.1-0.20190212211648-25d852aebe32 h1:Mn26/9ZMNWSw9C9ER
 github.com/ghodss/yaml v1.0.1-0.20190212211648-25d852aebe32/go.mod h1:GIjDIg/heH5DOkXY3YJ/wNhfHsQHoXGjl8G8amsYQ1I=
 github.com/giantswarm/apiextensions v0.0.0-20190904125954-a1822dc1393b h1:FQLyt0dyXSvZ9ZvC/E4dDDYi4hbB7C1QUzLujJV2wiM=
 github.com/giantswarm/apiextensions v0.0.0-20190904125954-a1822dc1393b/go.mod h1:zHLSgCszRMdZUzwmfOibzcyfRC89ygwAQlpXcukgZuc=
+github.com/giantswarm/apiextensions v0.0.0-20191004090949-c43a075b8e7d h1:sd3A3ZwXwl3j3KbgKulWLV7KGTQmK8zt9GvR5ALiEE4=
 github.com/giantswarm/backoff v0.0.0-20181221085248-4763148864dc h1:Xr6FR04ovOZtkBevmvvSDBmABbzMx8DQlOc2HCAJozw=
 github.com/giantswarm/backoff v0.0.0-20181221085248-4763148864dc/go.mod h1:kjItv/iHgl/xsprYgbnCOme1pVTiiiaZeR2ybsN4ab0=
 github.com/giantswarm/certs v0.0.0-20190805100006-645efb99af63 h1:d3Y9Hmy1fxgTjQhqxSkfZyKN5BoloB3SZ7hqa+bNT+I=
@@ -340,6 +341,7 @@ k8s.io/apimachinery v0.0.0-20181127025237-2b1284ed4c93 h1:tT6oQBi0qwLbbZSfDkdIsb
 k8s.io/apimachinery v0.0.0-20181127025237-2b1284ed4c93/go.mod h1:ccL7Eh7zubPUSh9A3USN90/OzHNSVN6zxzde07TDCL0=
 k8s.io/apimachinery v0.0.0-20190927035529-0104e33c351d h1:oYLB5Nk2IOm17BHdatnaWAgzNGzq/5dlWy7Bzo5Htdc=
 k8s.io/apimachinery v0.0.0-20191001195453-082230a5ffdd h1:h7E1FLbeUlvCCytrGncBPIm99+t02/1GO+nf8CZWfkY=
+k8s.io/apimachinery v0.0.0-20191003115452-c31ffd88d5d2 h1:48f0A4mhyyvNwnpIi53xQ6w6B7Y6LvUd9p3kf2SS5YM=
 k8s.io/client-go v0.0.0-20190111032708-6bf63545bd02 h1:YAM4ZYpIdCtx9iu111ZKIqCKOYnO6ibNZ9uV6I1XsY0=
 k8s.io/client-go v0.0.0-20190111032708-6bf63545bd02/go.mod h1:7vJpHMYJwNQCWgzmNV+VYUl1zCObLyodBc8nIyt8L5s=
 k8s.io/gengo v0.0.0-20190128074634-0689ccc1d7d6/go.mod h1:ezvh/TsK7cY6rbqRK0oQQ8IAqLxYwwyPxAX1Pzy0ii0=
