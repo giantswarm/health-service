@@ -2,11 +2,15 @@ package searcher
 
 import (
 	"context"
-	"fmt"
+	"encoding/json"
+	"flag"
+	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
+	"path/filepath"
 	"strconv"
 	"testing"
+	"unicode"
 
 	"github.com/giantswarm/apiextensions/pkg/clientset/versioned"
 	"github.com/giantswarm/micrologger/microloggertest"
@@ -16,15 +20,32 @@ import (
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
 
-	"github.com/giantswarm/health-service/mock"
 	"github.com/giantswarm/health-service/pkg/errors"
 	"github.com/giantswarm/health-service/server/middleware"
 	"github.com/giantswarm/health-service/service"
 	"github.com/giantswarm/health-service/service/health"
-	"github.com/giantswarm/health-service/service/health/key"
 	"github.com/giantswarm/health-service/service/host"
 	"github.com/giantswarm/health-service/service/tenant"
 )
+
+var update = flag.Bool("update", false, "update .golden expected response files")
+
+// NormalizeFileName converts all non-digit, non-letter runes in input string to
+// dash ('-'). Coalesces multiple dashes into one.
+func normalizeFileName(s string) string {
+	var result []rune
+	for _, r := range []rune(s) {
+		if unicode.IsDigit(r) || unicode.IsLetter(r) {
+			result = append(result, r)
+		} else {
+			l := len(result)
+			if l > 0 && result[l-1] != '-' {
+				result = append(result, rune('-'))
+			}
+		}
+	}
+	return string(result)
+}
 
 func Test_NotFound(t *testing.T) {
 	testCases := []struct {
@@ -165,208 +186,59 @@ func Test_NotFound(t *testing.T) {
 
 func Test_Health_Endpoint(t *testing.T) {
 	testCases := []struct {
-		name             string
-		clusterID        string
-		k8sCPAPIResponse string
-		k8sTCAPIResponse string
-		errorMatcher     func(err error) bool
-		expectedResponse health.Response
-		provider         string
+		name         string
+		clusterID    string
+		errorMatcher func(err error) bool
+		provider     string
 	}{
 		{
-			name:             "case 0: aws health is returned successfully",
-			clusterID:        "oby63",
-			errorMatcher:     nil,
-			k8sCPAPIResponse: mock.AWSHealthy,
-			k8sTCAPIResponse: mock.AWSHealthyTC,
-			expectedResponse: health.Response{
-				Cluster: health.ClusterStatus{
-					Health:    key.Green,
-					State:     key.Normal,
-					NodeCount: 4,
-				},
-				Nodes: []health.NodeStatus{
-					health.NodeStatus{
-						Name:         "ip-10-1-1-104.eu-central-1.compute.internal",
-						Ready:        true,
-						IP:           "10.1.1.104",
-						Hostname:     "ip-10-1-1-104.eu-central-1.compute.internal",
-						InstanceType: "m4.xlarge",
-						CPUCount:     4,
-						MemoryBytes:  16817954816,
-					},
-					health.NodeStatus{
-						Name:         "ip-10-1-1-125.eu-central-1.compute.internal",
-						Ready:        true,
-						IP:           "10.1.1.125",
-						Hostname:     "ip-10-1-1-125.eu-central-1.compute.internal",
-						InstanceType: "m4.xlarge",
-						CPUCount:     4,
-						MemoryBytes:  16817954816,
-					},
-					health.NodeStatus{
-						Name:         "ip-10-1-1-57.eu-central-1.compute.internal",
-						Ready:        true,
-						IP:           "10.1.1.57",
-						Hostname:     "ip-10-1-1-57.eu-central-1.compute.internal",
-						InstanceType: "m4.xlarge",
-						CPUCount:     4,
-						MemoryBytes:  16817954816,
-					},
-					health.NodeStatus{
-						Name:         "ip-10-1-1-85.eu-central-1.compute.internal",
-						Ready:        true,
-						IP:           "10.1.1.85",
-						Hostname:     "ip-10-1-1-85.eu-central-1.compute.internal",
-						InstanceType: "m4.xlarge",
-						CPUCount:     4,
-						MemoryBytes:  16817954816,
-					},
-				},
-			},
-			provider: "aws",
+			name:         "case 0: aws",
+			clusterID:    "oby63",
+			errorMatcher: nil,
+			provider:     "aws",
 		},
 		{
-			name:             "case 1: azure health is returned successfully",
-			clusterID:        "0cu4f",
-			errorMatcher:     nil,
-			k8sCPAPIResponse: mock.AzureHealthy,
-			k8sTCAPIResponse: mock.AzureHealthyTC,
-			expectedResponse: health.Response{
-				Cluster: health.ClusterStatus{
-					Health:    "green",
-					State:     key.Normal,
-					NodeCount: 4,
-				},
-				Nodes: []health.NodeStatus{
-					health.NodeStatus{
-						Name:         "6iec4-master-000000",
-						Ready:        true,
-						IP:           "10.15.0.5",
-						Hostname:     "6iec4-master-000000",
-						InstanceType: "Standard_D2s_v3",
-						CPUCount:     2,
-						MemoryBytes:  8340721664,
-					},
-					health.NodeStatus{
-						Name:         "6iec4-worker-000003",
-						Ready:        true,
-						IP:           "10.15.1.7",
-						Hostname:     "6iec4-worker-000003",
-						InstanceType: "Standard_A2_v2",
-						CPUCount:     2,
-						MemoryBytes:  4112863232,
-					},
-					health.NodeStatus{
-						Name:         "6iec4-worker-000004",
-						Ready:        true,
-						IP:           "10.15.1.4",
-						Hostname:     "6iec4-worker-000004",
-						InstanceType: "Standard_A2_v2",
-						CPUCount:     2,
-						MemoryBytes:  4112863232,
-					},
-					health.NodeStatus{
-						Name:         "6iec4-worker-000009",
-						Ready:        true,
-						IP:           "10.15.1.10",
-						Hostname:     "6iec4-worker-000009",
-						InstanceType: "Standard_A2_v2",
-						CPUCount:     2,
-						MemoryBytes:  4112855040,
-					},
-					health.NodeStatus{
-						Name:         "6iec4-worker-00000j",
-						Ready:        true,
-						IP:           "10.15.1.8",
-						Hostname:     "6iec4-worker-00000j",
-						InstanceType: "Standard_A2_v2",
-						CPUCount:     2,
-						MemoryBytes:  4112863232,
-					},
-					health.NodeStatus{
-						Name:         "6iec4-worker-00000k",
-						Ready:        true,
-						IP:           "10.15.1.9",
-						Hostname:     "6iec4-worker-00000k",
-						InstanceType: "Standard_A2_v2",
-						CPUCount:     2,
-						MemoryBytes:  4112863232,
-					},
-					health.NodeStatus{
-						Name:         "6iec4-worker-00000m",
-						Ready:        true,
-						IP:           "10.15.1.11",
-						Hostname:     "6iec4-worker-00000m",
-						InstanceType: "Standard_A2_v2",
-						CPUCount:     2,
-						MemoryBytes:  4112863232,
-					},
-				},
-			},
-			provider: "azure",
+			name:         "case 1: azure",
+			clusterID:    "0cu4f",
+			errorMatcher: nil,
+			provider:     "azure",
 		},
 		{
-			name:             "case 2: kvm health is returned successfully",
-			clusterID:        "cxx2e",
-			errorMatcher:     nil,
-			k8sCPAPIResponse: mock.KVMHealthy,
-			k8sTCAPIResponse: mock.KVMHealthyTC,
-			expectedResponse: health.Response{
-				Cluster: health.ClusterStatus{
-					Health:    "green",
-					State:     key.Normal,
-					NodeCount: 4,
-				},
-				Nodes: []health.NodeStatus{
-					health.NodeStatus{
-						Name:        "master-8w5xy-58494dd955-7x4px",
-						Ready:       true,
-						IP:          "172.23.2.210",
-						Hostname:    "master-8w5xy-58494dd955-7x4px",
-						CPUCount:    2,
-						MemoryBytes: 8364433408,
-					},
-					health.NodeStatus{
-						Name:        "worker-3505b-57c995659f-55shv",
-						Ready:       true,
-						IP:          "172.23.2.22",
-						Hostname:    "worker-3505b-57c995659f-55shv",
-						CPUCount:    2,
-						MemoryBytes: 3079614464,
-					},
-					health.NodeStatus{
-						Name:        "worker-fqu7z-6b4d5d9cf5-vkrxt",
-						Ready:       true,
-						IP:          "172.23.2.138",
-						Hostname:    "worker-fqu7z-6b4d5d9cf5-vkrxt",
-						CPUCount:    2,
-						MemoryBytes: 3079598080,
-					},
-				},
-			},
-			provider: "kvm",
+			name:         "case 2: kvm",
+			clusterID:    "cxx2e",
+			errorMatcher: nil,
+			provider:     "kvm",
 		},
 	}
 
 	for i, tc := range testCases {
 		t.Run(strconv.Itoa(i), func(t *testing.T) {
 			var err error
+			testCaseNormalizedName := normalizeFileName(tc.name)
 
 			// Mock k8s api server handling `kubectl get aws/azure/kvmconfig <clusterID>`.
 			k8sCPAPIMockServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+				responsePath := filepath.Join("testdata", testCaseNormalizedName+"-"+tc.provider+"config.json")
+				responseJSON, err := ioutil.ReadFile(responsePath)
+				if err != nil {
+					t.Fatal(err)
+				}
 				w.Header().Set("Content-Type", "application/json; charset=utf-8")
 				w.WriteHeader(http.StatusOK)
-				w.Write([]byte(tc.k8sCPAPIResponse))
+				w.Write(responseJSON)
 			}))
 			defer k8sCPAPIMockServer.Close()
 
 			// Mock TC k8s api server handling `kubectl get nodes`.
 			k8sTCAPIMockServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-				fmt.Println("TCR", r.URL)
+				responsePath := filepath.Join("testdata", testCaseNormalizedName+"-nodes.json")
+				responseJSON, err := ioutil.ReadFile(responsePath)
+				if err != nil {
+					t.Fatal(err)
+				}
 				w.Header().Set("Content-Type", "application/json; charset=utf-8")
 				w.WriteHeader(http.StatusOK)
-				w.Write([]byte(tc.k8sTCAPIResponse))
+				w.Write(responseJSON)
 			}))
 			defer k8sTCAPIMockServer.Close()
 
@@ -492,8 +364,27 @@ func Test_Health_Endpoint(t *testing.T) {
 				t.Fatalf("endpointResponse.(type) = %T, want %T", endpointResponse, endpointResponseTyped)
 			}
 
-			if !cmp.Equal(tc.expectedResponse, *endpointResponseTyped) {
-				t.Fatalf("\n\n%s\n", cmp.Diff(tc.expectedResponse, *endpointResponseTyped))
+			p := filepath.Join("testdata", normalizeFileName(tc.name)+".golden")
+
+			if *update {
+				json, err := json.Marshal(endpointResponseTyped)
+				if err != nil {
+					t.Fatal(err)
+				}
+				err = ioutil.WriteFile(p, json, 0644)
+				if err != nil {
+					t.Fatal(err)
+				}
+			}
+			goldenFile, err := ioutil.ReadFile(p)
+			if err != nil {
+				t.Fatal(err)
+			}
+			var goldenFileUnmarshalled health.Response
+			json.Unmarshal(goldenFile, &goldenFileUnmarshalled)
+
+			if !cmp.Equal(goldenFileUnmarshalled, *endpointResponseTyped) {
+				t.Fatalf("\n\n%s\n", cmp.Diff(goldenFileUnmarshalled, *endpointResponseTyped))
 			}
 		})
 	}

@@ -1,0 +1,508 @@
+{
+  "kind": "NodeList",
+  "apiVersion": "v1",
+  "metadata": {
+    "selfLink": "/api/v1/nodes",
+    "resourceVersion": "3079"
+  },
+  "items": [
+    {
+      "metadata": {
+        "name": "fg0ge-master-000000",
+        "selfLink": "/api/v1/nodes/fg0ge-master-000000",
+        "uid": "6c0ddfe9-e6b4-11e9-8147-000d3a267334",
+        "resourceVersion": "3057",
+        "creationTimestamp": "2019-10-04T14:36:59Z",
+        "labels": {
+          "azure-operator.giantswarm.io/version": "2.6.1",
+          "beta.kubernetes.io/arch": "amd64",
+          "beta.kubernetes.io/instance-type": "Standard_D2s_v3",
+          "beta.kubernetes.io/os": "linux",
+          "failure-domain.beta.kubernetes.io/region": "westeurope",
+          "failure-domain.beta.kubernetes.io/zone": "0",
+          "giantswarm.io/provider": "azure",
+          "ip": "10.2.0.5",
+          "kubernetes.io/arch": "amd64",
+          "kubernetes.io/hostname": "fg0ge-master-000000",
+          "kubernetes.io/os": "linux",
+          "kubernetes.io/role": "master",
+          "node-role.kubernetes.io/master": "",
+          "node.kubernetes.io/master": "",
+          "role": "master"
+        },
+        "annotations": {
+          "node.alpha.kubernetes.io/ttl": "0",
+          "volumes.kubernetes.io/controller-managed-attach-detach": "true"
+        }
+      },
+      "spec": {
+        "podCIDR": "10.2.128.0/24",
+        "providerID": "azure:///subscriptions/1be3b2e6-497b-45b9-915f-eb35cae23c6a/resourceGroups/fg0ge/providers/Microsoft.Compute/virtualMachineScaleSets/fg0ge-master/virtualMachines/0",
+        "taints": [
+          {
+            "key": "node-role.kubernetes.io/master",
+            "effect": "NoSchedule"
+          }
+        ]
+      },
+      "status": {
+        "capacity": {
+          "attachable-volumes-azure-disk": "4",
+          "cpu": "2",
+          "ephemeral-storage": "28454196Ki",
+          "hugepages-1Gi": "0",
+          "hugepages-2Mi": "0",
+          "memory": "8145236Ki",
+          "pods": "110"
+        },
+        "allocatable": {
+          "attachable-volumes-azure-disk": "4",
+          "cpu": "1400m",
+          "ephemeral-storage": "27405620Ki",
+          "hugepages-1Gi": "0",
+          "hugepages-2Mi": "0",
+          "memory": "6236500Ki",
+          "pods": "110"
+        },
+        "conditions": [
+          {
+            "type": "NetworkUnavailable",
+            "status": "False",
+            "lastHeartbeatTime": "2019-10-04T14:38:55Z",
+            "lastTransitionTime": "2019-10-04T14:38:55Z",
+            "reason": "RouteCreated",
+            "message": "RouteController created a route"
+          },
+          {
+            "type": "MemoryPressure",
+            "status": "False",
+            "lastHeartbeatTime": "2019-10-04T14:51:36Z",
+            "lastTransitionTime": "2019-10-04T14:36:48Z",
+            "reason": "KubeletHasSufficientMemory",
+            "message": "kubelet has sufficient memory available"
+          },
+          {
+            "type": "DiskPressure",
+            "status": "False",
+            "lastHeartbeatTime": "2019-10-04T14:51:36Z",
+            "lastTransitionTime": "2019-10-04T14:36:48Z",
+            "reason": "KubeletHasNoDiskPressure",
+            "message": "kubelet has no disk pressure"
+          },
+          {
+            "type": "PIDPressure",
+            "status": "False",
+            "lastHeartbeatTime": "2019-10-04T14:51:36Z",
+            "lastTransitionTime": "2019-10-04T14:36:48Z",
+            "reason": "KubeletHasSufficientPID",
+            "message": "kubelet has sufficient PID available"
+          },
+          {
+            "type": "Ready",
+            "status": "True",
+            "lastHeartbeatTime": "2019-10-04T14:51:36Z",
+            "lastTransitionTime": "2019-10-04T14:39:03Z",
+            "reason": "KubeletReady",
+            "message": "kubelet is posting ready status"
+          }
+        ],
+        "addresses": [
+          {
+            "type": "InternalIP",
+            "address": "10.2.0.5"
+          },
+          {
+            "type": "Hostname",
+            "address": "fg0ge-master-000000"
+          }
+        ],
+        "daemonEndpoints": {
+          "kubeletEndpoint": {
+            "Port": 10250
+          }
+        },
+        "nodeInfo": {
+          "machineID": "89797ad1eaa34c0baa6b3f9f1bba1c1b",
+          "systemUUID": "2757b7b8-0b8e-0143-ae90-b44d42b4fb32",
+          "bootID": "50d7a69b-6759-4756-967b-bb9b834e1b52",
+          "kernelVersion": "4.19.50-coreos-r1",
+          "osImage": "Container Linux by CoreOS 2135.4.0 (Rhyolite)",
+          "containerRuntimeVersion": "docker://18.6.3",
+          "kubeletVersion": "v1.14.6",
+          "kubeProxyVersion": "v1.14.6",
+          "operatingSystem": "linux",
+          "architecture": "amd64"
+        }
+      }
+    },
+    {
+      "metadata": {
+        "name": "fg0ge-worker-000000",
+        "selfLink": "/api/v1/nodes/fg0ge-worker-000000",
+        "uid": "c87d2fe6-e6b4-11e9-8147-000d3a267334",
+        "resourceVersion": "3006",
+        "creationTimestamp": "2019-10-04T14:39:34Z",
+        "labels": {
+          "azure-operator.giantswarm.io/version": "2.6.1",
+          "beta.kubernetes.io/arch": "amd64",
+          "beta.kubernetes.io/instance-type": "Standard_D2s_v3",
+          "beta.kubernetes.io/os": "linux",
+          "failure-domain.beta.kubernetes.io/region": "westeurope",
+          "failure-domain.beta.kubernetes.io/zone": "0",
+          "giantswarm.io/provider": "azure",
+          "ip": "10.2.1.4",
+          "kubernetes.io/arch": "amd64",
+          "kubernetes.io/hostname": "fg0ge-worker-000000",
+          "kubernetes.io/os": "linux",
+          "kubernetes.io/role": "worker",
+          "node-role.kubernetes.io/worker": "",
+          "node.kubernetes.io/worker": "",
+          "role": "worker"
+        },
+        "annotations": {
+          "node.alpha.kubernetes.io/ttl": "0",
+          "volumes.kubernetes.io/controller-managed-attach-detach": "true"
+        }
+      },
+      "spec": {
+        "podCIDR": "10.2.131.0/24",
+        "providerID": "azure:///subscriptions/1be3b2e6-497b-45b9-915f-eb35cae23c6a/resourceGroups/fg0ge/providers/Microsoft.Compute/virtualMachineScaleSets/fg0ge-worker/virtualMachines/0"
+      },
+      "status": {
+        "capacity": {
+          "attachable-volumes-azure-disk": "4",
+          "cpu": "2",
+          "ephemeral-storage": "28454196Ki",
+          "hugepages-1Gi": "0",
+          "hugepages-2Mi": "0",
+          "memory": "8145236Ki",
+          "pods": "110"
+        },
+        "allocatable": {
+          "attachable-volumes-azure-disk": "4",
+          "cpu": "1500m",
+          "ephemeral-storage": "27405620Ki",
+          "hugepages-1Gi": "0",
+          "hugepages-2Mi": "0",
+          "memory": "6760788Ki",
+          "pods": "110"
+        },
+        "conditions": [
+          {
+            "type": "NetworkUnavailable",
+            "status": "False",
+            "lastHeartbeatTime": "2019-10-04T14:41:06Z",
+            "lastTransitionTime": "2019-10-04T14:41:06Z",
+            "reason": "RouteCreated",
+            "message": "RouteController created a route"
+          },
+          {
+            "type": "MemoryPressure",
+            "status": "False",
+            "lastHeartbeatTime": "2019-10-04T14:51:06Z",
+            "lastTransitionTime": "2019-10-04T14:39:34Z",
+            "reason": "KubeletHasSufficientMemory",
+            "message": "kubelet has sufficient memory available"
+          },
+          {
+            "type": "DiskPressure",
+            "status": "False",
+            "lastHeartbeatTime": "2019-10-04T14:51:06Z",
+            "lastTransitionTime": "2019-10-04T14:39:34Z",
+            "reason": "KubeletHasNoDiskPressure",
+            "message": "kubelet has no disk pressure"
+          },
+          {
+            "type": "PIDPressure",
+            "status": "False",
+            "lastHeartbeatTime": "2019-10-04T14:51:06Z",
+            "lastTransitionTime": "2019-10-04T14:39:34Z",
+            "reason": "KubeletHasSufficientPID",
+            "message": "kubelet has sufficient PID available"
+          },
+          {
+            "type": "Ready",
+            "status": "True",
+            "lastHeartbeatTime": "2019-10-04T14:51:06Z",
+            "lastTransitionTime": "2019-10-04T14:40:04Z",
+            "reason": "KubeletReady",
+            "message": "kubelet is posting ready status"
+          }
+        ],
+        "addresses": [
+          {
+            "type": "InternalIP",
+            "address": "10.2.1.4"
+          },
+          {
+            "type": "Hostname",
+            "address": "fg0ge-worker-000000"
+          }
+        ],
+        "daemonEndpoints": {
+          "kubeletEndpoint": {
+            "Port": 10250
+          }
+        },
+        "nodeInfo": {
+          "machineID": "1370ced0e18149168402ca035db6cbf1",
+          "systemUUID": "14dbeb78-8ffe-8b47-8ca6-e83e88babcae",
+          "bootID": "8593033e-f99d-4ec7-a73c-08db36ca460c",
+          "kernelVersion": "4.19.50-coreos-r1",
+          "osImage": "Container Linux by CoreOS 2135.4.0 (Rhyolite)",
+          "containerRuntimeVersion": "docker://18.6.3",
+          "kubeletVersion": "v1.14.6",
+          "kubeProxyVersion": "v1.14.6",
+          "operatingSystem": "linux",
+          "architecture": "amd64"
+        }
+      }
+    },
+    {
+      "metadata": {
+        "name": "fg0ge-worker-000001",
+        "selfLink": "/api/v1/nodes/fg0ge-worker-000001",
+        "uid": "c500d900-e6b4-11e9-8147-000d3a267334",
+        "resourceVersion": "3065",
+        "creationTimestamp": "2019-10-04T14:39:28Z",
+        "labels": {
+          "azure-operator.giantswarm.io/version": "2.6.1",
+          "beta.kubernetes.io/arch": "amd64",
+          "beta.kubernetes.io/instance-type": "Standard_D2s_v3",
+          "beta.kubernetes.io/os": "linux",
+          "failure-domain.beta.kubernetes.io/region": "westeurope",
+          "failure-domain.beta.kubernetes.io/zone": "1",
+          "giantswarm.io/provider": "azure",
+          "ip": "10.2.1.5",
+          "kubernetes.io/arch": "amd64",
+          "kubernetes.io/hostname": "fg0ge-worker-000001",
+          "kubernetes.io/os": "linux",
+          "kubernetes.io/role": "worker",
+          "node-role.kubernetes.io/worker": "",
+          "node.kubernetes.io/worker": "",
+          "role": "worker"
+        },
+        "annotations": {
+          "node.alpha.kubernetes.io/ttl": "0",
+          "volumes.kubernetes.io/controller-managed-attach-detach": "true"
+        }
+      },
+      "spec": {
+        "podCIDR": "10.2.129.0/24",
+        "providerID": "azure:///subscriptions/1be3b2e6-497b-45b9-915f-eb35cae23c6a/resourceGroups/fg0ge/providers/Microsoft.Compute/virtualMachineScaleSets/fg0ge-worker/virtualMachines/1"
+      },
+      "status": {
+        "capacity": {
+          "attachable-volumes-azure-disk": "4",
+          "cpu": "2",
+          "ephemeral-storage": "28454196Ki",
+          "hugepages-1Gi": "0",
+          "hugepages-2Mi": "0",
+          "memory": "8145228Ki",
+          "pods": "110"
+        },
+        "allocatable": {
+          "attachable-volumes-azure-disk": "4",
+          "cpu": "1500m",
+          "ephemeral-storage": "27405620Ki",
+          "hugepages-1Gi": "0",
+          "hugepages-2Mi": "0",
+          "memory": "6760780Ki",
+          "pods": "110"
+        },
+        "conditions": [
+          {
+            "type": "NetworkUnavailable",
+            "status": "False",
+            "lastHeartbeatTime": "2019-10-04T14:40:56Z",
+            "lastTransitionTime": "2019-10-04T14:40:56Z",
+            "reason": "RouteCreated",
+            "message": "RouteController created a route"
+          },
+          {
+            "type": "MemoryPressure",
+            "status": "False",
+            "lastHeartbeatTime": "2019-10-04T14:51:41Z",
+            "lastTransitionTime": "2019-10-04T14:39:28Z",
+            "reason": "KubeletHasSufficientMemory",
+            "message": "kubelet has sufficient memory available"
+          },
+          {
+            "type": "DiskPressure",
+            "status": "False",
+            "lastHeartbeatTime": "2019-10-04T14:51:41Z",
+            "lastTransitionTime": "2019-10-04T14:39:28Z",
+            "reason": "KubeletHasNoDiskPressure",
+            "message": "kubelet has no disk pressure"
+          },
+          {
+            "type": "PIDPressure",
+            "status": "False",
+            "lastHeartbeatTime": "2019-10-04T14:51:41Z",
+            "lastTransitionTime": "2019-10-04T14:39:28Z",
+            "reason": "KubeletHasSufficientPID",
+            "message": "kubelet has sufficient PID available"
+          },
+          {
+            "type": "Ready",
+            "status": "True",
+            "lastHeartbeatTime": "2019-10-04T14:51:41Z",
+            "lastTransitionTime": "2019-10-04T14:40:08Z",
+            "reason": "KubeletReady",
+            "message": "kubelet is posting ready status"
+          }
+        ],
+        "addresses": [
+          {
+            "type": "InternalIP",
+            "address": "10.2.1.5"
+          },
+          {
+            "type": "Hostname",
+            "address": "fg0ge-worker-000001"
+          }
+        ],
+        "daemonEndpoints": {
+          "kubeletEndpoint": {
+            "Port": 10250
+          }
+        },
+        "nodeInfo": {
+          "machineID": "6ddecb40a4a3459cade3f0d4a26b69df",
+          "systemUUID": "56e47b08-32fb-a24c-bc4c-0f751ba3bba5",
+          "bootID": "715a057a-33b7-4e9f-9547-bcee0a6795a4",
+          "kernelVersion": "4.19.50-coreos-r1",
+          "osImage": "Container Linux by CoreOS 2135.4.0 (Rhyolite)",
+          "containerRuntimeVersion": "docker://18.6.3",
+          "kubeletVersion": "v1.14.6",
+          "kubeProxyVersion": "v1.14.6",
+          "operatingSystem": "linux",
+          "architecture": "amd64"
+        }
+      }
+    },
+    {
+      "metadata": {
+        "name": "fg0ge-worker-000004",
+        "selfLink": "/api/v1/nodes/fg0ge-worker-000004",
+        "uid": "c736139d-e6b4-11e9-8147-000d3a267334",
+        "resourceVersion": "3054",
+        "creationTimestamp": "2019-10-04T14:39:32Z",
+        "labels": {
+          "azure-operator.giantswarm.io/version": "2.6.1",
+          "beta.kubernetes.io/arch": "amd64",
+          "beta.kubernetes.io/instance-type": "Standard_D2s_v3",
+          "beta.kubernetes.io/os": "linux",
+          "failure-domain.beta.kubernetes.io/region": "westeurope",
+          "failure-domain.beta.kubernetes.io/zone": "4",
+          "giantswarm.io/provider": "azure",
+          "ip": "10.2.1.8",
+          "kubernetes.io/arch": "amd64",
+          "kubernetes.io/hostname": "fg0ge-worker-000004",
+          "kubernetes.io/os": "linux",
+          "kubernetes.io/role": "worker",
+          "node-role.kubernetes.io/worker": "",
+          "node.kubernetes.io/worker": "",
+          "role": "worker"
+        },
+        "annotations": {
+          "node.alpha.kubernetes.io/ttl": "0",
+          "volumes.kubernetes.io/controller-managed-attach-detach": "true"
+        }
+      },
+      "spec": {
+        "podCIDR": "10.2.130.0/24",
+        "providerID": "azure:///subscriptions/1be3b2e6-497b-45b9-915f-eb35cae23c6a/resourceGroups/fg0ge/providers/Microsoft.Compute/virtualMachineScaleSets/fg0ge-worker/virtualMachines/4"
+      },
+      "status": {
+        "capacity": {
+          "attachable-volumes-azure-disk": "4",
+          "cpu": "2",
+          "ephemeral-storage": "28454196Ki",
+          "hugepages-1Gi": "0",
+          "hugepages-2Mi": "0",
+          "memory": "8145236Ki",
+          "pods": "110"
+        },
+        "allocatable": {
+          "attachable-volumes-azure-disk": "4",
+          "cpu": "1500m",
+          "ephemeral-storage": "27405620Ki",
+          "hugepages-1Gi": "0",
+          "hugepages-2Mi": "0",
+          "memory": "6760788Ki",
+          "pods": "110"
+        },
+        "conditions": [
+          {
+            "type": "NetworkUnavailable",
+            "status": "False",
+            "lastHeartbeatTime": "2019-10-04T14:41:05Z",
+            "lastTransitionTime": "2019-10-04T14:41:05Z",
+            "reason": "RouteCreated",
+            "message": "RouteController created a route"
+          },
+          {
+            "type": "MemoryPressure",
+            "status": "False",
+            "lastHeartbeatTime": "2019-10-04T14:51:34Z",
+            "lastTransitionTime": "2019-10-04T14:39:32Z",
+            "reason": "KubeletHasSufficientMemory",
+            "message": "kubelet has sufficient memory available"
+          },
+          {
+            "type": "DiskPressure",
+            "status": "False",
+            "lastHeartbeatTime": "2019-10-04T14:51:34Z",
+            "lastTransitionTime": "2019-10-04T14:39:32Z",
+            "reason": "KubeletHasNoDiskPressure",
+            "message": "kubelet has no disk pressure"
+          },
+          {
+            "type": "PIDPressure",
+            "status": "False",
+            "lastHeartbeatTime": "2019-10-04T14:51:34Z",
+            "lastTransitionTime": "2019-10-04T14:39:32Z",
+            "reason": "KubeletHasSufficientPID",
+            "message": "kubelet has sufficient PID available"
+          },
+          {
+            "type": "Ready",
+            "status": "True",
+            "lastHeartbeatTime": "2019-10-04T14:51:34Z",
+            "lastTransitionTime": "2019-10-04T14:40:52Z",
+            "reason": "KubeletReady",
+            "message": "kubelet is posting ready status"
+          }
+        ],
+        "addresses": [
+          {
+            "type": "InternalIP",
+            "address": "10.2.1.8"
+          },
+          {
+            "type": "Hostname",
+            "address": "fg0ge-worker-000004"
+          }
+        ],
+        "daemonEndpoints": {
+          "kubeletEndpoint": {
+            "Port": 10250
+          }
+        },
+        "nodeInfo": {
+          "machineID": "d6747767d9284f92956642356b317a39",
+          "systemUUID": "1538cecd-b866-c948-a8fd-e349808298c3",
+          "bootID": "d32d709a-795c-4680-bc1c-64d780d22e88",
+          "kernelVersion": "4.19.50-coreos-r1",
+          "osImage": "Container Linux by CoreOS 2135.4.0 (Rhyolite)",
+          "containerRuntimeVersion": "docker://18.6.3",
+          "kubeletVersion": "v1.14.6",
+          "kubeProxyVersion": "v1.14.6",
+          "operatingSystem": "linux",
+          "architecture": "amd64"
+        }
+      }
+    }
+  ]
+}
