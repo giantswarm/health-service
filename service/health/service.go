@@ -35,6 +35,7 @@ func New(config Config) (*Service, error) {
 func (s *Service) Search(ctx context.Context, request Request) (*Response, error) {
 	clusterHealth := NewClusterStatus(request.Cluster, request.Nodes)
 	nodesHealth := NewNodesStatus(request.Nodes)
+	nodesHealth = FillNodeVersions(nodesHealth, request.Cluster.Nodes)
 
 	response := Response{
 		Cluster: clusterHealth,
