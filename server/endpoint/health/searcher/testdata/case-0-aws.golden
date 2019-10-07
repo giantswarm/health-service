@@ -1,116 +1,188 @@
 {
-    "cluster": {
-        "health": "green",
-        "state": "normal"
+  "cluster": {
+    "health": "green",
+    "state": "normal"
+  },
+  "nodes": [
+    {
+      "ready": true,
+      "health": "green",
+      "identity": {
+        "name": "ip-10-0-5-141.eu-central-1.compute.internal",
+        "kubelet_version": "v1.14.3",
+        "operator_version": "",
+        "role": "master",
+        "ip": "10.0.5.141",
+        "hostname": "ip-10-0-5-141.eu-central-1.compute.internal",
+        "instance_type": "m5.large",
+        "availability_region": "eu-central-1",
+        "availability_zone": "eu-central-1c"
+      },
+      "machine": {
+        "cpu_count": 2,
+        "memory_capacity_bytes": 8055848960,
+        "memory_allocatable_bytes": 7846133760,
+        "ephemeral_storage_capacity_bytes": 5843333120,
+        "ephemeral_storage_allocatable_bytes": 5843333120
+      },
+      "limit_totals": {
+        "cpu": 0,
+        "memory_bytes": 0
+      },
+      "request_totals": {
+        "cpu": 0,
+        "memory_bytes": 0
+      }
     },
-    "nodes": [
-        {
-            "name": "ip-10-0-5-141.eu-central-1.compute.internal",
-            "role": "master",
-            "ip": "10.0.5.141",
-            "hostname": "ip-10-0-5-141.eu-central-1.compute.internal",
-            "instance_type": "m5.large",
-            "availability_region": "eu-central-1",
-            "availability_zone": "eu-central-1c",
-            "kubelet_version": "v1.14.3",
-            "operator_version": "",
-            "cpu_count": 2,
-            "memory_capacity_bytes": 8055848960,
-            "memory_allocatable_bytes": 7846133760,
-            "ephemeral_storage_capacity_bytes": 5843333120,
-            "ephemeral_storage_allocatable_bytes": 5843333120,
-            "ready": true,
-            "health": "green"
-        },
-        {
-            "name": "ip-10-0-5-179.eu-central-1.compute.internal",
-            "role": "worker",
-            "ip": "10.0.5.179",
-            "hostname": "ip-10-0-5-179.eu-central-1.compute.internal",
-            "instance_type": "m5.xlarge",
-            "availability_region": "eu-central-1",
-            "availability_zone": "eu-central-1c",
-            "kubelet_version": "v1.14.3",
-            "operator_version": "",
-            "cpu_count": 4,
-            "memory_capacity_bytes": 16335044608,
-            "memory_allocatable_bytes": 16125329408,
-            "ephemeral_storage_capacity_bytes": 5843333120,
-            "ephemeral_storage_allocatable_bytes": 5843333120,
-            "ready": true,
-            "health": "green"
-        },
-        {
-            "name": "ip-10-0-5-37.eu-central-1.compute.internal",
-            "role": "master",
-            "ip": "10.0.5.37",
-            "hostname": "ip-10-0-5-37.eu-central-1.compute.internal",
-            "instance_type": "m5.large",
-            "availability_region": "eu-central-1",
-            "availability_zone": "eu-central-1a",
-            "kubelet_version": "v1.15.4",
-            "operator_version": "",
-            "cpu_count": 2,
-            "memory_capacity_bytes": 8055848960,
-            "memory_allocatable_bytes": 7846133760,
-            "ephemeral_storage_capacity_bytes": 5843333120,
-            "ephemeral_storage_allocatable_bytes": 5843333120,
-            "ready": true,
-            "health": "green"
-        },
-        {
-            "name": "ip-10-0-5-42.eu-central-1.compute.internal",
-            "role": "worker",
-            "ip": "10.0.5.42",
-            "hostname": "ip-10-0-5-42.eu-central-1.compute.internal",
-            "instance_type": "m5.xlarge",
-            "availability_region": "eu-central-1",
-            "availability_zone": "eu-central-1a",
-            "kubelet_version": "v1.14.3",
-            "operator_version": "",
-            "cpu_count": 4,
-            "memory_capacity_bytes": 16335044608,
-            "memory_allocatable_bytes": 16125329408,
-            "ephemeral_storage_capacity_bytes": 5843333120,
-            "ephemeral_storage_allocatable_bytes": 5843333120,
-            "ready": true,
-            "health": "green"
-        },
-        {
-            "name": "ip-10-0-5-79.eu-central-1.compute.internal",
-            "role": "master",
-            "ip": "10.0.5.79",
-            "hostname": "ip-10-0-5-79.eu-central-1.compute.internal",
-            "instance_type": "m5.large",
-            "availability_region": "eu-central-1",
-            "availability_zone": "eu-central-1b",
-            "kubelet_version": "v1.14.3",
-            "operator_version": "",
-            "cpu_count": 2,
-            "memory_capacity_bytes": 8055848960,
-            "memory_allocatable_bytes": 7846133760,
-            "ephemeral_storage_capacity_bytes": 5843333120,
-            "ephemeral_storage_allocatable_bytes": 5843333120,
-            "ready": true,
-            "health": "green"
-        },
-        {
-            "name": "ip-10-0-5-80.eu-central-1.compute.internal",
-            "role": "worker",
-            "ip": "10.0.5.80",
-            "hostname": "ip-10-0-5-80.eu-central-1.compute.internal",
-            "instance_type": "m5.xlarge",
-            "availability_region": "eu-central-1",
-            "availability_zone": "eu-central-1b",
-            "kubelet_version": "v1.14.3",
-            "operator_version": "",
-            "cpu_count": 4,
-            "memory_capacity_bytes": 16335044608,
-            "memory_allocatable_bytes": 16125329408,
-            "ephemeral_storage_capacity_bytes": 5843333120,
-            "ephemeral_storage_allocatable_bytes": 5843333120,
-            "ready": true,
-            "health": "green"
-        }
-    ]
+    {
+      "ready": true,
+      "health": "green",
+      "identity": {
+        "name": "ip-10-0-5-179.eu-central-1.compute.internal",
+        "kubelet_version": "v1.14.3",
+        "operator_version": "",
+        "role": "worker",
+        "ip": "10.0.5.179",
+        "hostname": "ip-10-0-5-179.eu-central-1.compute.internal",
+        "instance_type": "m5.xlarge",
+        "availability_region": "eu-central-1",
+        "availability_zone": "eu-central-1c"
+      },
+      "machine": {
+        "cpu_count": 4,
+        "memory_capacity_bytes": 16335044608,
+        "memory_allocatable_bytes": 16125329408,
+        "ephemeral_storage_capacity_bytes": 5843333120,
+        "ephemeral_storage_allocatable_bytes": 5843333120
+      },
+      "limit_totals": {
+        "cpu": 0,
+        "memory_bytes": 0
+      },
+      "request_totals": {
+        "cpu": 0,
+        "memory_bytes": 0
+      }
+    },
+    {
+      "ready": true,
+      "health": "green",
+      "identity": {
+        "name": "ip-10-0-5-37.eu-central-1.compute.internal",
+        "kubelet_version": "v1.15.4",
+        "operator_version": "",
+        "role": "master",
+        "ip": "10.0.5.37",
+        "hostname": "ip-10-0-5-37.eu-central-1.compute.internal",
+        "instance_type": "m5.large",
+        "availability_region": "eu-central-1",
+        "availability_zone": "eu-central-1a"
+      },
+      "machine": {
+        "cpu_count": 2,
+        "memory_capacity_bytes": 8055848960,
+        "memory_allocatable_bytes": 7846133760,
+        "ephemeral_storage_capacity_bytes": 5843333120,
+        "ephemeral_storage_allocatable_bytes": 5843333120
+      },
+      "limit_totals": {
+        "cpu": 0,
+        "memory_bytes": 0
+      },
+      "request_totals": {
+        "cpu": 0,
+        "memory_bytes": 0
+      }
+    },
+    {
+      "ready": true,
+      "health": "green",
+      "identity": {
+        "name": "ip-10-0-5-42.eu-central-1.compute.internal",
+        "kubelet_version": "v1.14.3",
+        "operator_version": "",
+        "role": "worker",
+        "ip": "10.0.5.42",
+        "hostname": "ip-10-0-5-42.eu-central-1.compute.internal",
+        "instance_type": "m5.xlarge",
+        "availability_region": "eu-central-1",
+        "availability_zone": "eu-central-1a"
+      },
+      "machine": {
+        "cpu_count": 4,
+        "memory_capacity_bytes": 16335044608,
+        "memory_allocatable_bytes": 16125329408,
+        "ephemeral_storage_capacity_bytes": 5843333120,
+        "ephemeral_storage_allocatable_bytes": 5843333120
+      },
+      "limit_totals": {
+        "cpu": 0,
+        "memory_bytes": 0
+      },
+      "request_totals": {
+        "cpu": 0,
+        "memory_bytes": 0
+      }
+    },
+    {
+      "ready": true,
+      "health": "green",
+      "identity": {
+        "name": "ip-10-0-5-79.eu-central-1.compute.internal",
+        "kubelet_version": "v1.14.3",
+        "operator_version": "",
+        "role": "master",
+        "ip": "10.0.5.79",
+        "hostname": "ip-10-0-5-79.eu-central-1.compute.internal",
+        "instance_type": "m5.large",
+        "availability_region": "eu-central-1",
+        "availability_zone": "eu-central-1b"
+      },
+      "machine": {
+        "cpu_count": 2,
+        "memory_capacity_bytes": 8055848960,
+        "memory_allocatable_bytes": 7846133760,
+        "ephemeral_storage_capacity_bytes": 5843333120,
+        "ephemeral_storage_allocatable_bytes": 5843333120
+      },
+      "limit_totals": {
+        "cpu": 0,
+        "memory_bytes": 0
+      },
+      "request_totals": {
+        "cpu": 0,
+        "memory_bytes": 0
+      }
+    },
+    {
+      "ready": true,
+      "health": "green",
+      "identity": {
+        "name": "ip-10-0-5-80.eu-central-1.compute.internal",
+        "kubelet_version": "v1.14.3",
+        "operator_version": "",
+        "role": "worker",
+        "ip": "10.0.5.80",
+        "hostname": "ip-10-0-5-80.eu-central-1.compute.internal",
+        "instance_type": "m5.xlarge",
+        "availability_region": "eu-central-1",
+        "availability_zone": "eu-central-1b"
+      },
+      "machine": {
+        "cpu_count": 4,
+        "memory_capacity_bytes": 16335044608,
+        "memory_allocatable_bytes": 16125329408,
+        "ephemeral_storage_capacity_bytes": 5843333120,
+        "ephemeral_storage_allocatable_bytes": 5843333120
+      },
+      "limit_totals": {
+        "cpu": 0,
+        "memory_bytes": 0
+      },
+      "request_totals": {
+        "cpu": 0,
+        "memory_bytes": 0
+      }
+    }
+  ]
 }

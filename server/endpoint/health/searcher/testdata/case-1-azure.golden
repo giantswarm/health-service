@@ -1,1 +1,128 @@
-{"cluster":{"health":"green","state":"normal"},"nodes":[{"name":"fg0ge-master-000000","role":"master","ip":"10.2.0.5","hostname":"fg0ge-master-000000","instance_type":"Standard_D2s_v3","availability_region":"westeurope","availability_zone":"0","kubelet_version":"v1.14.6","operator_version":"2.6.1","cpu_count":2,"memory_capacity_bytes":8340721664,"memory_allocatable_bytes":6386176000,"ephemeral_storage_capacity_bytes":29137096704,"ephemeral_storage_allocatable_bytes":28063354880,"ready":true,"health":"green"},{"name":"fg0ge-worker-000000","role":"worker","ip":"10.2.1.4","hostname":"fg0ge-worker-000000","instance_type":"Standard_D2s_v3","availability_region":"westeurope","availability_zone":"0","kubelet_version":"v1.14.6","operator_version":"2.6.1","cpu_count":2,"memory_capacity_bytes":8340721664,"memory_allocatable_bytes":6923046912,"ephemeral_storage_capacity_bytes":29137096704,"ephemeral_storage_allocatable_bytes":28063354880,"ready":true,"health":"green"},{"name":"fg0ge-worker-000001","role":"worker","ip":"10.2.1.5","hostname":"fg0ge-worker-000001","instance_type":"Standard_D2s_v3","availability_region":"westeurope","availability_zone":"1","kubelet_version":"v1.14.6","operator_version":"2.6.1","cpu_count":2,"memory_capacity_bytes":8340713472,"memory_allocatable_bytes":6923038720,"ephemeral_storage_capacity_bytes":29137096704,"ephemeral_storage_allocatable_bytes":28063354880,"ready":true,"health":"green"},{"name":"fg0ge-worker-000004","role":"worker","ip":"10.2.1.8","hostname":"fg0ge-worker-000004","instance_type":"Standard_D2s_v3","availability_region":"westeurope","availability_zone":"4","kubelet_version":"v1.14.6","operator_version":"2.6.1","cpu_count":2,"memory_capacity_bytes":8340721664,"memory_allocatable_bytes":6923046912,"ephemeral_storage_capacity_bytes":29137096704,"ephemeral_storage_allocatable_bytes":28063354880,"ready":true,"health":"green"}]}
+{
+  "cluster": {
+    "health": "green",
+    "state": "normal"
+  },
+  "nodes": [
+    {
+      "ready": true,
+      "health": "green",
+      "identity": {
+        "name": "fg0ge-master-000000",
+        "kubelet_version": "v1.14.6",
+        "operator_version": "2.6.1",
+        "role": "master",
+        "ip": "10.2.0.5",
+        "hostname": "fg0ge-master-000000",
+        "instance_type": "Standard_D2s_v3",
+        "availability_region": "westeurope",
+        "availability_zone": "0"
+      },
+      "machine": {
+        "cpu_count": 2,
+        "memory_capacity_bytes": 8340721664,
+        "memory_allocatable_bytes": 6386176000,
+        "ephemeral_storage_capacity_bytes": 29137096704,
+        "ephemeral_storage_allocatable_bytes": 28063354880
+      },
+      "limit_totals": {
+        "cpu": 3,
+        "memory_bytes": 602931200
+      },
+      "request_totals": {
+        "cpu": 8,
+        "memory_bytes": 1315962880
+      }
+    },
+    {
+      "ready": true,
+      "health": "green",
+      "identity": {
+        "name": "fg0ge-worker-000000",
+        "kubelet_version": "v1.14.6",
+        "operator_version": "2.6.1",
+        "role": "worker",
+        "ip": "10.2.1.4",
+        "hostname": "fg0ge-worker-000000",
+        "instance_type": "Standard_D2s_v3",
+        "availability_region": "westeurope",
+        "availability_zone": "0"
+      },
+      "machine": {
+        "cpu_count": 2,
+        "memory_capacity_bytes": 8340721664,
+        "memory_allocatable_bytes": 6923046912,
+        "ephemeral_storage_capacity_bytes": 29137096704,
+        "ephemeral_storage_allocatable_bytes": 28063354880
+      },
+      "limit_totals": {
+        "cpu": 4,
+        "memory_bytes": 594542592
+      },
+      "request_totals": {
+        "cpu": 7,
+        "memory_bytes": 1307574272
+      }
+    },
+    {
+      "ready": true,
+      "health": "green",
+      "identity": {
+        "name": "fg0ge-worker-000001",
+        "kubelet_version": "v1.14.6",
+        "operator_version": "2.6.1",
+        "role": "worker",
+        "ip": "10.2.1.5",
+        "hostname": "fg0ge-worker-000001",
+        "instance_type": "Standard_D2s_v3",
+        "availability_region": "westeurope",
+        "availability_zone": "1"
+      },
+      "machine": {
+        "cpu_count": 2,
+        "memory_capacity_bytes": 8340713472,
+        "memory_allocatable_bytes": 6923038720,
+        "ephemeral_storage_capacity_bytes": 29137096704,
+        "ephemeral_storage_allocatable_bytes": 28063354880
+      },
+      "limit_totals": {
+        "cpu": 3,
+        "memory_bytes": 542113792
+      },
+      "request_totals": {
+        "cpu": 6,
+        "memory_bytes": 1255145472
+      }
+    },
+    {
+      "ready": true,
+      "health": "green",
+      "identity": {
+        "name": "fg0ge-worker-000004",
+        "kubelet_version": "v1.14.6",
+        "operator_version": "2.6.1",
+        "role": "worker",
+        "ip": "10.2.1.8",
+        "hostname": "fg0ge-worker-000004",
+        "instance_type": "Standard_D2s_v3",
+        "availability_region": "westeurope",
+        "availability_zone": "4"
+      },
+      "machine": {
+        "cpu_count": 2,
+        "memory_capacity_bytes": 8340721664,
+        "memory_allocatable_bytes": 6923046912,
+        "ephemeral_storage_capacity_bytes": 29137096704,
+        "ephemeral_storage_allocatable_bytes": 28063354880
+      },
+      "limit_totals": {
+        "cpu": 4,
+        "memory_bytes": 781189120
+      },
+      "request_totals": {
+        "cpu": 7,
+        "memory_bytes": 1494220800
+      }
+    }
+  ]
+}

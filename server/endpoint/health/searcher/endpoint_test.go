@@ -379,7 +379,7 @@ func Test_Health_Endpoint(t *testing.T) {
 			p := filepath.Join("testdata", normalizeFileName(tc.name)+".golden")
 
 			if *update {
-				json, err := json.Marshal(endpointResponseTyped)
+				json, err := json.MarshalIndent(endpointResponseTyped, "", "  ")
 				if err != nil {
 					t.Fatal(err)
 				}
