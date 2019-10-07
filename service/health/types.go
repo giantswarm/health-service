@@ -68,14 +68,22 @@ func NewClusterStatus(cluster v1alpha1.StatusCluster, nodes []v1.Node) ClusterSt
 	}
 }
 
+func NewNodesStatus(nodes []v1.Node, pods []v1.Pod) []NodeStatus {
+	result := []NodeStatus{}
+	for _, node := range nodes {
+		result = append(result, NewNodeStatus(node, filterNodePods(pods, node.Name)))
+	}
+	return result
+}
+
 func NewNodeStatus(node v1.Node, pods []v1.Pod) NodeStatus {
 	limits := NodeStatusComputeResources{}
 	requests := NodeStatusComputeResources{}
 	for _, pod := range pods {
 		for _, container := range pod.Spec.Containers {
-			limits.CPU += container.Resources.Limits.Cpu().Value()
+			limits.CPU += container.Resources.Limits.Cpu().MilliValue()
 			limits.MemoryBytes += container.Resources.Limits.Memory().Value()
-			requests.CPU += container.Resources.Requests.Cpu().Value()
+			requests.CPU += container.Resources.Requests.Cpu().MilliValue()
 			requests.MemoryBytes += container.Resources.Requests.Memory().Value()
 		}
 	}
@@ -119,14 +127,6 @@ func findVersionForNode(name string, nodes []v1alpha1.StatusClusterNode) string 
 		}
 	}
 	return ""
-}
-
-func NewNodesStatus(nodes []v1.Node, pods []v1.Pod) []NodeStatus {
-	result := []NodeStatus{}
-	for _, node := range nodes {
-		result = append(result, NewNodeStatus(node, filterNodePods(pods, node.Name)))
-	}
-	return result
 }
 
 func filterNodePods(pods []v1.Pod, nodeName string) []v1.Pod {

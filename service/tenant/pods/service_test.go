@@ -8,7 +8,7 @@ import (
 	"github.com/giantswarm/tenantcluster/tenantclustertest"
 )
 
-func Test_Health_New(t *testing.T) {
+func Test_New(t *testing.T) {
 	testCases := []struct {
 		name         string
 		inputObj     Config

@@ -26,11 +26,11 @@
         "ephemeral_storage_allocatable_bytes": 28063354880
       },
       "limit_totals": {
-        "cpu": 3,
+        "cpu": 550,
         "memory_bytes": 602931200
       },
       "request_totals": {
-        "cpu": 8,
+        "cpu": 1300,
         "memory_bytes": 1315962880
       }
     },
@@ -56,11 +56,11 @@
         "ephemeral_storage_allocatable_bytes": 28063354880
       },
       "limit_totals": {
-        "cpu": 4,
+        "cpu": 600,
         "memory_bytes": 594542592
       },
       "request_totals": {
-        "cpu": 7,
+        "cpu": 1250,
         "memory_bytes": 1307574272
       }
     },
@@ -86,11 +86,11 @@
         "ephemeral_storage_allocatable_bytes": 28063354880
       },
       "limit_totals": {
-        "cpu": 3,
+        "cpu": 550,
         "memory_bytes": 542113792
       },
       "request_totals": {
-        "cpu": 6,
+        "cpu": 1200,
         "memory_bytes": 1255145472
       }
     },
@@ -116,11 +116,11 @@
         "ephemeral_storage_allocatable_bytes": 28063354880
       },
       "limit_totals": {
-        "cpu": 4,
+        "cpu": 790,
         "memory_bytes": 781189120
       },
       "request_totals": {
-        "cpu": 7,
+        "cpu": 1440,
         "memory_bytes": 1494220800
       }
     }
