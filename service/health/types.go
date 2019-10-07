@@ -68,7 +68,17 @@ func NewClusterStatus(cluster v1alpha1.StatusCluster, nodes []v1.Node) ClusterSt
 	}
 }
 
-func NewNodeStatus(node v1.Node) NodeStatus {
+func NewNodeStatus(node v1.Node, pods []v1.Pod) NodeStatus {
+	limits := NodeStatusComputeResources{}
+	requests := NodeStatusComputeResources{}
+	for _, pod := range pods {
+		for _, container := range pod.Spec.Containers {
+			limits.CPU += container.Resources.Limits.Cpu().Value()
+			limits.MemoryBytes += container.Resources.Limits.Memory().Value()
+			requests.CPU += container.Resources.Requests.Cpu().Value()
+			requests.MemoryBytes += container.Resources.Requests.Memory().Value()
+		}
+	}
 	return NodeStatus{
 		Health: calculateNodeHealth(node),
 		Ready:  nodeHasCondition(node.Status.Conditions, v1.ConditionTrue, v1.NodeReady),
@@ -89,6 +99,8 @@ func NewNodeStatus(node v1.Node) NodeStatus {
 			EphemeralStorageCap:    nodeMemoryToInt(node.Status.Capacity.StorageEphemeral()),
 			EphemeralStorageAvail:  nodeMemoryToInt(node.Status.Allocatable.StorageEphemeral()),
 		},
+		LimitTotals:   limits,
+		RequestTotals: requests,
 	}
 }
 
@@ -112,9 +124,19 @@ func findVersionForNode(name string, nodes []v1alpha1.StatusClusterNode) string 
 func NewNodesStatus(nodes []v1.Node, pods []v1.Pod) []NodeStatus {
 	result := []NodeStatus{}
 	for _, node := range nodes {
-		result = append(result, NewNodeStatus(node))
+		result = append(result, NewNodeStatus(node, filterNodePods(pods, node.Name)))
 	}
 	return result
+}
+
+func filterNodePods(pods []v1.Pod, nodeName string) []v1.Pod {
+	filtered := []v1.Pod{}
+	for _, pod := range pods {
+		if pod.Spec.NodeName == nodeName {
+			filtered = append(filtered, pod)
+		}
+	}
+	return filtered
 }
 
 func nodeRole(labels map[string]string) string {
