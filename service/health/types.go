@@ -97,7 +97,7 @@ func NewNodeStatus(node v1.Node) NodeStatus {
 
 // Counts the total number of Attachable volumes in the ResourceList
 func countAttachableVolumes(nodeStatus v1.ResourceList) int64 {
-	var sum int64 = 0
+	sum := int64(0)
 	for _, count := range getAttachableVolumes(nodeStatus) {
 		sum += count
 	}
