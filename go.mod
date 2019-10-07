@@ -23,7 +23,6 @@ require (
 	github.com/giantswarm/microerror v0.0.0-20190815145748-cb07ec533b50
 	github.com/giantswarm/microkit v0.0.0-20190724090920-4eef9bd96406
 	github.com/giantswarm/micrologger v0.0.0-20190118112544-0926d9b7c541
-	github.com/giantswarm/microstorage v0.0.0-20190823110936-a5580e1bbf60
 	github.com/giantswarm/operatorkit v0.0.0-20190905153801-8a0fbd0dde5a
 	github.com/giantswarm/tenantcluster v0.0.0-20190807135820-782e6be8a729
 	github.com/giantswarm/to v0.0.0-20190705070919-38e6500015be // indirect
