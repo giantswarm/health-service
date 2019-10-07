@@ -28,7 +28,7 @@ require (
 	github.com/giantswarm/tenantcluster v0.0.0-20190807135820-782e6be8a729
 	github.com/giantswarm/to v0.0.0-20190705070919-38e6500015be // indirect
 	github.com/giantswarm/versionbundle v0.0.0-20190424125133-c91a5899eae8 // indirect
-	github.com/go-kit/kit v0.8.0
+	github.com/go-kit/kit v0.9.0
 	github.com/gobwas/glob v0.2.3 // indirect
 	github.com/gogo/protobuf v1.3.0 // indirect
 	github.com/google/go-cmp v0.3.0
