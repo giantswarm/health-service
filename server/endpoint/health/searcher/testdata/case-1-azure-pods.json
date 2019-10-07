@@ -1,0 +1,579 @@
+{
+  "kind": "PodList",
+  "apiVersion": "v1",
+  "metadata": {
+    "selfLink": "/api/v1/pods",
+    "resourceVersion": "424563"
+  },
+  "items": [
+    {
+      "spec": {
+        "nodeName": "fg0ge-master-000000",
+        "containers": [
+          {
+            "resources": {
+              "limits": {
+                "cpu": "250m",
+                "memory": "250Mi"
+              },
+              "requests": {
+                "cpu": "250m",
+                "memory": "250Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "fg0ge-worker-000001",
+        "containers": [
+          {
+            "resources": {}
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "fg0ge-worker-000001",
+        "containers": [
+          {
+            "resources": {
+              "limits": {
+                "cpu": "250m",
+                "memory": "150Mi"
+              },
+              "requests": {
+                "cpu": "250m",
+                "memory": "150Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "fg0ge-worker-000004",
+        "containers": [
+          {
+            "resources": {
+              "limits": {
+                "cpu": "250m",
+                "memory": "150Mi"
+              },
+              "requests": {
+                "cpu": "250m",
+                "memory": "150Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "fg0ge-worker-000000",
+        "containers": [
+          {
+            "resources": {
+              "limits": {
+                "cpu": "250m",
+                "memory": "150Mi"
+              },
+              "requests": {
+                "cpu": "250m",
+                "memory": "150Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "fg0ge-master-000000",
+        "containers": [
+          {
+            "resources": {
+              "limits": {
+                "cpu": "250m",
+                "memory": "150Mi"
+              },
+              "requests": {
+                "cpu": "250m",
+                "memory": "150Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "fg0ge-master-000000",
+        "containers": [
+          {
+            "resources": {
+              "limits": {
+                "cpu": "50m",
+                "memory": "50Mi"
+              },
+              "requests": {
+                "cpu": "50m",
+                "memory": "50Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "fg0ge-worker-000000",
+        "containers": [
+          {
+            "resources": {
+              "limits": {
+                "cpu": "50m",
+                "memory": "50Mi"
+              },
+              "requests": {
+                "cpu": "50m",
+                "memory": "50Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "fg0ge-worker-000001",
+        "containers": [
+          {
+            "resources": {
+              "limits": {
+                "cpu": "50m",
+                "memory": "50Mi"
+              },
+              "requests": {
+                "cpu": "50m",
+                "memory": "50Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "fg0ge-worker-000004",
+        "containers": [
+          {
+            "resources": {
+              "limits": {
+                "cpu": "50m",
+                "memory": "50Mi"
+              },
+              "requests": {
+                "cpu": "50m",
+                "memory": "50Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "fg0ge-worker-000000",
+        "containers": [
+          {
+            "resources": {
+              "limits": {
+                "cpu": "250m",
+                "memory": "192Mi"
+              },
+              "requests": {
+                "cpu": "250m",
+                "memory": "192Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "fg0ge-worker-000001",
+        "containers": [
+          {
+            "resources": {
+              "limits": {
+                "cpu": "250m",
+                "memory": "192Mi"
+              },
+              "requests": {
+                "cpu": "250m",
+                "memory": "192Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "fg0ge-worker-000000",
+        "containers": [
+          {
+            "resources": {
+              "limits": {
+                "cpu": "50m",
+                "memory": "50Mi"
+              },
+              "requests": {
+                "cpu": "50m",
+                "memory": "50Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "fg0ge-master-000000",
+        "containers": [
+          {
+            "resources": {
+              "requests": {
+                "cpu": "300m",
+                "memory": "300Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "fg0ge-master-000000",
+        "containers": [
+          {
+            "resources": {
+              "requests": {
+                "cpu": "200m",
+                "memory": "200Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "fg0ge-master-000000",
+        "containers": [
+          {
+            "resources": {
+              "requests": {
+                "cpu": "100m",
+                "memory": "100Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "fg0ge-worker-000000",
+        "containers": [
+          {
+            "resources": {
+              "requests": {
+                "cpu": "75m",
+                "memory": "80Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "fg0ge-worker-000004",
+        "containers": [
+          {
+            "resources": {
+              "requests": {
+                "cpu": "75m",
+                "memory": "80Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "fg0ge-master-000000",
+        "containers": [
+          {
+            "resources": {
+              "requests": {
+                "cpu": "75m",
+                "memory": "80Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "fg0ge-worker-000001",
+        "containers": [
+          {
+            "resources": {
+              "requests": {
+                "cpu": "75m",
+                "memory": "80Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "fg0ge-worker-000004",
+        "containers": [
+          {
+            "resources": {
+              "limits": {
+                "cpu": "340m",
+                "memory": "370Mi"
+              },
+              "requests": {
+                "cpu": "340m",
+                "memory": "370Mi"
+              }
+            }
+          },
+          {
+            "resources": {
+              "limits": {
+                "cpu": "150m",
+                "memory": "50Mi"
+              },
+              "requests": {
+                "cpu": "150m",
+                "memory": "50Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "fg0ge-worker-000000",
+        "containers": [
+          {
+            "resources": {}
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "fg0ge-worker-000001",
+        "containers": [
+          {
+            "resources": {
+              "limits": {
+                "memory": "75Mi"
+              },
+              "requests": {
+                "memory": "75Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "fg0ge-master-000000",
+        "containers": [
+          {
+            "resources": {
+              "limits": {
+                "memory": "75Mi"
+              },
+              "requests": {
+                "memory": "75Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "fg0ge-worker-000004",
+        "containers": [
+          {
+            "resources": {
+              "limits": {
+                "memory": "75Mi"
+              },
+              "requests": {
+                "memory": "75Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "fg0ge-worker-000000",
+        "containers": [
+          {
+            "resources": {
+              "limits": {
+                "memory": "75Mi"
+              },
+              "requests": {
+                "memory": "75Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "fg0ge-worker-000001",
+        "containers": [
+          {
+            "resources": {
+              "requests": {
+                "cpu": "500m",
+                "memory": "600Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "fg0ge-worker-000000",
+        "containers": [
+          {
+            "resources": {
+              "requests": {
+                "cpu": "500m",
+                "memory": "600Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "fg0ge-worker-000004",
+        "containers": [
+          {
+            "resources": {
+              "requests": {
+                "cpu": "500m",
+                "memory": "600Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "fg0ge-worker-000004",
+        "containers": [
+          {
+            "resources": {
+              "limits": {
+                "memory": "50Mi"
+              },
+              "requests": {
+                "cpu": "75m",
+                "memory": "50Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "fg0ge-master-000000",
+        "containers": [
+          {
+            "resources": {
+              "limits": {
+                "memory": "50Mi"
+              },
+              "requests": {
+                "cpu": "75m",
+                "memory": "50Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "fg0ge-worker-000001",
+        "containers": [
+          {
+            "resources": {
+              "limits": {
+                "memory": "50Mi"
+              },
+              "requests": {
+                "cpu": "75m",
+                "memory": "50Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "fg0ge-worker-000000",
+        "containers": [
+          {
+            "resources": {
+              "limits": {
+                "memory": "50Mi"
+              },
+              "requests": {
+                "cpu": "75m",
+                "memory": "50Mi"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

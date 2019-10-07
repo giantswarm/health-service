@@ -70,28 +70,32 @@ func NewClusterStatus(cluster v1alpha1.StatusCluster, nodes []v1.Node) ClusterSt
 
 func NewNodeStatus(node v1.Node) NodeStatus {
 	return NodeStatus{
-		Name:                   node.Name,
-		Role:                   nodeRole(node.Labels),
-		Health:                 calculateNodeHealth(node),
-		Ready:                  nodeHasCondition(node.Status.Conditions, v1.ConditionTrue, v1.NodeReady),
-		IP:                     ipFromAddresses(node.Status.Addresses),
-		Hostname:               hostnameFromAddresses(node.Status.Addresses),
-		InstanceType:           node.GetLabels()["beta.kubernetes.io/instance-type"],
-		AvailabilityZone:       node.GetLabels()["failure-domain.beta.kubernetes.io/zone"],
-		AvailabilityRegion:     node.GetLabels()["failure-domain.beta.kubernetes.io/region"],
-		KubeletVersion:         node.Status.NodeInfo.KubeletVersion,
-		CPUCount:               node.Status.Capacity.Cpu().Value(),
-		MemoryCapacityBytes:    nodeMemoryToInt(node.Status.Capacity.Memory()),
-		MemoryAllocatableBytes: nodeMemoryToInt(node.Status.Allocatable.Memory()),
-		EphemeralStorageCap:    nodeMemoryToInt(node.Status.Capacity.StorageEphemeral()),
-		EphemeralStorageAvail:  nodeMemoryToInt(node.Status.Allocatable.StorageEphemeral()),
+		Health: calculateNodeHealth(node),
+		Ready:  nodeHasCondition(node.Status.Conditions, v1.ConditionTrue, v1.NodeReady),
+		Identity: NodeStatusIdentity{
+			Name:               node.Name,
+			Role:               nodeRole(node.Labels),
+			IP:                 ipFromAddresses(node.Status.Addresses),
+			Hostname:           hostnameFromAddresses(node.Status.Addresses),
+			InstanceType:       node.GetLabels()["beta.kubernetes.io/instance-type"],
+			AvailabilityZone:   node.GetLabels()["failure-domain.beta.kubernetes.io/zone"],
+			AvailabilityRegion: node.GetLabels()["failure-domain.beta.kubernetes.io/region"],
+			KubeletVersion:     node.Status.NodeInfo.KubeletVersion,
+		},
+		MachineResources: NodeStatusMachineResources{
+			CPUCount:               node.Status.Capacity.Cpu().Value(),
+			MemoryCapacityBytes:    nodeMemoryToInt(node.Status.Capacity.Memory()),
+			MemoryAllocatableBytes: nodeMemoryToInt(node.Status.Allocatable.Memory()),
+			EphemeralStorageCap:    nodeMemoryToInt(node.Status.Capacity.StorageEphemeral()),
+			EphemeralStorageAvail:  nodeMemoryToInt(node.Status.Allocatable.StorageEphemeral()),
+		},
 	}
 }
 
 // FillNodeVersions takes node version information available at the cluster level and stores it in the associated node-level status
 func FillNodeVersions(nodes []NodeStatus, versions []v1alpha1.StatusClusterNode) []NodeStatus {
 	for i, node := range nodes {
-		nodes[i].OperatorVersion = findVersionForNode(node.Name, versions)
+		nodes[i].Identity.OperatorVersion = findVersionForNode(node.Identity.Name, versions)
 	}
 	return nodes
 }
@@ -105,7 +109,7 @@ func findVersionForNode(name string, nodes []v1alpha1.StatusClusterNode) string 
 	return ""
 }
 
-func NewNodesStatus(nodes []v1.Node) []NodeStatus {
+func NewNodesStatus(nodes []v1.Node, pods []v1.Pod) []NodeStatus {
 	result := []NodeStatus{}
 	for _, node := range nodes {
 		result = append(result, NewNodeStatus(node))

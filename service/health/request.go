@@ -7,7 +7,8 @@ import (
 
 // Request is the configuration for the service action.
 type Request struct {
+	Cluster   v1alpha1.StatusCluster
 	ClusterID string
 	Nodes     []v1.Node
-	Cluster   v1alpha1.StatusCluster
+	Pods      []v1.Pod
 }

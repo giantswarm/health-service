@@ -16,7 +16,8 @@ import (
 	"github.com/giantswarm/health-service/service"
 	"github.com/giantswarm/health-service/service/health"
 	"github.com/giantswarm/health-service/service/host"
-	"github.com/giantswarm/health-service/service/tenant"
+	"github.com/giantswarm/health-service/service/tenant/nodes"
+	"github.com/giantswarm/health-service/service/tenant/pods"
 )
 
 const (
@@ -93,11 +94,20 @@ func (e *Endpoint) Endpoint() kitendpoint.Endpoint {
 			return nil, microerror.Mask(err)
 		}
 
-		tenantRequest := tenant.Request{
+		nodesRequest := nodes.Request{
 			ClusterID: clusterID,
 			Endpoint:  hostResponse.Endpoint,
 		}
-		tenantResponse, err := e.service.Tenant.ListNodes(ctx, tenantRequest)
+		nodesResponse, err := e.service.Tenant.Nodes.ListNodes(ctx, nodesRequest)
+		if err != nil {
+			return nil, microerror.Mask(err)
+		}
+
+		podsRequest := pods.Request{
+			ClusterID: clusterID,
+			Endpoint:  hostResponse.Endpoint,
+		}
+		podsResponse, err := e.service.Tenant.Pods.ListPods(ctx, podsRequest)
 		if err != nil {
 			return nil, microerror.Mask(err)
 		}
@@ -105,7 +115,8 @@ func (e *Endpoint) Endpoint() kitendpoint.Endpoint {
 		healthRequest := health.Request{
 			Cluster:   hostResponse.Status,
 			ClusterID: clusterID,
-			Nodes:     tenantResponse.Nodes,
+			Nodes:     nodesResponse.Nodes,
+			Pods:      podsResponse.Pods,
 		}
 		healthResponse, err := e.service.Health.Search(ctx, healthRequest)
 		if err != nil {

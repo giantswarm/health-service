@@ -1,4 +1,4 @@
-package tenant
+package pods
 
 import (
 	"strconv"
