@@ -177,6 +177,8 @@ func hostnameFromAddresses(addresses []v1.NodeAddress) string {
 	return findInAddresses(addresses, v1.NodeHostName)
 }
 
+// Accepts a node memory (or any resource Quantity) and
+// returns it as an int, if it can be represented as one, else 0.
 func nodeMemoryToInt(nodeMemory *resource.Quantity) int64 {
 	memBytes, ok := nodeMemory.AsInt64()
 	if !ok {
