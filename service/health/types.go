@@ -126,6 +126,7 @@ func FillNodeVersions(nodes []NodeStatus, versions []v1alpha1.StatusClusterNode)
 	return nodes
 }
 
+// findVersionForNode searches a list of cluster status nodes for a node with the given name, and returns the node's version
 func findVersionForNode(name string, nodes []v1alpha1.StatusClusterNode) string {
 	for _, node := range nodes {
 		if node.Name == name {
