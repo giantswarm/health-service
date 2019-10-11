@@ -40,7 +40,7 @@ func New(config Config) (*Service, error) {
 	return s, nil
 }
 
-// ListPods returns a slice of Pods in a tenant cluster.
+// ListPods returns a slice of Pods in all namespaces of a tenant cluster.
 func (s *Service) ListPods(ctx context.Context, request Request) (*Response, error) {
 	var err error
 	var response Response
