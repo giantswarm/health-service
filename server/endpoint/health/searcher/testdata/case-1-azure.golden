@@ -22,8 +22,8 @@
                 "memory_allocatable_bytes": 6386176000,
                 "ephemeral_storage_capacity_bytes": 29137096704,
                 "ephemeral_storage_allocatable_bytes": 28063354880,
-                "attachable_volume_allocatable_count": 0,
-                "attachable_volume_capacity_count": 0
+                "attachable_volume_allocatable_count": 4,
+                "attachable_volume_capacity_count": 4
             },
             "ready": true,
             "health": "green"
@@ -46,8 +46,8 @@
                 "memory_allocatable_bytes": 6923046912,
                 "ephemeral_storage_capacity_bytes": 29137096704,
                 "ephemeral_storage_allocatable_bytes": 28063354880,
-                "attachable_volume_allocatable_count": 0,
-                "attachable_volume_capacity_count": 0
+                "attachable_volume_allocatable_count": 4,
+                "attachable_volume_capacity_count": 4
             },
             "ready": true,
             "health": "green"
@@ -70,8 +70,8 @@
                 "memory_allocatable_bytes": 6923038720,
                 "ephemeral_storage_capacity_bytes": 29137096704,
                 "ephemeral_storage_allocatable_bytes": 28063354880,
-                "attachable_volume_allocatable_count": 0,
-                "attachable_volume_capacity_count": 0
+                "attachable_volume_allocatable_count": 4,
+                "attachable_volume_capacity_count": 4
             },
             "ready": true,
             "health": "green"
@@ -94,8 +94,8 @@
                 "memory_allocatable_bytes": 6923046912,
                 "ephemeral_storage_capacity_bytes": 29137096704,
                 "ephemeral_storage_allocatable_bytes": 28063354880,
-                "attachable_volume_allocatable_count": 0,
-                "attachable_volume_capacity_count": 0
+                "attachable_volume_allocatable_count": 4,
+                "attachable_volume_capacity_count": 4
             },
             "ready": true,
             "health": "green"
