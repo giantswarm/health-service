@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"flag"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
@@ -249,7 +248,6 @@ func Test_Health_Endpoint(t *testing.T) {
 				if err != nil {
 					t.Fatal(err)
 				}
-				fmt.Println(err, tc.name, responseFilename, responseJSON)
 				w.Header().Set("Content-Type", "application/json; charset=utf-8")
 				w.WriteHeader(http.StatusOK)
 				w.Write(responseJSON)
