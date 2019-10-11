@@ -23,7 +23,9 @@
         "memory_capacity_bytes": 8055848960,
         "memory_allocatable_bytes": 7846133760,
         "ephemeral_storage_capacity_bytes": 5843333120,
-        "ephemeral_storage_allocatable_bytes": 5843333120
+        "ephemeral_storage_allocatable_bytes": 5843333120,
+        "attachable_volume_allocatable_count": 25,
+        "attachable_volume_capacity_count": 25
       },
       "limit_totals": {
         "cpu": 0,
@@ -53,7 +55,9 @@
         "memory_capacity_bytes": 16335044608,
         "memory_allocatable_bytes": 16125329408,
         "ephemeral_storage_capacity_bytes": 5843333120,
-        "ephemeral_storage_allocatable_bytes": 5843333120
+        "ephemeral_storage_allocatable_bytes": 5843333120,
+        "attachable_volume_allocatable_count": 25,
+        "attachable_volume_capacity_count": 25
       },
       "limit_totals": {
         "cpu": 0,
@@ -83,7 +87,9 @@
         "memory_capacity_bytes": 8055848960,
         "memory_allocatable_bytes": 7846133760,
         "ephemeral_storage_capacity_bytes": 5843333120,
-        "ephemeral_storage_allocatable_bytes": 5843333120
+        "ephemeral_storage_allocatable_bytes": 5843333120,
+        "attachable_volume_allocatable_count": 25,
+        "attachable_volume_capacity_count": 25
       },
       "limit_totals": {
         "cpu": 0,
@@ -113,7 +119,9 @@
         "memory_capacity_bytes": 16335044608,
         "memory_allocatable_bytes": 16125329408,
         "ephemeral_storage_capacity_bytes": 5843333120,
-        "ephemeral_storage_allocatable_bytes": 5843333120
+        "ephemeral_storage_allocatable_bytes": 5843333120,
+        "attachable_volume_allocatable_count": 25,
+        "attachable_volume_capacity_count": 25
       },
       "limit_totals": {
         "cpu": 0,
@@ -143,7 +151,9 @@
         "memory_capacity_bytes": 8055848960,
         "memory_allocatable_bytes": 7846133760,
         "ephemeral_storage_capacity_bytes": 5843333120,
-        "ephemeral_storage_allocatable_bytes": 5843333120
+        "ephemeral_storage_allocatable_bytes": 5843333120,
+        "attachable_volume_allocatable_count": 25,
+        "attachable_volume_capacity_count": 25
       },
       "limit_totals": {
         "cpu": 0,
@@ -173,7 +183,9 @@
         "memory_capacity_bytes": 16335044608,
         "memory_allocatable_bytes": 16125329408,
         "ephemeral_storage_capacity_bytes": 5843333120,
-        "ephemeral_storage_allocatable_bytes": 5843333120
+        "ephemeral_storage_allocatable_bytes": 5843333120,
+        "attachable_volume_allocatable_count": 25,
+        "attachable_volume_capacity_count": 25
       },
       "limit_totals": {
         "cpu": 0,

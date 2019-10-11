@@ -1,6 +1,7 @@
 package key
 
 import (
+	"regexp"
 	"strings"
 
 	"github.com/giantswarm/apiextensions/pkg/apis/provider/v1alpha1"
@@ -9,8 +10,9 @@ import (
 )
 
 const (
-	roleKey    = "kubernetes.io/role"
-	roleKeyAlt = "node-role.kubernetes.io/"
+	attachableVolumePattern = v1.ResourceAttachableVolumesPrefix + "*"
+	roleKey                 = "kubernetes.io/role"
+	roleKeyAlt              = "node-role.kubernetes.io/"
 )
 
 // NodeVersion returns the version of a node from an array of StatusClusterNode.
@@ -74,4 +76,27 @@ func NodeHasCondition(conditions []v1.NodeCondition, s v1.ConditionStatus, t v1.
 		}
 	}
 	return false
+}
+
+// NodeAttachableVolumesCount counts the total number of attachable volumes in the ResourceList
+func NodeAttachableVolumesCount(nodeStatus v1.ResourceList) int64 {
+	sum := int64(0)
+	for _, count := range nodeAttachableVolumes(nodeStatus) {
+		sum += count
+	}
+	return sum
+}
+
+// Searches a node's resources for attachable volumes,
+// and returns a mapping of the resource types to the number of that type
+func nodeAttachableVolumes(nodeStatus v1.ResourceList) map[string]int64 {
+	attachableVolumeRegex, _ := regexp.Compile(attachableVolumePattern)
+	var result = map[string]int64{}
+
+	for i, resource := range nodeStatus {
+		if attachableVolumeRegex.MatchString(i.String()) {
+			result[i.String()] = MemoryToInt(&resource)
+		}
+	}
+	return result
 }
