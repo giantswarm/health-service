@@ -29,18 +29,21 @@ const (
 	Path = "/health/{id}"
 )
 
+// Config is an object holding data required to create a health searcher endpoint.
 type Config struct {
 	Logger     micrologger.Logger
 	Middleware *middleware.Middleware
 	Service    *service.Service
 }
 
+// Endpoint is an object holding data required for a health searcher endpoint.
 type Endpoint struct {
 	logger     micrologger.Logger
 	middleware *middleware.Middleware
 	service    *service.Service
 }
 
+// New creates a new health searcher endpoint from the given config.
 func New(config Config) (*Endpoint, error) {
 	if config.Logger == nil {
 		return nil, microerror.Maskf(errors.InvalidConfigError, "config.Logger must not be empty")
@@ -61,6 +64,7 @@ func New(config Config) (*Endpoint, error) {
 	return e, nil
 }
 
+// Decoder deserializes the HTTP request into an endpoint request object.
 func (e *Endpoint) Decoder() kithttp.DecodeRequestFunc {
 	return func(ctx context.Context, r *http.Request) (interface{}, error) {
 		vars := mux.Vars(r)
@@ -70,6 +74,7 @@ func (e *Endpoint) Decoder() kithttp.DecodeRequestFunc {
 	}
 }
 
+// Encoder serializes the endpoint response object into an HTTP response.
 func (e *Endpoint) Encoder() kithttp.EncodeResponseFunc {
 	return func(ctx context.Context, w http.ResponseWriter, response interface{}) error {
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
@@ -79,6 +84,8 @@ func (e *Endpoint) Encoder() kithttp.EncodeResponseFunc {
 	}
 }
 
+// Endpoint returns a function which accepts a request for the health
+// of a tenant cluster and returns a response with that information.
 func (e *Endpoint) Endpoint() kitendpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		clusterID, ok := request.(string)
@@ -118,7 +125,7 @@ func (e *Endpoint) Endpoint() kitendpoint.Endpoint {
 			Nodes:     nodesResponse.Nodes,
 			Pods:      podsResponse.Pods,
 		}
-		healthResponse, err := e.service.Health.Search(ctx, healthRequest)
+		healthResponse, err := e.service.Health.GetHealth(ctx, healthRequest)
 		if err != nil {
 			return nil, microerror.Mask(err)
 		}
@@ -127,6 +134,7 @@ func (e *Endpoint) Endpoint() kitendpoint.Endpoint {
 	}
 }
 
+// Method is the HTTP method this endpoint is registered for.
 func (e *Endpoint) Method() string {
 	return Method
 }
@@ -136,10 +144,12 @@ func (e *Endpoint) Middlewares() []kitendpoint.Middleware {
 	return []kitendpoint.Middleware{}
 }
 
+// Name identifies the endpoint. It is aligned to the package path.
 func (e *Endpoint) Name() string {
 	return Name
 }
 
+// Path is the HTTP request path this endpoint is registered for.
 func (e *Endpoint) Path() string {
 	return Path
 }

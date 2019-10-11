@@ -1,203 +1,49 @@
 package health
 
 import (
-	"strings"
-
-	v1alpha1 "github.com/giantswarm/apiextensions/pkg/apis/provider/v1alpha1"
-	v1 "k8s.io/api/core/v1"
-	"k8s.io/apimachinery/pkg/api/resource"
-
 	"github.com/giantswarm/health-service/service/health/key"
 )
 
-func NewClusterStatus(cluster v1alpha1.StatusCluster, nodes []v1.Node) ClusterStatus {
-	health := key.Default
-	roleHealthCounts := map[string]map[key.Health]int{}
-	workerCount := 0
-	creating := cluster.HasCreatingCondition()
-	updating := cluster.HasUpdatingCondition()
-	deleting := cluster.HasDeletingCondition()
-
-	for _, node := range nodes {
-		role := nodeRole(node.Labels)
-		nodeHealth := calculateNodeHealth(node)
-		if roleHealthCounts[role] == nil {
-			roleHealthCounts[role] = map[key.Health]int{}
-		}
-		roleHealthCounts[role][nodeHealth]++
-		if role == "worker" {
-			workerCount++
-		} else if role == "master" && nodeHealth != key.Green {
-			if updating {
-				health = key.Yellow
-			} else {
-				health = key.Red
-			}
-		}
-	}
-
-	if health != key.Red {
-		if creating || deleting {
-			health = key.Yellow
-		}
-		healthyWorkersProportion := float32(roleHealthCounts["worker"][key.Green]) / float32(workerCount)
-		if healthyWorkersProportion < 0.75 {
-			health = key.Yellow
-		}
-		if workerCount >= 20 && healthyWorkersProportion < 0.5 {
-			health = key.Red
-		}
-		if roleHealthCounts["worker"][key.Green] < 3 {
-			health = key.Red
-		}
-	}
-
-	state := key.Normal
-
-	if creating {
-		state = key.Creating
-	} else if updating {
-		state = key.Upgrading
-	} else if deleting {
-		state = key.Deleting
-	}
-
-	return ClusterStatus{
-		Health: health,
-		State:  state,
-	}
+// ClusterStatus holds data about the overall health/status of a cluster.
+type ClusterStatus struct {
+	Health key.Health         `json:"health"`
+	State  key.LifecycleState `json:"state"`
 }
 
-func NewNodesStatus(nodes []v1.Node, pods []v1.Pod) []NodeStatus {
-	result := []NodeStatus{}
-	for _, node := range nodes {
-		result = append(result, NewNodeStatus(node, filterNodePods(pods, node.Name)))
-	}
-	return result
+// NodeStatus represents the health status of a single node in a cluster.
+type NodeStatus struct {
+	Ready            bool                       `json:"ready"`
+	Health           key.Health                 `json:"health"`
+	Identity         NodeStatusIdentity         `json:"identity"`
+	MachineResources NodeStatusMachineResources `json:"machine"`
+	LimitTotals      NodeStatusComputeResources `json:"limit_totals"`
+	RequestTotals    NodeStatusComputeResources `json:"request_totals"`
 }
 
-func NewNodeStatus(node v1.Node, pods []v1.Pod) NodeStatus {
-	limits := NodeStatusComputeResources{}
-	requests := NodeStatusComputeResources{}
-	for _, pod := range pods {
-		for _, container := range pod.Spec.Containers {
-			limits.CPU += container.Resources.Limits.Cpu().MilliValue()
-			limits.MemoryBytes += container.Resources.Limits.Memory().Value()
-			requests.CPU += container.Resources.Requests.Cpu().MilliValue()
-			requests.MemoryBytes += container.Resources.Requests.Memory().Value()
-		}
-	}
-	return NodeStatus{
-		Health: calculateNodeHealth(node),
-		Ready:  nodeHasCondition(node.Status.Conditions, v1.ConditionTrue, v1.NodeReady),
-		Identity: NodeStatusIdentity{
-			Name:               node.Name,
-			Role:               nodeRole(node.Labels),
-			IP:                 ipFromAddresses(node.Status.Addresses),
-			Hostname:           hostnameFromAddresses(node.Status.Addresses),
-			InstanceType:       node.GetLabels()["beta.kubernetes.io/instance-type"],
-			AvailabilityZone:   node.GetLabels()["failure-domain.beta.kubernetes.io/zone"],
-			AvailabilityRegion: node.GetLabels()["failure-domain.beta.kubernetes.io/region"],
-			KubeletVersion:     node.Status.NodeInfo.KubeletVersion,
-		},
-		MachineResources: NodeStatusMachineResources{
-			CPUCount:               node.Status.Capacity.Cpu().Value(),
-			MemoryCapacityBytes:    nodeMemoryToInt(node.Status.Capacity.Memory()),
-			MemoryAllocatableBytes: nodeMemoryToInt(node.Status.Allocatable.Memory()),
-			EphemeralStorageCap:    nodeMemoryToInt(node.Status.Capacity.StorageEphemeral()),
-			EphemeralStorageAvail:  nodeMemoryToInt(node.Status.Allocatable.StorageEphemeral()),
-		},
-		LimitTotals:   limits,
-		RequestTotals: requests,
-	}
+// NodeStatusComputeResources holds data about available or requested compute resources.
+type NodeStatusComputeResources struct {
+	CPU         int64 `json:"cpu"`
+	MemoryBytes int64 `json:"memory_bytes"`
 }
 
-// FillNodeVersions takes node version information available at the cluster level and stores it in the associated node-level status
-func FillNodeVersions(nodes []NodeStatus, versions []v1alpha1.StatusClusterNode) []NodeStatus {
-	for i, node := range nodes {
-		nodes[i].Identity.OperatorVersion = findVersionForNode(node.Identity.Name, versions)
-	}
-	return nodes
+// NodeStatusIdentity holds data about the identity of a node which is generally static.
+type NodeStatusIdentity struct {
+	Name               string `json:"name"`
+	KubeletVersion     string `json:"kubelet_version"`
+	OperatorVersion    string `json:"operator_version"`
+	Role               string `json:"role"`
+	IP                 string `json:"ip"`
+	Hostname           string `json:"hostname"`
+	InstanceType       string `json:"instance_type"`
+	AvailabilityRegion string `json:"availability_region"`
+	AvailabilityZone   string `json:"availability_zone"`
 }
 
-func findVersionForNode(name string, nodes []v1alpha1.StatusClusterNode) string {
-	for _, node := range nodes {
-		if node.Name == name {
-			return node.Version
-		}
-	}
-	return ""
-}
-
-func filterNodePods(pods []v1.Pod, nodeName string) []v1.Pod {
-	filtered := []v1.Pod{}
-	for _, pod := range pods {
-		if pod.Spec.NodeName == nodeName {
-			filtered = append(filtered, pod)
-		}
-	}
-	return filtered
-}
-
-func nodeRole(labels map[string]string) string {
-	roleKey := "kubernetes.io/role"
-	roleKeyAlt := "node-role.kubernetes.io/"
-	for key, value := range labels {
-		if key == roleKey {
-			return value
-		} else if strings.HasPrefix(key, roleKeyAlt) && value == "" {
-			runes := []rune(key)
-			role := string(runes[len(roleKeyAlt):])
-			return role
-		}
-	}
-	return ""
-}
-
-// findInAddresses searches a list of NodeAddresses for an address of a given type and returns its value.
-func findInAddresses(addresses []v1.NodeAddress, addressType v1.NodeAddressType) string {
-	for _, entry := range addresses {
-		if entry.Type == addressType {
-			return entry.Address
-		}
-	}
-	return ""
-}
-
-func ipFromAddresses(addresses []v1.NodeAddress) string {
-	return findInAddresses(addresses, v1.NodeInternalIP)
-}
-
-func hostnameFromAddresses(addresses []v1.NodeAddress) string {
-	return findInAddresses(addresses, v1.NodeHostName)
-}
-
-func nodeMemoryToInt(nodeMemory *resource.Quantity) int64 {
-	memBytes, ok := nodeMemory.AsInt64()
-	if !ok {
-		return 0
-	}
-	return memBytes
-}
-
-func nodeHasCondition(conditions []v1.NodeCondition, s v1.ConditionStatus, t v1.NodeConditionType) bool {
-	for _, c := range conditions {
-		if c.Status == s && c.Type == t {
-			return true
-		}
-	}
-
-	return false
-}
-
-func calculateNodeHealth(node v1.Node) key.Health {
-	ready := nodeHasCondition(node.Status.Conditions, v1.ConditionTrue, v1.NodeReady)
-	if ready {
-		return key.Green
-	}
-	role := nodeRole(node.ObjectMeta.Labels)
-	if role == "master" {
-		return key.Red
-	}
-	return key.Yellow
+// NodeStatusMachineResources holds data about the status of storage on a cluster node.
+type NodeStatusMachineResources struct {
+	CPUCount               int64 `json:"cpu_count"`
+	MemoryCapacityBytes    int64 `json:"memory_capacity_bytes"`
+	MemoryAllocatableBytes int64 `json:"memory_allocatable_bytes"`
+	EphemeralStorageCap    int64 `json:"ephemeral_storage_capacity_bytes"`
+	EphemeralStorageAvail  int64 `json:"ephemeral_storage_allocatable_bytes"`
 }

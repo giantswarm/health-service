@@ -5,7 +5,7 @@ import (
 	v1 "k8s.io/api/core/v1"
 )
 
-// Request is the configuration for the service action.
+// Request holds the data required to generate the health response.
 type Request struct {
 	Cluster   v1alpha1.StatusCluster
 	ClusterID string
