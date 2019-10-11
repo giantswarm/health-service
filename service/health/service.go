@@ -34,7 +34,7 @@ func New(config Config) (*Service, error) {
 // It try to find cluster information in CR and fallback to storage service when nothing is found.
 func (s *Service) Search(ctx context.Context, request Request) (*Response, error) {
 	clusterHealth := NewClusterStatus(request.Cluster, request.Nodes)
-	nodesHealth := NewNodesStatus(request.Nodes)
+	nodesHealth := NewNodesStatus(request.Nodes, request.Pods)
 	nodesHealth = FillNodeVersions(nodesHealth, request.Cluster.Nodes)
 
 	response := Response{

@@ -38,4 +38,13 @@ type NodeStatus struct {
 	// Status
 	Ready  bool       `json:"ready"`
 	Health key.Health `json:"health"`
+	// Pods
+	LimitTotals   NodeStatusComputeResources `json:"limit_totals"`
+	RequestTotals NodeStatusComputeResources `json:"request_totals"`
+}
+
+// NodeStatusComputeResources holds data about available or requested compute resources.
+type NodeStatusComputeResources struct {
+	CPU         int64 `json:"cpu"`
+	MemoryBytes int64 `json:"memory_bytes"`
 }

@@ -40,7 +40,7 @@ func New(config Config) (*Service, error) {
 	return s, nil
 }
 
-// ListPods returns a slice of Pods in all namespaces of a tenant cluster.
+// ListPods returns a slice of Pods in a tenant cluster.
 func (s *Service) ListPods(ctx context.Context, request Request) (*Response, error) {
 	var err error
 	var response Response
@@ -55,6 +55,7 @@ func (s *Service) ListPods(ctx context.Context, request Request) (*Response, err
 	}
 
 	{
+		// Empty namespace ("") returns pods from all namespaces
 		pods, err := k8sClient.CoreV1().Pods("").List(v1.ListOptions{})
 		if err != nil {
 			return nil, microerror.Mask(err)

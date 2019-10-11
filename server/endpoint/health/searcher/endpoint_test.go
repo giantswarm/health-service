@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"flag"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
@@ -229,13 +230,26 @@ func Test_Health_Endpoint(t *testing.T) {
 			}))
 			defer k8sCPAPIMockServer.Close()
 
-			// Mock TC k8s api server handling `kubectl get nodes`.
+			// Mock TC k8s api server handling node list and pod list.
+			// Node list can be generated using:
+			//   kubectl get --raw='/api/v1/nodes' | jq .
+			// Pod list (filtered) can be generated using:
+			//   kubectl get --raw='/api/v1/pods?fieldSelector=status.phase%21%3DFailed%2Cstatus.phase%21%3DSucceeded' | python3 -c "import sys; import json; print(json.dumps({key : [{'spec': {'nodeName': pod['spec']['nodeName'], 'containers': [{'resources': c['resources']} for c in pod['spec']['containers']]}} for pod in value] if key == 'items' else value for key, value in json.loads(sys.stdin.read()).items()}))" | jq .
 			k8sTCAPIMockServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-				responsePath := filepath.Join("testdata", testCaseNormalizedName+"-nodes.json")
-				responseJSON, err := ioutil.ReadFile(responsePath)
+				var responseFilename string
+				switch r.RequestURI {
+				case "/api/v1/nodes":
+					responseFilename = filepath.Join("testdata", testCaseNormalizedName+"-nodes.json")
+				case "/api/v1/pods":
+					responseFilename = filepath.Join("testdata", testCaseNormalizedName+"-pods.json")
+				default:
+					t.Fatal("Unknown mock request URI", r.RequestURI)
+				}
+				responseJSON, err := ioutil.ReadFile(responseFilename)
 				if err != nil {
 					t.Fatal(err)
 				}
+				fmt.Println(err, tc.name, responseFilename, responseJSON)
 				w.Header().Set("Content-Type", "application/json; charset=utf-8")
 				w.WriteHeader(http.StatusOK)
 				w.Write(responseJSON)
@@ -367,7 +381,7 @@ func Test_Health_Endpoint(t *testing.T) {
 			p := filepath.Join("testdata", normalizeFileName(tc.name)+".golden")
 
 			if *update {
-				json, err := json.Marshal(endpointResponseTyped)
+				json, err := json.MarshalIndent(endpointResponseTyped, "", "    ")
 				if err != nil {
 					t.Fatal(err)
 				}

@@ -73,7 +73,19 @@ func NewClusterStatus(cluster v1alpha1.StatusCluster, nodes []v1.Node) ClusterSt
 	}
 }
 
-func NewNodeStatus(node v1.Node) NodeStatus {
+func NewNodeStatus(node v1.Node, pods []v1.Pod) NodeStatus {
+	limits := NodeStatusComputeResources{}
+	requests := NodeStatusComputeResources{}
+	for _, pod := range pods {
+		if pod.Spec.NodeName == node.Name {
+			for _, container := range pod.Spec.Containers {
+				limits.CPU += container.Resources.Limits.Cpu().MilliValue()
+				limits.MemoryBytes += container.Resources.Limits.Memory().Value()
+				requests.CPU += container.Resources.Requests.Cpu().MilliValue()
+				requests.MemoryBytes += container.Resources.Requests.Memory().Value()
+			}
+		}
+	}
 	return NodeStatus{
 		Name:                              node.Name,
 		Role:                              nodeRole(node.Labels),
@@ -92,6 +104,8 @@ func NewNodeStatus(node v1.Node) NodeStatus {
 		EphemeralStorageAvail:             nodeMemoryToInt(node.Status.Allocatable.StorageEphemeral()),
 		AttachableVolumesAllocatableCount: countAttachableVolumes(node.Status.Allocatable),
 		AttachableVolumesCapacityCount:    countAttachableVolumes(node.Status.Capacity),
+		LimitTotals:                       limits,
+		RequestTotals:                     requests,
 	}
 }
 
@@ -136,10 +150,10 @@ func findVersionForNode(name string, nodes []v1alpha1.StatusClusterNode) string 
 	return ""
 }
 
-func NewNodesStatus(nodes []v1.Node) []NodeStatus {
+func NewNodesStatus(nodes []v1.Node, pods []v1.Pod) []NodeStatus {
 	result := []NodeStatus{}
 	for _, node := range nodes {
-		result = append(result, NewNodeStatus(node))
+		result = append(result, NewNodeStatus(node, pods))
 	}
 	return result
 }

@@ -22,7 +22,15 @@
             "attachable_volume_allocatable_count": 25,
             "attachable_volume_capacity_count": 25,
             "ready": true,
-            "health": "green"
+            "health": "green",
+            "limit_totals": {
+                "cpu": 0,
+                "memory_bytes": 0
+            },
+            "request_totals": {
+                "cpu": 0,
+                "memory_bytes": 0
+            }
         },
         {
             "name": "ip-10-0-5-179.eu-central-1.compute.internal",
@@ -42,7 +50,15 @@
             "attachable_volume_allocatable_count": 25,
             "attachable_volume_capacity_count": 25,
             "ready": true,
-            "health": "green"
+            "health": "green",
+            "limit_totals": {
+                "cpu": 0,
+                "memory_bytes": 0
+            },
+            "request_totals": {
+                "cpu": 0,
+                "memory_bytes": 0
+            }
         },
         {
             "name": "ip-10-0-5-37.eu-central-1.compute.internal",
@@ -62,7 +78,15 @@
             "attachable_volume_allocatable_count": 25,
             "attachable_volume_capacity_count": 25,
             "ready": true,
-            "health": "green"
+            "health": "green",
+            "limit_totals": {
+                "cpu": 0,
+                "memory_bytes": 0
+            },
+            "request_totals": {
+                "cpu": 0,
+                "memory_bytes": 0
+            }
         },
         {
             "name": "ip-10-0-5-42.eu-central-1.compute.internal",
@@ -82,7 +106,15 @@
             "attachable_volume_allocatable_count": 25,
             "attachable_volume_capacity_count": 25,
             "ready": true,
-            "health": "green"
+            "health": "green",
+            "limit_totals": {
+                "cpu": 0,
+                "memory_bytes": 0
+            },
+            "request_totals": {
+                "cpu": 0,
+                "memory_bytes": 0
+            }
         },
         {
             "name": "ip-10-0-5-79.eu-central-1.compute.internal",
@@ -102,7 +134,15 @@
             "attachable_volume_allocatable_count": 25,
             "attachable_volume_capacity_count": 25,
             "ready": true,
-            "health": "green"
+            "health": "green",
+            "limit_totals": {
+                "cpu": 0,
+                "memory_bytes": 0
+            },
+            "request_totals": {
+                "cpu": 0,
+                "memory_bytes": 0
+            }
         },
         {
             "name": "ip-10-0-5-80.eu-central-1.compute.internal",
@@ -122,7 +162,15 @@
             "attachable_volume_allocatable_count": 25,
             "attachable_volume_capacity_count": 25,
             "ready": true,
-            "health": "green"
+            "health": "green",
+            "limit_totals": {
+                "cpu": 0,
+                "memory_bytes": 0
+            },
+            "request_totals": {
+                "cpu": 0,
+                "memory_bytes": 0
+            }
         }
     ]
 }
