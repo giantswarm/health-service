@@ -15,6 +15,50 @@ const (
 	attachableVolumePattern = v1.ResourceAttachableVolumesPrefix + "*"
 )
 
+// ClusterStatus holds data about the overall health/status of a cluster.
+type ClusterStatus struct {
+	Health key.Health         `json:"health"`
+	State  key.LifecycleState `json:"state"`
+}
+
+// NodeStatus represents the health status of a single node in a cluster.
+type NodeStatus struct {
+	Identity         NodeStatusIdentity         `json:"identity"`
+	MachineResources NodeStatusMachineResources `json:"machine"`
+	Ready            bool                       `json:"ready"`
+	Health           key.Health                 `json:"health"`
+}
+
+// NodeStatusComputeResources holds data about available or requested compute resources.
+type NodeStatusComputeResources struct {
+	CPU         int64 `json:"cpu"`
+	MemoryBytes int64 `json:"memory_bytes"`
+}
+
+// NodeStatusIdentity holds data about the identity of a node which is generally static.
+type NodeStatusIdentity struct {
+	Name               string `json:"name"`
+	KubeletVersion     string `json:"kubelet_version"`
+	OperatorVersion    string `json:"operator_version"`
+	Role               string `json:"role"`
+	IP                 string `json:"ip"`
+	Hostname           string `json:"hostname"`
+	InstanceType       string `json:"instance_type"`
+	AvailabilityRegion string `json:"availability_region"`
+	AvailabilityZone   string `json:"availability_zone"`
+}
+
+// NodeStatusMachineResources holds data about the status of storage on a cluster node.
+type NodeStatusMachineResources struct {
+	CPUCount                          int64 `json:"cpu_count"`
+	MemoryCapacityBytes               int64 `json:"memory_capacity_bytes"`
+	MemoryAllocatableBytes            int64 `json:"memory_allocatable_bytes"`
+	EphemeralStorageCap               int64 `json:"ephemeral_storage_capacity_bytes"`
+	EphemeralStorageAvail             int64 `json:"ephemeral_storage_allocatable_bytes"`
+	AttachableVolumesAllocatableCount int64 `json:"attachable_volume_allocatable_count"`
+	AttachableVolumesCapacityCount    int64 `json:"attachable_volume_capacity_count"`
+}
+
 func NewClusterStatus(cluster v1alpha1.StatusCluster, nodes []v1.Node) ClusterStatus {
 	health := key.Default
 	roleHealthCounts := map[string]map[key.Health]int{}
@@ -75,23 +119,27 @@ func NewClusterStatus(cluster v1alpha1.StatusCluster, nodes []v1.Node) ClusterSt
 
 func NewNodeStatus(node v1.Node) NodeStatus {
 	return NodeStatus{
-		Name:                              node.Name,
-		Role:                              nodeRole(node.Labels),
-		Health:                            calculateNodeHealth(node),
-		Ready:                             nodeHasCondition(node.Status.Conditions, v1.ConditionTrue, v1.NodeReady),
-		IP:                                ipFromAddresses(node.Status.Addresses),
-		Hostname:                          hostnameFromAddresses(node.Status.Addresses),
-		InstanceType:                      node.GetLabels()["beta.kubernetes.io/instance-type"],
-		AvailabilityZone:                  node.GetLabels()["failure-domain.beta.kubernetes.io/zone"],
-		AvailabilityRegion:                node.GetLabels()["failure-domain.beta.kubernetes.io/region"],
-		KubeletVersion:                    node.Status.NodeInfo.KubeletVersion,
-		CPUCount:                          node.Status.Capacity.Cpu().Value(),
-		MemoryCapacityBytes:               nodeMemoryToInt(node.Status.Capacity.Memory()),
-		MemoryAllocatableBytes:            nodeMemoryToInt(node.Status.Allocatable.Memory()),
-		EphemeralStorageCap:               nodeMemoryToInt(node.Status.Capacity.StorageEphemeral()),
-		EphemeralStorageAvail:             nodeMemoryToInt(node.Status.Allocatable.StorageEphemeral()),
-		AttachableVolumesAllocatableCount: countAttachableVolumes(node.Status.Allocatable),
-		AttachableVolumesCapacityCount:    countAttachableVolumes(node.Status.Capacity),
+		Health: calculateNodeHealth(node),
+		Ready:  nodeHasCondition(node.Status.Conditions, v1.ConditionTrue, v1.NodeReady),
+		Identity: NodeStatusIdentity{
+			Name:               node.Name,
+			Role:               nodeRole(node.Labels),
+			IP:                 ipFromAddresses(node.Status.Addresses),
+			Hostname:           hostnameFromAddresses(node.Status.Addresses),
+			InstanceType:       node.GetLabels()["beta.kubernetes.io/instance-type"],
+			AvailabilityZone:   node.GetLabels()["failure-domain.beta.kubernetes.io/zone"],
+			AvailabilityRegion: node.GetLabels()["failure-domain.beta.kubernetes.io/region"],
+			KubeletVersion:     node.Status.NodeInfo.KubeletVersion,
+		},
+		MachineResources: NodeStatusMachineResources{
+			CPUCount:                          node.Status.Capacity.Cpu().Value(),
+			MemoryCapacityBytes:               nodeMemoryToInt(node.Status.Capacity.Memory()),
+			MemoryAllocatableBytes:            nodeMemoryToInt(node.Status.Allocatable.Memory()),
+			EphemeralStorageCap:               nodeMemoryToInt(node.Status.Capacity.StorageEphemeral()),
+			EphemeralStorageAvail:             nodeMemoryToInt(node.Status.Allocatable.StorageEphemeral()),
+			AttachableVolumesAllocatableCount: countAttachableVolumes(node.Status.Allocatable),
+			AttachableVolumesCapacityCount:    countAttachableVolumes(node.Status.Capacity),
+		},
 	}
 }
 
@@ -121,7 +169,7 @@ func getAttachableVolumes(nodeStatus v1.ResourceList) map[string]int64 {
 // FillNodeVersions takes node version information available at the cluster level and stores it in the associated node-level status
 func FillNodeVersions(nodes []NodeStatus, versions []v1alpha1.StatusClusterNode) []NodeStatus {
 	for i, node := range nodes {
-		nodes[i].OperatorVersion = findVersionForNode(node.Name, versions)
+		nodes[i].Identity.OperatorVersion = findVersionForNode(node.Identity.Name, versions)
 	}
 	return nodes
 }
