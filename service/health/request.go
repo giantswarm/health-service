@@ -9,5 +9,6 @@ import (
 type Request struct {
 	ClusterID string
 	Nodes     []v1.Node
+	Pods      []v1.Pod
 	Cluster   v1alpha1.StatusCluster
 }

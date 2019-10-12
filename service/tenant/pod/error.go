@@ -1,4 +1,4 @@
-package tenant
+package pod
 
 import (
 	"github.com/giantswarm/microerror"

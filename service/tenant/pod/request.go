@@ -1,4 +1,4 @@
-package tenant
+package pod
 
 // Request is the configuration for the service action.
 type Request struct {
