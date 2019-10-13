@@ -6,12 +6,12 @@
     "nodes": [
         {
             "identity": {
-                "name": "master-m73hu-5bfc5479b-pd52d",
+                "name": "master-5khgh-d897dc6cf-vstr9",
                 "kubelet_version": "v1.14.6",
                 "operator_version": "3.8.0",
                 "role": "master",
-                "ip": "172.23.2.254",
-                "hostname": "master-m73hu-5bfc5479b-pd52d",
+                "ip": "172.23.7.74",
+                "hostname": "master-5khgh-d897dc6cf-vstr9",
                 "instance_type": "",
                 "availability_region": "",
                 "availability_zone": ""
@@ -27,109 +27,109 @@
             },
             "ready": true,
             "health": "green",
-            "limit_totals": {
-                "cpu": 0,
-                "memory_bytes": 0
-            },
             "request_totals": {
-                "cpu": 0,
-                "memory_bytes": 0
+                "cpu": 1300,
+                "memory_bytes": 1158676480
+            },
+            "limit_totals": {
+                "cpu": 550,
+                "memory_bytes": 445644800
             }
         },
         {
             "identity": {
-                "name": "worker-243rn-6944445cd4-zd6g9",
+                "name": "worker-0ht26-64c4fbf547-vzs6q",
                 "kubelet_version": "v1.14.6",
                 "operator_version": "3.8.0",
                 "role": "worker",
-                "ip": "172.23.2.206",
-                "hostname": "worker-243rn-6944445cd4-zd6g9",
+                "ip": "172.23.7.62",
+                "hostname": "worker-0ht26-64c4fbf547-vzs6q",
                 "instance_type": "",
                 "availability_region": "",
                 "availability_zone": ""
             },
             "machine": {
-                "cpu_count": 2,
-                "memory_capacity_bytes": 3079614464,
-                "memory_allocatable_bytes": 1661939712,
-                "ephemeral_storage_capacity_bytes": 10726932480,
-                "ephemeral_storage_allocatable_bytes": 9653190656,
+                "cpu_count": 3,
+                "memory_capacity_bytes": 3079434240,
+                "memory_allocatable_bytes": 1661759488,
+                "ephemeral_storage_capacity_bytes": 42928701440,
+                "ephemeral_storage_allocatable_bytes": 41854959616,
                 "attachable_volume_allocatable_count": 0,
                 "attachable_volume_capacity_count": 0
             },
             "ready": true,
             "health": "green",
-            "limit_totals": {
-                "cpu": 0,
-                "memory_bytes": 0
-            },
             "request_totals": {
-                "cpu": 0,
-                "memory_bytes": 0
+                "cpu": 450,
+                "memory_bytes": 424673280
+            },
+            "limit_totals": {
+                "cpu": 300,
+                "memory_bytes": 340787200
             }
         },
         {
             "identity": {
-                "name": "worker-e8r4m-5dcb8ffd8d-xdjt5",
+                "name": "worker-fj8kh-74d69554d9-qggz9",
                 "kubelet_version": "v1.14.6",
                 "operator_version": "3.8.0",
                 "role": "worker",
-                "ip": "172.23.2.122",
-                "hostname": "worker-e8r4m-5dcb8ffd8d-xdjt5",
+                "ip": "172.23.7.230",
+                "hostname": "worker-fj8kh-74d69554d9-qggz9",
                 "instance_type": "",
                 "availability_region": "",
                 "availability_zone": ""
             },
             "machine": {
-                "cpu_count": 2,
-                "memory_capacity_bytes": 3079598080,
-                "memory_allocatable_bytes": 1661923328,
-                "ephemeral_storage_capacity_bytes": 10726932480,
-                "ephemeral_storage_allocatable_bytes": 9653190656,
+                "cpu_count": 3,
+                "memory_capacity_bytes": 3079417856,
+                "memory_allocatable_bytes": 1661743104,
+                "ephemeral_storage_capacity_bytes": 42928701440,
+                "ephemeral_storage_allocatable_bytes": 41854959616,
                 "attachable_volume_allocatable_count": 0,
                 "attachable_volume_capacity_count": 0
             },
             "ready": true,
             "health": "green",
-            "limit_totals": {
-                "cpu": 0,
-                "memory_bytes": 0
-            },
             "request_totals": {
-                "cpu": 0,
-                "memory_bytes": 0
+                "cpu": 1190,
+                "memory_bytes": 1066401792
+            },
+            "limit_totals": {
+                "cpu": 1040,
+                "memory_bytes": 982515712
             }
         },
         {
             "identity": {
-                "name": "worker-hc97q-58487c888-jcbdd",
+                "name": "worker-xd0mh-dc7fddf4f-qgkwt",
                 "kubelet_version": "v1.14.6",
                 "operator_version": "3.8.0",
                 "role": "worker",
-                "ip": "172.23.2.242",
-                "hostname": "worker-hc97q-58487c888-jcbdd",
+                "ip": "172.23.7.122",
+                "hostname": "worker-xd0mh-dc7fddf4f-qgkwt",
                 "instance_type": "",
                 "availability_region": "",
                 "availability_zone": ""
             },
             "machine": {
-                "cpu_count": 2,
-                "memory_capacity_bytes": 3079598080,
-                "memory_allocatable_bytes": 1661923328,
-                "ephemeral_storage_capacity_bytes": 10726932480,
-                "ephemeral_storage_allocatable_bytes": 9653190656,
+                "cpu_count": 3,
+                "memory_capacity_bytes": 3079417856,
+                "memory_allocatable_bytes": 1661743104,
+                "ephemeral_storage_capacity_bytes": 42928701440,
+                "ephemeral_storage_allocatable_bytes": 41854959616,
                 "attachable_volume_allocatable_count": 0,
                 "attachable_volume_capacity_count": 0
             },
             "ready": true,
             "health": "green",
-            "limit_totals": {
-                "cpu": 0,
-                "memory_bytes": 0
-            },
             "request_totals": {
-                "cpu": 0,
-                "memory_bytes": 0
+                "cpu": 950,
+                "memory_bytes": 888143872
+            },
+            "limit_totals": {
+                "cpu": 800,
+                "memory_bytes": 804257792
             }
         }
     ]

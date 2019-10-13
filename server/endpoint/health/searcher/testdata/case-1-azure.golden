@@ -27,13 +27,13 @@
             },
             "ready": true,
             "health": "green",
-            "limit_totals": {
-                "cpu": 550,
-                "memory_bytes": 602931200
-            },
             "request_totals": {
                 "cpu": 1300,
                 "memory_bytes": 1315962880
+            },
+            "limit_totals": {
+                "cpu": 550,
+                "memory_bytes": 602931200
             }
         },
         {
@@ -59,13 +59,13 @@
             },
             "ready": true,
             "health": "green",
-            "limit_totals": {
-                "cpu": 600,
-                "memory_bytes": 594542592
-            },
             "request_totals": {
                 "cpu": 1250,
                 "memory_bytes": 1307574272
+            },
+            "limit_totals": {
+                "cpu": 600,
+                "memory_bytes": 594542592
             }
         },
         {
@@ -91,13 +91,13 @@
             },
             "ready": true,
             "health": "green",
-            "limit_totals": {
-                "cpu": 550,
-                "memory_bytes": 542113792
-            },
             "request_totals": {
                 "cpu": 1200,
                 "memory_bytes": 1255145472
+            },
+            "limit_totals": {
+                "cpu": 550,
+                "memory_bytes": 542113792
             }
         },
         {
@@ -123,13 +123,13 @@
             },
             "ready": true,
             "health": "green",
-            "limit_totals": {
-                "cpu": 790,
-                "memory_bytes": 781189120
-            },
             "request_totals": {
                 "cpu": 1440,
                 "memory_bytes": 1494220800
+            },
+            "limit_totals": {
+                "cpu": 790,
+                "memory_bytes": 781189120
             }
         }
     ]
