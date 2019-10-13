@@ -1,0 +1,20 @@
+{
+    "ready": true,
+    "health": "green",
+    "name": "ip-10-0-5-141.eu-central-1.compute.internal",
+    "kubelet_version": "v1.14.3",
+    "operator_version": "",
+    "role": "master",
+    "ip": "10.0.5.141",
+    "hostname": "ip-10-0-5-141.eu-central-1.compute.internal",
+    "instance_type": "m5.large",
+    "availability_region": "eu-central-1",
+    "availability_zone": "eu-central-1c",
+    "cpu_count": 2,
+    "memory_capacity_bytes": 8055848960,
+    "memory_allocatable_bytes": 7846133760,
+    "ephemeral_storage_capacity_bytes": 5843333120,
+    "ephemeral_storage_allocatable_bytes": 5843333120,
+    "attachable_volume_allocatable_count": 25,
+    "attachable_volume_capacity_count": 25
+}

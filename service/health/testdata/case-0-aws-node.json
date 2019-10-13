@@ -1,0 +1,123 @@
+{
+  "metadata": {
+      "name": "ip-10-0-5-141.eu-central-1.compute.internal",
+      "selfLink": "/api/v1/nodes/ip-10-0-5-141.eu-central-1.compute.internal",
+      "uid": "e7895c6d-e677-11e9-8b4e-02b237710270",
+      "resourceVersion": "157911391",
+      "creationTimestamp": "2019-10-04T07:23:47Z",
+      "labels": {
+          "beta.kubernetes.io/arch": "amd64",
+          "beta.kubernetes.io/instance-type": "m5.large",
+          "beta.kubernetes.io/os": "linux",
+          "failure-domain.beta.kubernetes.io/region": "eu-central-1",
+          "failure-domain.beta.kubernetes.io/zone": "eu-central-1c",
+          "ip": "10.0.5.141",
+          "kubernetes.io/arch": "amd64",
+          "kubernetes.io/hostname": "ip-10-0-5-141.eu-central-1.compute.internal",
+          "kubernetes.io/os": "linux",
+          "kubernetes.io/role": "master",
+          "master-id": "3",
+          "node-role.kubernetes.io/master": "",
+          "node.kubernetes.io/master": "",
+          "role": "master"
+      },
+      "annotations": {
+          "node.alpha.kubernetes.io/ttl": "0",
+          "volumes.kubernetes.io/controller-managed-attach-detach": "true"
+      }
+  },
+  "spec": {
+      "providerID": "aws:///eu-central-1c/i-07aaf3eed410dad09",
+      "taints": [
+          {
+              "key": "node-role.kubernetes.io/master",
+              "effect": "NoSchedule"
+          }
+      ]
+  },
+  "status": {
+      "capacity": {
+          "attachable-volumes-aws-ebs": "25",
+          "cpu": "2",
+          "ephemeral-storage": "5706380Ki",
+          "hugepages-1Gi": "0",
+          "hugepages-2Mi": "0",
+          "memory": "7867040Ki",
+          "pods": "110"
+      },
+      "allocatable": {
+          "attachable-volumes-aws-ebs": "25",
+          "cpu": "2",
+          "ephemeral-storage": "5706380Ki",
+          "hugepages-1Gi": "0",
+          "hugepages-2Mi": "0",
+          "memory": "7662240Ki",
+          "pods": "110"
+      },
+      "conditions": [
+          {
+              "type": "MemoryPressure",
+              "status": "False",
+              "lastHeartbeatTime": "2019-10-04T17:12:36Z",
+              "lastTransitionTime": "2019-10-04T07:23:47Z",
+              "reason": "KubeletHasSufficientMemory",
+              "message": "kubelet has sufficient memory available"
+          },
+          {
+              "type": "DiskPressure",
+              "status": "False",
+              "lastHeartbeatTime": "2019-10-04T17:12:36Z",
+              "lastTransitionTime": "2019-10-04T07:23:47Z",
+              "reason": "KubeletHasNoDiskPressure",
+              "message": "kubelet has no disk pressure"
+          },
+          {
+              "type": "PIDPressure",
+              "status": "False",
+              "lastHeartbeatTime": "2019-10-04T17:12:36Z",
+              "lastTransitionTime": "2019-10-04T07:23:47Z",
+              "reason": "KubeletHasSufficientPID",
+              "message": "kubelet has sufficient PID available"
+          },
+          {
+              "type": "Ready",
+              "status": "True",
+              "lastHeartbeatTime": "2019-10-04T17:12:36Z",
+              "lastTransitionTime": "2019-10-04T07:24:07Z",
+              "reason": "KubeletReady",
+              "message": "kubelet is posting ready status"
+          }
+      ],
+      "addresses": [
+          {
+              "type": "InternalIP",
+              "address": "10.0.5.141"
+          },
+          {
+              "type": "InternalDNS",
+              "address": "ip-10-0-5-141.eu-central-1.compute.internal"
+          },
+          {
+              "type": "Hostname",
+              "address": "ip-10-0-5-141.eu-central-1.compute.internal"
+          }
+      ],
+      "daemonEndpoints": {
+          "kubeletEndpoint": {
+              "Port": 10250
+          }
+      },
+      "nodeInfo": {
+          "machineID": "ec28fb8f2f763f26291761baf88b3c60",
+          "systemUUID": "ec28fb8f-2f76-3f26-2917-61baf88b3c60",
+          "bootID": "2493e8c2-0873-4aee-bcf0-8372224877b3",
+          "kernelVersion": "4.19.23-coreos-r1",
+          "osImage": "Container Linux by CoreOS 2023.4.0 (Rhyolite)",
+          "containerRuntimeVersion": "docker://18.6.1",
+          "kubeletVersion": "v1.14.3",
+          "kubeProxyVersion": "v1.14.3",
+          "operatingSystem": "linux",
+          "architecture": "amd64"
+      }
+  }
+}

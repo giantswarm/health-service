@@ -107,6 +107,7 @@ func (e *Endpoint) Endpoint() kitendpoint.Endpoint {
 			ClusterID: clusterID,
 			Nodes:     tenantResponse.Nodes,
 		}
+
 		healthResponse, err := e.service.Health.Search(ctx, healthRequest)
 		if err != nil {
 			return nil, microerror.Mask(err)

@@ -1,0 +1,122 @@
+{
+  "metadata": {
+      "name": "master-m73hu-5bfc5479b-pd52d",
+      "selfLink": "/api/v1/nodes/master-m73hu-5bfc5479b-pd52d",
+      "uid": "91c48076-e6b0-11e9-af79-deadbe835803",
+      "resourceVersion": "5643",
+      "creationTimestamp": "2019-10-04T14:09:24Z",
+      "labels": {
+          "beta.kubernetes.io/arch": "amd64",
+          "beta.kubernetes.io/os": "linux",
+          "giantswarm.io/provider": "kvm",
+          "ip": "172.23.2.254",
+          "kubernetes.io/arch": "amd64",
+          "kubernetes.io/hostname": "master-m73hu-5bfc5479b-pd52d",
+          "kubernetes.io/os": "linux",
+          "kubernetes.io/role": "master",
+          "kvm-operator.giantswarm.io/version": "3.8.0",
+          "node-role.kubernetes.io/master": "",
+          "node.kubernetes.io/master": "",
+          "role": "master"
+      },
+      "annotations": {
+          "node.alpha.kubernetes.io/ttl": "0",
+          "volumes.kubernetes.io/controller-managed-attach-detach": "true"
+      }
+  },
+  "spec": {
+      "taints": [
+          {
+              "key": "node-role.kubernetes.io/master",
+              "effect": "NoSchedule"
+          }
+      ]
+  },
+  "status": {
+      "capacity": {
+          "cpu": "2",
+          "ephemeral-storage": "5110Mi",
+          "hugepages-1Gi": "0",
+          "hugepages-2Mi": "0",
+          "memory": "8168392Ki",
+          "pods": "110"
+      },
+      "allocatable": {
+          "cpu": "1400m",
+          "ephemeral-storage": "4086Mi",
+          "hugepages-1Gi": "0",
+          "hugepages-2Mi": "0",
+          "memory": "6259656Ki",
+          "pods": "110"
+      },
+      "conditions": [
+          {
+              "type": "NetworkUnavailable",
+              "status": "False",
+              "lastHeartbeatTime": "2019-10-04T14:12:14Z",
+              "lastTransitionTime": "2019-10-04T14:12:14Z",
+              "reason": "CalicoIsUp",
+              "message": "Calico is running on this node"
+          },
+          {
+              "type": "MemoryPressure",
+              "status": "False",
+              "lastHeartbeatTime": "2019-10-04T14:53:34Z",
+              "lastTransitionTime": "2019-10-04T14:09:16Z",
+              "reason": "KubeletHasSufficientMemory",
+              "message": "kubelet has sufficient memory available"
+          },
+          {
+              "type": "DiskPressure",
+              "status": "False",
+              "lastHeartbeatTime": "2019-10-04T14:53:34Z",
+              "lastTransitionTime": "2019-10-04T14:09:16Z",
+              "reason": "KubeletHasNoDiskPressure",
+              "message": "kubelet has no disk pressure"
+          },
+          {
+              "type": "PIDPressure",
+              "status": "False",
+              "lastHeartbeatTime": "2019-10-04T14:53:34Z",
+              "lastTransitionTime": "2019-10-04T14:09:16Z",
+              "reason": "KubeletHasSufficientPID",
+              "message": "kubelet has sufficient PID available"
+          },
+          {
+              "type": "Ready",
+              "status": "True",
+              "lastHeartbeatTime": "2019-10-04T14:53:34Z",
+              "lastTransitionTime": "2019-10-04T14:13:50Z",
+              "reason": "KubeletReady",
+              "message": "kubelet is posting ready status"
+          }
+      ],
+      "addresses": [
+          {
+              "type": "InternalIP",
+              "address": "172.23.2.254"
+          },
+          {
+              "type": "Hostname",
+              "address": "master-m73hu-5bfc5479b-pd52d"
+          }
+      ],
+      "daemonEndpoints": {
+          "kubeletEndpoint": {
+              "Port": 10250
+          }
+      },
+      "nodeInfo": {
+          "machineID": "7cd158ee39054c81bb9da41d73688c56",
+          "systemUUID": "311936e2303b034fe7ef70182235b8cb",
+          "bootID": "71f5e94e-1175-4ac6-8c7c-31ad9dc80d93",
+          "kernelVersion": "4.19.50-coreos-r1",
+          "osImage": "Container Linux by CoreOS 2135.4.0 (Rhyolite)",
+          "containerRuntimeVersion": "docker://18.6.3",
+          "kubeletVersion": "v1.14.6",
+          "kubeProxyVersion": "v1.14.6",
+          "operatingSystem": "linux",
+          "architecture": "amd64"
+      }
+  }
+}
