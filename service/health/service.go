@@ -110,24 +110,28 @@ func calculateNodeStatus(cluster v1alpha1.StatusCluster, nodes []v1.Node) []Node
 	result := []NodeStatus{}
 	for _, node := range nodes {
 		nodeStatus := NodeStatus{
-			Health:                            calculateNodeHealth(node),
-			Ready:                             key.NodeHasCondition(node.Status.Conditions, v1.ConditionTrue, v1.NodeReady),
-			Name:                              node.Name,
-			Role:                              key.NodeRole(node),
-			IP:                                key.NodeIP(node.Status.Addresses),
-			Hostname:                          key.NodeHostname(node.Status.Addresses),
-			InstanceType:                      node.GetLabels()["beta.kubernetes.io/instance-type"],
-			AvailabilityZone:                  node.GetLabels()["failure-domain.beta.kubernetes.io/zone"],
-			AvailabilityRegion:                node.GetLabels()["failure-domain.beta.kubernetes.io/region"],
-			KubeletVersion:                    node.Status.NodeInfo.KubeletVersion,
-			OperatorVersion:                   key.NodeVersion(cluster.Nodes, node.Name),
-			CPUCount:                          node.Status.Capacity.Cpu().Value(),
-			MemoryCapacityBytes:               key.MemoryToInt(node.Status.Capacity.Memory()),
-			MemoryAllocatableBytes:            key.MemoryToInt(node.Status.Allocatable.Memory()),
-			EphemeralStorageCap:               key.MemoryToInt(node.Status.Capacity.StorageEphemeral()),
-			EphemeralStorageAvail:             key.MemoryToInt(node.Status.Allocatable.StorageEphemeral()),
-			AttachableVolumesAllocatableCount: key.NodeAttachableVolumesCount(node.Status.Allocatable),
-			AttachableVolumesCapacityCount:    key.NodeAttachableVolumesCount(node.Status.Capacity),
+			Health: calculateNodeHealth(node),
+			Ready:  key.NodeHasCondition(node.Status.Conditions, v1.ConditionTrue, v1.NodeReady),
+			Identity: NodeStatusIdentity{
+				Name:               node.Name,
+				Role:               key.NodeRole(node),
+				IP:                 key.NodeIP(node.Status.Addresses),
+				Hostname:           key.NodeHostname(node.Status.Addresses),
+				InstanceType:       node.Labels["beta.kubernetes.io/instance-type"],
+				AvailabilityZone:   node.Labels["failure-domain.beta.kubernetes.io/zone"],
+				AvailabilityRegion: node.Labels["failure-domain.beta.kubernetes.io/region"],
+				KubeletVersion:     node.Status.NodeInfo.KubeletVersion,
+				OperatorVersion:    key.NodeVersion(cluster.Nodes, node.Name),
+			},
+			MachineResources: NodeStatusMachineResources{
+				CPUCount:                          node.Status.Capacity.Cpu().Value(),
+				MemoryCapacityBytes:               key.MemoryToInt(node.Status.Capacity.Memory()),
+				MemoryAllocatableBytes:            key.MemoryToInt(node.Status.Allocatable.Memory()),
+				EphemeralStorageCap:               key.MemoryToInt(node.Status.Capacity.StorageEphemeral()),
+				EphemeralStorageAvail:             key.MemoryToInt(node.Status.Allocatable.StorageEphemeral()),
+				AttachableVolumesAllocatableCount: key.NodeAttachableVolumesCount(node.Status.Allocatable),
+				AttachableVolumesCapacityCount:    key.NodeAttachableVolumesCount(node.Status.Capacity),
+			},
 		}
 		result = append(result, nodeStatus)
 	}

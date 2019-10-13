@@ -1,4 +1,4 @@
-package tenant
+package node
 
 import (
 	"github.com/giantswarm/microerror"

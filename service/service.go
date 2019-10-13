@@ -10,7 +10,6 @@ import (
 	"github.com/giantswarm/microendpoint/service/version"
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
-	"github.com/giantswarm/microstorage"
 	"github.com/giantswarm/tenantcluster"
 
 	"github.com/giantswarm/health-service/service/health"
@@ -29,7 +28,6 @@ const (
 type Config struct {
 	G8sClient     versioned.Interface
 	Logger        micrologger.Logger
-	Storage       microstorage.Storage
 	TenantCluster tenantcluster.Interface
 	Provider      string
 
