@@ -38,7 +38,7 @@ func New(config Config) (*Service, error) {
 // an object representing an aggregate health of the cluster and its nodes.
 func (s *Service) Search(ctx context.Context, request Request) (*Response, error) {
 	clusterStatus := calculateClusterStatus(request.Cluster, request.Nodes)
-	nodeStatus := calculateNodeStatus(request.Cluster, request.Nodes)
+	nodeStatus := calculateNodeStatus(request.Cluster, request.Nodes, request.Pods)
 
 	response := Response{
 		Cluster: clusterStatus,
@@ -106,9 +106,21 @@ func calculateClusterStatus(cluster v1alpha1.StatusCluster, nodes []v1.Node) Clu
 	}
 }
 
-func calculateNodeStatus(cluster v1alpha1.StatusCluster, nodes []v1.Node) []NodeStatus {
+func calculateNodeStatus(cluster v1alpha1.StatusCluster, nodes []v1.Node, pods []v1.Pod) []NodeStatus {
 	result := []NodeStatus{}
 	for _, node := range nodes {
+		limits := NodeStatusComputeResources{}
+		requests := NodeStatusComputeResources{}
+		for _, pod := range pods {
+			if pod.Spec.NodeName == node.Name {
+				for _, container := range pod.Spec.Containers {
+					limits.CPU += container.Resources.Limits.Cpu().MilliValue()
+					limits.MemoryBytes += container.Resources.Limits.Memory().Value()
+					requests.CPU += container.Resources.Requests.Cpu().MilliValue()
+					requests.MemoryBytes += container.Resources.Requests.Memory().Value()
+				}
+			}
+		}
 		nodeStatus := NodeStatus{
 			Health: calculateNodeHealth(node),
 			Ready:  key.NodeHasCondition(node.Status.Conditions, v1.ConditionTrue, v1.NodeReady),
@@ -132,6 +144,8 @@ func calculateNodeStatus(cluster v1alpha1.StatusCluster, nodes []v1.Node) []Node
 				AttachableVolumesAllocatableCount: key.NodeAttachableVolumesCount(node.Status.Allocatable),
 				AttachableVolumesCapacityCount:    key.NodeAttachableVolumesCount(node.Status.Capacity),
 			},
+			RequestTotals: requests,
+			LimitTotals:   limits,
 		}
 		result = append(result, nodeStatus)
 	}

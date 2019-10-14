@@ -1,0 +1,534 @@
+{
+  "kind": "PodList",
+  "apiVersion": "v1",
+  "metadata": {
+    "selfLink": "/api/v1/pods",
+    "resourceVersion": "8055"
+  },
+  "items": [
+    {
+      "spec": {
+        "nodeName": "worker-xd0mh-dc7fddf4f-qgkwt",
+        "containers": [
+          {
+            "resources": {
+              "limits": {
+                "cpu": "250m",
+                "memory": "250Mi"
+              },
+              "requests": {
+                "cpu": "250m",
+                "memory": "250Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "worker-fj8kh-74d69554d9-qggz9",
+        "containers": [
+          {
+            "resources": {}
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "master-5khgh-d897dc6cf-vstr9",
+        "containers": [
+          {
+            "resources": {
+              "limits": {
+                "cpu": "250m",
+                "memory": "100Mi"
+              },
+              "requests": {
+                "cpu": "250m",
+                "memory": "100Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "worker-xd0mh-dc7fddf4f-qgkwt",
+        "containers": [
+          {
+            "resources": {
+              "limits": {
+                "cpu": "250m",
+                "memory": "150Mi"
+              },
+              "requests": {
+                "cpu": "250m",
+                "memory": "150Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "worker-fj8kh-74d69554d9-qggz9",
+        "containers": [
+          {
+            "resources": {
+              "limits": {
+                "cpu": "250m",
+                "memory": "150Mi"
+              },
+              "requests": {
+                "cpu": "250m",
+                "memory": "150Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "master-5khgh-d897dc6cf-vstr9",
+        "containers": [
+          {
+            "resources": {
+              "limits": {
+                "cpu": "250m",
+                "memory": "150Mi"
+              },
+              "requests": {
+                "cpu": "250m",
+                "memory": "150Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "worker-0ht26-64c4fbf547-vzs6q",
+        "containers": [
+          {
+            "resources": {
+              "limits": {
+                "cpu": "250m",
+                "memory": "150Mi"
+              },
+              "requests": {
+                "cpu": "250m",
+                "memory": "150Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "master-5khgh-d897dc6cf-vstr9",
+        "containers": [
+          {
+            "resources": {
+              "limits": {
+                "cpu": "50m",
+                "memory": "50Mi"
+              },
+              "requests": {
+                "cpu": "50m",
+                "memory": "50Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "worker-0ht26-64c4fbf547-vzs6q",
+        "containers": [
+          {
+            "resources": {
+              "limits": {
+                "cpu": "50m",
+                "memory": "50Mi"
+              },
+              "requests": {
+                "cpu": "50m",
+                "memory": "50Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "worker-xd0mh-dc7fddf4f-qgkwt",
+        "containers": [
+          {
+            "resources": {
+              "limits": {
+                "cpu": "50m",
+                "memory": "50Mi"
+              },
+              "requests": {
+                "cpu": "50m",
+                "memory": "50Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "worker-fj8kh-74d69554d9-qggz9",
+        "containers": [
+          {
+            "resources": {
+              "limits": {
+                "cpu": "50m",
+                "memory": "50Mi"
+              },
+              "requests": {
+                "cpu": "50m",
+                "memory": "50Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "worker-fj8kh-74d69554d9-qggz9",
+        "containers": [
+          {
+            "resources": {
+              "limits": {
+                "cpu": "250m",
+                "memory": "192Mi"
+              },
+              "requests": {
+                "cpu": "250m",
+                "memory": "192Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "worker-xd0mh-dc7fddf4f-qgkwt",
+        "containers": [
+          {
+            "resources": {
+              "limits": {
+                "cpu": "250m",
+                "memory": "192Mi"
+              },
+              "requests": {
+                "cpu": "250m",
+                "memory": "192Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "master-5khgh-d897dc6cf-vstr9",
+        "containers": [
+          {
+            "resources": {
+              "requests": {
+                "cpu": "300m",
+                "memory": "300Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "master-5khgh-d897dc6cf-vstr9",
+        "containers": [
+          {
+            "resources": {
+              "requests": {
+                "cpu": "200m",
+                "memory": "200Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "master-5khgh-d897dc6cf-vstr9",
+        "containers": [
+          {
+            "resources": {
+              "requests": {
+                "cpu": "100m",
+                "memory": "100Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "master-5khgh-d897dc6cf-vstr9",
+        "containers": [
+          {
+            "resources": {
+              "requests": {
+                "cpu": "75m",
+                "memory": "80Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "worker-0ht26-64c4fbf547-vzs6q",
+        "containers": [
+          {
+            "resources": {
+              "requests": {
+                "cpu": "75m",
+                "memory": "80Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "worker-fj8kh-74d69554d9-qggz9",
+        "containers": [
+          {
+            "resources": {
+              "requests": {
+                "cpu": "75m",
+                "memory": "80Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "worker-xd0mh-dc7fddf4f-qgkwt",
+        "containers": [
+          {
+            "resources": {
+              "requests": {
+                "cpu": "75m",
+                "memory": "80Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "worker-fj8kh-74d69554d9-qggz9",
+        "containers": [
+          {
+            "resources": {
+              "limits": {
+                "cpu": "340m",
+                "memory": "370Mi"
+              },
+              "requests": {
+                "cpu": "340m",
+                "memory": "370Mi"
+              }
+            }
+          },
+          {
+            "resources": {
+              "limits": {
+                "cpu": "150m",
+                "memory": "50Mi"
+              },
+              "requests": {
+                "cpu": "150m",
+                "memory": "50Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "worker-xd0mh-dc7fddf4f-qgkwt",
+        "containers": [
+          {
+            "resources": {}
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "worker-xd0mh-dc7fddf4f-qgkwt",
+        "containers": [
+          {
+            "resources": {
+              "limits": {
+                "memory": "75Mi"
+              },
+              "requests": {
+                "memory": "75Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "worker-0ht26-64c4fbf547-vzs6q",
+        "containers": [
+          {
+            "resources": {
+              "limits": {
+                "memory": "75Mi"
+              },
+              "requests": {
+                "memory": "75Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "master-5khgh-d897dc6cf-vstr9",
+        "containers": [
+          {
+            "resources": {
+              "limits": {
+                "memory": "75Mi"
+              },
+              "requests": {
+                "memory": "75Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "worker-fj8kh-74d69554d9-qggz9",
+        "containers": [
+          {
+            "resources": {
+              "limits": {
+                "memory": "75Mi"
+              },
+              "requests": {
+                "memory": "75Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "master-5khgh-d897dc6cf-vstr9",
+        "containers": [
+          {
+            "resources": {
+              "limits": {
+                "memory": "50Mi"
+              },
+              "requests": {
+                "cpu": "75m",
+                "memory": "50Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "worker-xd0mh-dc7fddf4f-qgkwt",
+        "containers": [
+          {
+            "resources": {
+              "limits": {
+                "memory": "50Mi"
+              },
+              "requests": {
+                "cpu": "75m",
+                "memory": "50Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "worker-fj8kh-74d69554d9-qggz9",
+        "containers": [
+          {
+            "resources": {
+              "limits": {
+                "memory": "50Mi"
+              },
+              "requests": {
+                "cpu": "75m",
+                "memory": "50Mi"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "spec": {
+        "nodeName": "worker-0ht26-64c4fbf547-vzs6q",
+        "containers": [
+          {
+            "resources": {
+              "limits": {
+                "memory": "50Mi"
+              },
+              "requests": {
+                "cpu": "75m",
+                "memory": "50Mi"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

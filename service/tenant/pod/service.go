@@ -55,6 +55,7 @@ func (s *Service) ListPods(ctx context.Context, request Request) (*Response, err
 	}
 
 	{
+		// Empty namespace ("") returns pods from all namespaces
 		pods, err := k8sClient.CoreV1().Pods("").List(v1.ListOptions{})
 		if err != nil {
 			return nil, microerror.Mask(err)

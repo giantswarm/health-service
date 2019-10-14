@@ -16,6 +16,8 @@ type NodeStatus struct {
 	MachineResources NodeStatusMachineResources `json:"machine"`
 	Ready            bool                       `json:"ready"`
 	Health           key.Health                 `json:"health"`
+	RequestTotals    NodeStatusComputeResources `json:"request_totals"`
+	LimitTotals      NodeStatusComputeResources `json:"limit_totals"`
 }
 
 // NodeStatusComputeResources holds data about available or requested compute resources.
