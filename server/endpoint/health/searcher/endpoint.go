@@ -118,6 +118,7 @@ func (e *Endpoint) Endpoint() kitendpoint.Endpoint {
 			Nodes:     nodeResponse.Nodes,
 			Pods:      podResponse.Pods,
 		}
+
 		healthResponse, err := e.service.Health.Search(ctx, healthRequest)
 		if err != nil {
 			return nil, microerror.Mask(err)

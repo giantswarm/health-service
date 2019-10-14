@@ -1,0 +1,24 @@
+{
+    "identity": {
+        "name": "master-m73hu-5bfc5479b-pd52d",
+        "kubelet_version": "v1.14.6",
+        "operator_version": "",
+        "role": "master",
+        "ip": "172.23.2.254",
+        "hostname": "master-m73hu-5bfc5479b-pd52d",
+        "instance_type": "",
+        "availability_region": "",
+        "availability_zone": ""
+    },
+    "machine": {
+        "cpu_count": 2,
+        "memory_capacity_bytes": 8364433408,
+        "memory_allocatable_bytes": 6409887744,
+        "ephemeral_storage_capacity_bytes": 5358223360,
+        "ephemeral_storage_allocatable_bytes": 4284481536,
+        "attachable_volume_allocatable_count": 0,
+        "attachable_volume_capacity_count": 0
+    },
+    "ready": true,
+    "health": "green"
+}
