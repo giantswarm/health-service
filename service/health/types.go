@@ -48,4 +48,5 @@ type NodeStatusMachineResources struct {
 	EphemeralStorageAvail             int64 `json:"ephemeral_storage_allocatable_bytes"`
 	AttachableVolumesAllocatableCount int64 `json:"attachable_volume_allocatable_count"`
 	AttachableVolumesCapacityCount    int64 `json:"attachable_volume_capacity_count"`
+	DockerVolumeSizeGB                int64 `json:"docker_volume_size_gb"`
 }

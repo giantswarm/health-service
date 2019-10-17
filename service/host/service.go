@@ -3,6 +3,7 @@ package host
 import (
 	"context"
 
+	v1alpha1 "github.com/giantswarm/apiextensions/pkg/apis/provider/v1alpha1"
 	"github.com/giantswarm/apiextensions/pkg/clientset/versioned"
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
@@ -56,6 +57,51 @@ func New(config Config) (*Service, error) {
 	return s, nil
 }
 
+func newProviderSpecFromAWS(aws v1alpha1.AWSConfigSpecAWS) ProviderSpec {
+	var workers []Worker
+
+	for _, worker := range aws.Workers {
+		newWorker := Worker{
+			DockerVolumeSizeGB: int64(worker.DockerVolumeSizeGB),
+		}
+		workers = append(workers, newWorker)
+	}
+
+	return ProviderSpec{
+		Workers: workers,
+	}
+}
+
+func newProviderSpecFromAzure(azure v1alpha1.AzureConfigSpecAzure) ProviderSpec {
+	var workers []Worker
+
+	for _, worker := range azure.Workers {
+		newWorker := Worker{
+			DockerVolumeSizeGB: int64(worker.DockerVolumeSizeGB),
+		}
+		workers = append(workers, newWorker)
+	}
+
+	return ProviderSpec{
+		Workers: workers,
+	}
+}
+
+func newProviderSpecFromKVM(kvm v1alpha1.KVMConfigSpecKVM) ProviderSpec {
+	var workers []Worker
+
+	for _, worker := range kvm.Workers {
+		newWorker := Worker{
+			DockerVolumeSizeGB: int64(worker.DockerVolumeSizeGB),
+		}
+		workers = append(workers, newWorker)
+	}
+
+	return ProviderSpec{
+		Workers: workers,
+	}
+}
+
 // searchAWSInfo searches for the cluster status in AWSConfigs resources.
 func (s *Service) searchAWSStatus(ctx context.Context, clusterID string) (Response, error) {
 	cr, err := s.g8sClient.ProviderV1alpha1().AWSConfigs(clusterNamespace).Get(clusterID, v1.GetOptions{})
@@ -67,7 +113,9 @@ func (s *Service) searchAWSStatus(ctx context.Context, clusterID string) (Respon
 	cluster := Response{
 		Endpoint: cr.Spec.Cluster.Kubernetes.API.Domain,
 		Status:   cr.Status.Cluster,
+		Spec:     newProviderSpecFromAWS(cr.Spec.AWS),
 	}
+
 	return cluster, nil
 }
 
@@ -82,6 +130,7 @@ func (s *Service) searchAzureStatus(ctx context.Context, clusterID string) (Resp
 	cluster := Response{
 		Endpoint: cr.Spec.Cluster.Kubernetes.API.Domain,
 		Status:   cr.Status.Cluster,
+		Spec:     newProviderSpecFromAzure(cr.Spec.Azure),
 	}
 	return cluster, nil
 }
@@ -97,6 +146,7 @@ func (s *Service) searchKVMStatus(ctx context.Context, clusterID string) (Respon
 	cluster := Response{
 		Endpoint: cr.Spec.Cluster.Kubernetes.API.Domain,
 		Status:   cr.Status.Cluster,
+		Spec:     newProviderSpecFromKVM(cr.Spec.KVM),
 	}
 	return cluster, nil
 }

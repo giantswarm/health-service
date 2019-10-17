@@ -9,6 +9,7 @@ import (
 	v1 "k8s.io/api/core/v1"
 
 	"github.com/giantswarm/health-service/service/health/key"
+	"github.com/giantswarm/health-service/service/host"
 )
 
 // Config represents the configuration used to create a new health service.
@@ -38,7 +39,7 @@ func New(config Config) (*Service, error) {
 // an object representing an aggregate health of the cluster and its nodes.
 func (s *Service) Search(ctx context.Context, request Request) (*Response, error) {
 	clusterStatus := calculateClusterStatus(request.Cluster, request.Nodes)
-	nodeStatus := calculateNodeStatus(request.Cluster, request.Nodes, request.Pods)
+	nodeStatus := calculateNodeStatus(request.Cluster, request.Spec, request.Nodes, request.Pods)
 
 	response := Response{
 		Cluster: clusterStatus,
@@ -106,7 +107,7 @@ func calculateClusterStatus(cluster v1alpha1.StatusCluster, nodes []v1.Node) Clu
 	}
 }
 
-func calculateNodeStatus(cluster v1alpha1.StatusCluster, nodes []v1.Node, pods []v1.Pod) []NodeStatus {
+func calculateNodeStatus(cluster v1alpha1.StatusCluster, spec host.ProviderSpec, nodes []v1.Node, pods []v1.Pod) []NodeStatus {
 	result := []NodeStatus{}
 	for _, node := range nodes {
 		limits := NodeStatusComputeResources{}
@@ -143,6 +144,7 @@ func calculateNodeStatus(cluster v1alpha1.StatusCluster, nodes []v1.Node, pods [
 				EphemeralStorageAvail:             key.MemoryToInt(node.Status.Allocatable.StorageEphemeral()),
 				AttachableVolumesAllocatableCount: key.NodeAttachableVolumesCount(node.Status.Allocatable),
 				AttachableVolumesCapacityCount:    key.NodeAttachableVolumesCount(node.Status.Capacity),
+				DockerVolumeSizeGB:                key.NodeWorkerVolumeSize(spec.Workers),
 			},
 			RequestTotals: requests,
 			LimitTotals:   limits,
