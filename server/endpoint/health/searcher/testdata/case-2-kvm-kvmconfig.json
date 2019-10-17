@@ -106,7 +106,7 @@
           {
             "cpus": 2,
             "disk": 40,
-            "dockerVolumeSizeGB": 0,
+            "dockerVolumeSizeGB": 30,
             "memory": "8G"
           }
         ],
@@ -136,19 +136,19 @@
           {
             "cpus": 3,
             "disk": 40,
-            "dockerVolumeSizeGB": 0,
+            "dockerVolumeSizeGB": 30,
             "memory": "3G"
           },
           {
             "cpus": 3,
             "disk": 40,
-            "dockerVolumeSizeGB": 0,
+            "dockerVolumeSizeGB": 30,
             "memory": "3G"
           },
           {
             "cpus": 3,
             "disk": 40,
-            "dockerVolumeSizeGB": 0,
+            "dockerVolumeSizeGB": 30,
             "memory": "3G"
           }
         ]
