@@ -3,13 +3,11 @@ package health
 import (
 	"context"
 
-	v1alpha1 "github.com/giantswarm/apiextensions/pkg/apis/provider/v1alpha1"
 	"github.com/giantswarm/microerror"
 	"github.com/giantswarm/micrologger"
 	v1 "k8s.io/api/core/v1"
 
 	"github.com/giantswarm/health-service/service/health/key"
-	"github.com/giantswarm/health-service/service/host"
 )
 
 // Config represents the configuration used to create a new health service.
@@ -38,8 +36,8 @@ func New(config Config) (*Service, error) {
 // Search accepts data from the control plane and tenant cluster and returns
 // an object representing an aggregate health of the cluster and its nodes.
 func (s *Service) Search(ctx context.Context, request Request) (*Response, error) {
-	clusterStatus := calculateClusterStatus(request.Cluster, request.Nodes)
-	nodeStatus := calculateNodeStatus(request.Cluster, request.Spec, request.Nodes, request.Pods)
+	clusterStatus := calculateClusterStatus(request.Cluster)
+	nodeStatus := calculateNodeStatus(request.Cluster)
 
 	response := Response{
 		Cluster: clusterStatus,
@@ -49,15 +47,15 @@ func (s *Service) Search(ctx context.Context, request Request) (*Response, error
 	return &response, nil
 }
 
-func calculateClusterStatus(cluster v1alpha1.StatusCluster, nodes []v1.Node) ClusterStatus {
+func calculateClusterStatus(cluster Cluster) ClusterStatus {
 	health := key.HealthDefault
 	roleHealthCounts := map[string]map[key.Health]int{}
 	workerCount := 0
-	creating := cluster.HasCreatingCondition()
-	updating := cluster.HasUpdatingCondition()
-	deleting := cluster.HasDeletingCondition()
+	creating := cluster.Status.HasCreatingCondition()
+	updating := cluster.Status.HasUpdatingCondition()
+	deleting := cluster.Status.HasDeletingCondition()
 
-	for _, node := range nodes {
+	for _, node := range cluster.Nodes {
 		role := key.NodeRole(node)
 		nodeHealth := calculateNodeHealth(node)
 		if roleHealthCounts[role] == nil {
@@ -107,12 +105,12 @@ func calculateClusterStatus(cluster v1alpha1.StatusCluster, nodes []v1.Node) Clu
 	}
 }
 
-func calculateNodeStatus(cluster v1alpha1.StatusCluster, spec host.ProviderSpec, nodes []v1.Node, pods []v1.Pod) []NodeStatus {
+func calculateNodeStatus(cluster Cluster) []NodeStatus {
 	result := []NodeStatus{}
-	for _, node := range nodes {
+	for _, node := range cluster.Nodes {
 		limits := NodeStatusComputeResources{}
 		requests := NodeStatusComputeResources{}
-		for _, pod := range pods {
+		for _, pod := range cluster.Pods {
 			if pod.Spec.NodeName == node.Name {
 				for _, container := range pod.Spec.Containers {
 					limits.CPU += container.Resources.Limits.Cpu().MilliValue()
@@ -134,7 +132,7 @@ func calculateNodeStatus(cluster v1alpha1.StatusCluster, spec host.ProviderSpec,
 				AvailabilityZone:   node.Labels["failure-domain.beta.kubernetes.io/zone"],
 				AvailabilityRegion: node.Labels["failure-domain.beta.kubernetes.io/region"],
 				KubeletVersion:     node.Status.NodeInfo.KubeletVersion,
-				OperatorVersion:    key.NodeVersion(cluster.Nodes, node.Name),
+				OperatorVersion:    key.NodeVersion(cluster.Status.Nodes, node.Name),
 			},
 			MachineResources: NodeStatusMachineResources{
 				CPUCount:                          node.Status.Capacity.Cpu().Value(),
@@ -144,7 +142,7 @@ func calculateNodeStatus(cluster v1alpha1.StatusCluster, spec host.ProviderSpec,
 				EphemeralStorageAvail:             key.MemoryToInt(node.Status.Allocatable.StorageEphemeral()),
 				AttachableVolumesAllocatableCount: key.NodeAttachableVolumesCount(node.Status.Allocatable),
 				AttachableVolumesCapacityCount:    key.NodeAttachableVolumesCount(node.Status.Capacity),
-				DockerVolumeSizeGB:                key.NodeWorkerVolumeSize(spec.Workers),
+				DockerVolumeSizeGB:                key.NodeWorkerVolumeSize(cluster.Spec.Workers),
 			},
 			RequestTotals: requests,
 			LimitTotals:   limits,

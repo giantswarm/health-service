@@ -113,11 +113,13 @@ func (e *Endpoint) Endpoint() kitendpoint.Endpoint {
 		}
 
 		healthRequest := health.Request{
-			Cluster:   hostResponse.Status,
 			ClusterID: clusterID,
-			Nodes:     nodeResponse.Nodes,
-			Pods:      podResponse.Pods,
-			Spec:      hostResponse.Spec,
+			Cluster: health.Cluster{
+				Status: hostResponse.Status,
+				Nodes:  nodeResponse.Nodes,
+				Pods:   podResponse.Pods,
+				Spec:   hostResponse.Spec,
+			},
 		}
 
 		healthResponse, err := e.service.Health.Search(ctx, healthRequest)

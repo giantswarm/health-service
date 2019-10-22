@@ -10,8 +10,13 @@ import (
 // Request is the configuration for the service action.
 type Request struct {
 	ClusterID string
-	Nodes     []v1.Node
-	Pods      []v1.Pod
-	Cluster   v1alpha1.StatusCluster
-	Spec      host.ProviderSpec
+	Cluster   Cluster
+}
+
+// Cluster represents the control plane and tenant cluster data received for performing health calculations
+type Cluster struct {
+	Nodes  []v1.Node
+	Pods   []v1.Pod
+	Status v1alpha1.StatusCluster
+	Spec   host.ProviderSpec
 }
