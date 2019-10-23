@@ -24,7 +24,8 @@
                 "ephemeral_storage_allocatable_bytes": 106248011776,
                 "attachable_volume_allocatable_count": 39,
                 "attachable_volume_capacity_count": 39,
-                "docker_volume_size_gb": 10
+                "docker_volume_size_gb": 10,
+                "attached_volumes_count": 3
             },
             "ready": true,
             "health": "green",

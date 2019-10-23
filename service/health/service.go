@@ -143,6 +143,7 @@ func calculateNodeStatus(cluster Cluster) []NodeStatus {
 				AttachableVolumesAllocatableCount: key.NodeAttachableVolumesCount(node.Status.Allocatable),
 				AttachableVolumesCapacityCount:    key.NodeAttachableVolumesCount(node.Status.Capacity),
 				DockerVolumeSizeGB:                key.NodeWorkerVolumeSize(cluster.Spec.Workers),
+				AttachedVolumesCount:              int64(len(node.Status.VolumesAttached)),
 			},
 			RequestTotals: requests,
 			LimitTotals:   limits,
