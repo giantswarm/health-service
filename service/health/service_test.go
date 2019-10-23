@@ -278,8 +278,10 @@ func Test_ClusterHealth(t *testing.T) {
 			}
 
 			request := Request{
-				Cluster: tc.clusterStatus,
-				Nodes:   tc.nodes,
+				Cluster: Cluster{
+					Status: tc.clusterStatus,
+					Nodes:  tc.nodes,
+				},
 			}
 			response, err := service.Search(context.Background(), request)
 
@@ -335,8 +337,10 @@ func Test_NodeParsing(t *testing.T) {
 				t.Fatal(err)
 			}
 			request := Request{
-				Nodes: []v1.Node{
-					node,
+				Cluster: Cluster{
+					Nodes: []v1.Node{
+						node,
+					},
 				},
 			}
 			response, err := service.Search(context.Background(), request)

@@ -23,7 +23,8 @@
                 "ephemeral_storage_capacity_bytes": 29137096704,
                 "ephemeral_storage_allocatable_bytes": 28063354880,
                 "attachable_volume_allocatable_count": 4,
-                "attachable_volume_capacity_count": 4
+                "attachable_volume_capacity_count": 4,
+                "docker_volume_size_gb": 20
             },
             "ready": true,
             "health": "green",
@@ -55,7 +56,8 @@
                 "ephemeral_storage_capacity_bytes": 29137096704,
                 "ephemeral_storage_allocatable_bytes": 28063354880,
                 "attachable_volume_allocatable_count": 4,
-                "attachable_volume_capacity_count": 4
+                "attachable_volume_capacity_count": 4,
+                "docker_volume_size_gb": 20
             },
             "ready": true,
             "health": "green",
@@ -87,7 +89,8 @@
                 "ephemeral_storage_capacity_bytes": 29137096704,
                 "ephemeral_storage_allocatable_bytes": 28063354880,
                 "attachable_volume_allocatable_count": 4,
-                "attachable_volume_capacity_count": 4
+                "attachable_volume_capacity_count": 4,
+                "docker_volume_size_gb": 20
             },
             "ready": true,
             "health": "green",
@@ -119,7 +122,8 @@
                 "ephemeral_storage_capacity_bytes": 29137096704,
                 "ephemeral_storage_allocatable_bytes": 28063354880,
                 "attachable_volume_allocatable_count": 4,
-                "attachable_volume_capacity_count": 4
+                "attachable_volume_capacity_count": 4,
+                "docker_volume_size_gb": 20
             },
             "ready": true,
             "health": "green",

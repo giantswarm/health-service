@@ -56,7 +56,7 @@
             },
             "masters": [
                 {
-                    "dockerVolumeSizeGB": 0,
+                    "dockerVolumeSizeGB": 10,
                     "imageID": "ami-90c152ff",
                     "instanceType": "m4.xlarge"
                 }
@@ -75,17 +75,17 @@
             },
             "workers": [
                 {
-                    "dockerVolumeSizeGB": 0,
+                    "dockerVolumeSizeGB": 10,
                     "imageID": "ami-90c152ff",
                     "instanceType": "m4.xlarge"
                 },
                 {
-                    "dockerVolumeSizeGB": 0,
+                    "dockerVolumeSizeGB": 10,
                     "imageID": "ami-90c152ff",
                     "instanceType": "m4.xlarge"
                 },
                 {
-                    "dockerVolumeSizeGB": 0,
+                    "dockerVolumeSizeGB": 10,
                     "imageID": "ami-90c152ff",
                     "instanceType": "m4.xlarge"
                 }

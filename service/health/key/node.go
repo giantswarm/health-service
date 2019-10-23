@@ -7,6 +7,8 @@ import (
 	"github.com/giantswarm/apiextensions/pkg/apis/provider/v1alpha1"
 	v1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
+
+	"github.com/giantswarm/health-service/service/host"
 )
 
 const (
@@ -66,6 +68,14 @@ func MemoryToInt(nodeMemory *resource.Quantity) int64 {
 		return 0
 	}
 	return memBytes
+}
+
+// NodeWorkerVolumeSize returns the first volume size found in a slice of Workers, or 0 if the list is empty.
+func NodeWorkerVolumeSize(workers []host.Worker) int64 {
+	if len(workers) > 0 {
+		return workers[0].DockerVolumeSizeGB
+	}
+	return 0
 }
 
 // NodeHasCondition returns true if the node conditions contains a condition of the given type and value.
