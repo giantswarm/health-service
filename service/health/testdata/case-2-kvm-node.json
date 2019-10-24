@@ -117,6 +117,12 @@
           "kubeProxyVersion": "v1.14.6",
           "operatingSystem": "linux",
           "architecture": "amd64"
-      }
+      },
+      "volumesAttached": [
+        {
+            "name": "kubernetes.io/iscsi/192.168.2.119:3260:iqn.2099-12.iscsievs411:sampleevs411.dataplane:2",
+            "devicePath": ""
+        }
+      ]
   }
 }
