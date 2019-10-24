@@ -49,4 +49,5 @@ type NodeStatusMachineResources struct {
 	AttachableVolumesAllocatableCount int64 `json:"attachable_volume_allocatable_count"`
 	AttachableVolumesCapacityCount    int64 `json:"attachable_volume_capacity_count"`
 	DockerVolumeSizeGB                int64 `json:"docker_volume_size_gb"`
+	AttachedVolumesCount              int64 `json:"attached_volumes_count"`
 }

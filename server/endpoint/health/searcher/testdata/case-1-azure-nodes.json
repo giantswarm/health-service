@@ -132,7 +132,13 @@
           "kubeProxyVersion": "v1.14.6",
           "operatingSystem": "linux",
           "architecture": "amd64"
-        }
+        },
+        "volumesAttached": [
+          {
+              "name": "kubernetes.io/azure-disk//subscriptions/foo/resourceGroups/GS_aksprod-1_aksprod-1_westeurope/providers/Microsoft.Compute/disks/kubernetes-dynamic-pvc-sample-hash-1234567890abc",
+              "devicePath": "/dev/xvdbk"
+          }
+        ]
       }
     },
     {

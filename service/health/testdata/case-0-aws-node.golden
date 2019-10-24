@@ -17,7 +17,8 @@
         "ephemeral_storage_capacity_bytes": 5843333120,
         "ephemeral_storage_allocatable_bytes": 5843333120,
         "attachable_volume_allocatable_count": 25,
-        "attachable_volume_capacity_count": 25
+        "attachable_volume_capacity_count": 25,
+        "attached_volumes_count": 3
     },
     "ready": true,
     "health": "green"
