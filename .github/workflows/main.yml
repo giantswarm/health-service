@@ -13,4 +13,6 @@ jobs:
       run: echo Running Nancy dependency scanner
     - name: Nancy for GitHub Actions
       uses: sonatype-nexus-community/nancy-github-action@1.0.0
+      with:
+        target: go.sum
 
