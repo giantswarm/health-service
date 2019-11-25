@@ -18,7 +18,10 @@ e2eTest: &e2eTest
           ./e2ectl cluster create
           ls
           echo kubeconfig path $(./e2ectl kubeconfig path)
-          cp $(./e2ectl kubeconfig path) ${E2E_TEST_DIR}/
+          mkdir test-kube-config
+          cp $(./e2ectl kubeconfig path) test-kube-config/
+          ls test-kube-config
+          # cp $(./e2ectl kubeconfig path) ${E2E_TEST_DIR}/
     - run:
         name: Run test
         command: echo "A very important test indeed"
@@ -26,7 +29,7 @@ e2eTest: &e2eTest
     - run:
         name: Run Docker CIS audit
         command: >
-          kubectl run --rm -i --kubeconfig=health-service/kind-config-kind 
+          kubectl run --rm -i --kubeconfig=test-kube-config/kind-config-kind 
           -t docker-bench-security 
           --image=docker/docker-bench-security 
           --restart=Never 
