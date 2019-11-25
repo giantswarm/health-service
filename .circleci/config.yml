@@ -16,20 +16,10 @@ e2eTest: &e2eTest
         name: Init cluster
         command: |
           ./e2ectl cluster create
-          cp $(./e2ectl kubeconfig path) ${E2E_TEST_DIR}/kubeconfig
+          cp $(./e2ectl kubeconfig path) ${E2E_TEST_DIR}/
     - run:
         name: Run test
-        command: |
-          echo "A very important test indeed"
-          # docker run --rm --network host \
-          #   -v $(pwd)/${E2E_TEST_DIR}:/e2e \
-          #   -v $(pwd):/go/src/github.com/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME} \
-          #   -e E2E_KUBECONFIG=/e2e/kubeconfig \
-          #   -e CIRCLE_SHA1=${CIRCLE_SHA1} \
-          #   -e GITHUB_BOT_TOKEN=${GITHUB_BOT_TOKEN} \
-          #   -e E2E_TESTED_VERSION=${E2E_TESTED_VERSION} \
-          #   -w /go/src/github.com/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME} \
-          #   golang:1 go test -v -tags k8srequired ./${E2E_TEST_DIR}/
+        command: echo "A very important test indeed"
 
     - run:
         name: Export logs
