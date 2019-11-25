@@ -16,7 +16,9 @@ e2eTest: &e2eTest
         name: Init cluster
         command: |
           ./e2ectl cluster create
-          cp $(./e2ectl kubeconfig path) ${E2E_TEST_DIR}/
+          ls
+          echo kubeconfig path $(./e2ectl kubeconfig path)
+          # cp $(./e2ectl kubeconfig path) ${E2E_TEST_DIR}/
     - run:
         name: Run test
         command: echo "A very important test indeed"
