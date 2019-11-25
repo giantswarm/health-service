@@ -22,7 +22,7 @@ e2eTest: &e2eTest
     - run:
         name: Run test
         command: echo "A very important test indeed"
-    - kube-orb/install-kubect
+    - kube-orb/install-kubectl
     - run:
         name: Run Docker CIS audit
         command: >
