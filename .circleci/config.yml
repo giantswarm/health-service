@@ -55,7 +55,7 @@ e2eTest: &e2eTest
 version: 2.1
 orbs:
   architect: giantswarm/architect@0.4.3
-  kubernetes: circleci/kubernetes@0.10.1
+  kube-orb: circleci/kubernetes@0.10.1
 
 jobs:
   build:
