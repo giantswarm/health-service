@@ -26,7 +26,7 @@ e2eTest: &e2eTest
     - run:
         name: Run Docker CIS audit
         command: >
-          kubectl run --rm -i 
+          kubectl run --rm -i --kubeconfig=$(kind get kubeconfig-path --name="kind") 
           -t docker-bench-security 
           --image=docker/docker-bench-security 
           --restart=Never 
