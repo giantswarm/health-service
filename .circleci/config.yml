@@ -72,7 +72,6 @@ jobs:
         paths:
         - ./health-service
         - ./architect
-
   e2eTestBasicPR:
     environment:
       # E2E_TEST_DIR: "integration/test/chart/basic"
@@ -90,7 +89,7 @@ workflows:
             #   only: /^v.*/
       - e2eTestBasicPR:
         requires:
-        - build
+          - build
 
 # e2eTest: &e2eTest
 #     machine: true
