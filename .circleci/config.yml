@@ -88,6 +88,9 @@ workflows:
             # tags:
             #   only: /^v.*/
       - e2eTestBasicPR:
+          filters:
+            branches:
+              only: test-ci-automation
           requires:
           - build
 
