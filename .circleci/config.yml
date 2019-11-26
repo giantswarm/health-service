@@ -35,7 +35,7 @@ e2eTest: &e2eTest
           export KUBECONFIG=$(./e2ectl kubeconfig path)
           kubectl run --rm -i -t kube-bench-master --image=aquasec/kube-bench:latest \
           --restart=Never --overrides="{ \"apiVersion\":\"v1\", \
-          \"spec\":{ \"hostPID\":true } }" -- master --version 1.15
+          \"spec\":{ \"hostPID\":true } }" -- master --version 1.15 --json
     # 
     # - run:
     #     name: Run Docker CIS audit
