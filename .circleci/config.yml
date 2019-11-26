@@ -12,27 +12,38 @@ e2eTest: &e2eTest
         command: |
           wget -q $(curl -sS https://api.github.com/repos/giantswarm/e2ectl/releases/latest | grep browser_download_url | head -n 1 | cut -d '"' -f 4)
           chmod +x ./e2ectl
-    - run:
-        name: Init cluster
-        command: |
-          ./e2ectl cluster create
-          ls
-          echo kubeconfig path $(./e2ectl kubeconfig path)
-          mkdir test-kube-config
-          cp $(./e2ectl kubeconfig path) test-kube-config/
-          ls test-kube-config
-          # cp $(./e2ectl kubeconfig path) ${E2E_TEST_DIR}/
+    # - run:
+    #     name: Init cluster
+    #     command: |
+    #       ./e2ectl cluster create
+    #       ls
+    #       echo kubeconfig path $(./e2ectl kubeconfig path)
+    #       mkdir test-kube-config
+    #       cp $(./e2ectl kubeconfig path) test-kube-config/
+    #       ls test-kube-config
+    #       # cp $(./e2ectl kubeconfig path) ${E2E_TEST_DIR}/
+    #       cat test-kube-config/kind-config-kind
     - run:
         name: Run test
         command: echo "A very important test indeed"
+    
     - kube-orb/install-kubectl
     - run:
-        name: Run Docker CIS audit
-        command: >
-          kubectl run --rm -i --kubeconfig=test-kube-config/kind-config-kind 
-          -t docker-bench-security 
-          --image=docker/docker-bench-security 
-          --restart=Never 
+        name: Init cluster and run audit
+        command: |
+          ./e2ectl cluster create
+          export KBECONFIG=$(./e2ectl kubeconfig path)
+          kubectl run --rm -i -t kube-bench-master --image=aquasec/kube-bench:latest \
+          --restart=Never --overrides="{ \"apiVersion\":\"v1\", \
+          \"spec\":{ \"hostPID\":true } }" -- master --version 1.15
+    # 
+    # - run:
+    #     name: Run Docker CIS audit
+    #     command: >
+    #       kubectl run --rm -i --kubeconfig=test-kube-config/kind-config-kind 
+    #       -t docker-bench-security 
+    #       --image=docker/docker-bench-security 
+    #       --restart=Never 
 
           # --overrides="{ \"apiVersion\":\"v1\", \"spec\":{ \"hostPID\":true,\"userNS\":\"host\", \"hostNetwork\":true, \"securityContext\":{ \"capabilities\":{ \"add\":[ \"audit_control\"]}},\"nodeSelector\":{ \"role\":\"master\" }, \"tolerations\":[ { \"key\":\"node-role.kubernetes.io/master\", \"operator\":\"Exists\", \"effect\":\"NoSchedule\" } ], \"volumes\":[ { \"name\":\"etc\", \"hostPath\":{ \"path\":\"/etc\", \"readOnly\":true } }, { \"name\":\"d-containerd\", \"hostPath\":{ \"path\":\"/usr/bin/docker-containerd\", \"readOnly\":true } }, { \"name\":\"d-runc\", \"hostPath\":{ \"path\":\"/usr/bin/docker-runc\", \"readOnly\":true } }, { \"name\":\"systemd\", \"hostPath\":{ \"path\":\"/usr/lib/systemd\", \"readOnly\":true } }, { \"name\":\"varlib\", \"hostPath\":{ \"path\":\"/var/lib\", \"readOnly\":true } }, { \"name\":\"dockersock\", \"hostPath\":{ \"path\":\"/var/run/docker.sock\", \"readOnly\":true } } ], \"containers\":[ { \"image\":\"docker/docker-bench-security\", \"name\":\"docker-bench-security\", \"command\":[ \"/bin/sh\"], \"args\":[ \"-c\", \"echo Starting && ./docker-bench-security.sh -l bench-out -e check_7 && cat bench-out.json\" ], \"volumeMounts\":[ { \"mountPath\":\"/etc\", \"name\":\"etc\" }, { \"mountPath\":\"/usr/bin/docker-containerd\", \"name\":\"d-containerd\" }, { \"mountPath\":\"/usr/bin/docker-runc\", \"name\":\"d-runc\" }, { \"mountPath\":\"/usr/lib/systemd\", \"name\":\"systemd\" }, { \"mountPath\":\"/var/lib\", \"name\":\"varlib\" },{ \"mountPath\":\"/var/run/docker.sock\", \"name\":\"dockersock\"}]}]}}" 
           # --env=DOCKER_CONTENT_TRUST=$DOCKER_CONTENT_TRUST
