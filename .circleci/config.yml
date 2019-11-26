@@ -32,7 +32,7 @@ e2eTest: &e2eTest
         name: Init cluster and run audit
         command: |
           ./e2ectl cluster create
-          export KBECONFIG=$(./e2ectl kubeconfig path)
+          export KUBECONFIG=$(./e2ectl kubeconfig path)
           kubectl run --rm -i -t kube-bench-master --image=aquasec/kube-bench:latest \
           --restart=Never --overrides="{ \"apiVersion\":\"v1\", \
           \"spec\":{ \"hostPID\":true } }" -- master --version 1.15
