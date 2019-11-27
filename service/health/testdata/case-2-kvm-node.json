@@ -15,7 +15,6 @@
           "kubernetes.io/os": "linux",
           "kubernetes.io/role": "master",
           "kvm-operator.giantswarm.io/version": "3.8.0",
-          "node-role.kubernetes.io/master": "",
           "node.kubernetes.io/master": "",
           "role": "master"
       },

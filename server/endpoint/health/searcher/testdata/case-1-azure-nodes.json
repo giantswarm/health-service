@@ -26,7 +26,6 @@
           "kubernetes.io/hostname": "fg0ge-master-000000",
           "kubernetes.io/os": "linux",
           "kubernetes.io/role": "master",
-          "node-role.kubernetes.io/master": "",
           "node.kubernetes.io/master": "",
           "role": "master"
         },
@@ -161,7 +160,6 @@
           "kubernetes.io/hostname": "fg0ge-worker-000000",
           "kubernetes.io/os": "linux",
           "kubernetes.io/role": "worker",
-          "node-role.kubernetes.io/worker": "",
           "node.kubernetes.io/worker": "",
           "role": "worker"
         },
@@ -284,7 +282,6 @@
           "kubernetes.io/hostname": "fg0ge-worker-000001",
           "kubernetes.io/os": "linux",
           "kubernetes.io/role": "worker",
-          "node-role.kubernetes.io/worker": "",
           "node.kubernetes.io/worker": "",
           "role": "worker"
         },
@@ -407,7 +404,6 @@
           "kubernetes.io/hostname": "fg0ge-worker-000004",
           "kubernetes.io/os": "linux",
           "kubernetes.io/role": "worker",
-          "node-role.kubernetes.io/worker": "",
           "node.kubernetes.io/worker": "",
           "role": "worker"
         },
