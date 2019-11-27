@@ -18,7 +18,6 @@
       "kubernetes.io/hostname": "fg0ge-master-000000",
       "kubernetes.io/os": "linux",
       "kubernetes.io/role": "master",
-      "node-role.kubernetes.io/master": "",
       "node.kubernetes.io/master": "",
       "role": "master"
     },

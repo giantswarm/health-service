@@ -23,7 +23,6 @@
             "kubernetes.io/os": "linux",
             "kubernetes.io/role": "master",
             "kvm-operator.giantswarm.io/version": "3.8.0",
-            "node-role.kubernetes.io/master": "",
             "node.kubernetes.io/master": "",
             "role": "master"
           },
@@ -151,7 +150,6 @@
             "kubernetes.io/os": "linux",
             "kubernetes.io/role": "worker",
             "kvm-operator.giantswarm.io/version": "3.8.0",
-            "node-role.kubernetes.io/worker": "",
             "node.kubernetes.io/worker": "",
             "role": "worker"
           },
@@ -266,7 +264,6 @@
             "kubernetes.io/os": "linux",
             "kubernetes.io/role": "worker",
             "kvm-operator.giantswarm.io/version": "3.8.0",
-            "node-role.kubernetes.io/worker": "",
             "node.kubernetes.io/worker": "",
             "role": "worker"
           },
@@ -381,7 +378,6 @@
             "kubernetes.io/os": "linux",
             "kubernetes.io/role": "worker",
             "kvm-operator.giantswarm.io/version": "3.8.0",
-            "node-role.kubernetes.io/worker": "",
             "node.kubernetes.io/worker": "",
             "role": "worker"
           },

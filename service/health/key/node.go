@@ -14,7 +14,6 @@ import (
 const (
 	attachableVolumePattern = v1.ResourceAttachableVolumesPrefix + "*"
 	roleKey                 = "kubernetes.io/role"
-	roleKeyAlt              = "node-role.kubernetes.io/"
 )
 
 // NodeVersion returns the version of a node from an array of StatusClusterNode.
